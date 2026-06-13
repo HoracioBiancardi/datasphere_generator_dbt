@@ -60,6 +60,17 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
             f"        indexes=[{{'columns': {pk_str}, 'type': 'btree'}}],",
             "    )",
             "}}",
+            "{% if is_incremental() %}",
+            "    WITH novos_hashes AS (",
+            "        SELECT s_tgt.hash_pk",
+            f"        FROM {{ source('dataspherev2', '{source_table.lower()}') }} AS s_tgt",
+            "        WHERE TRY_CONVERT(DATETIME2, s_tgt.dt_ingestao) >= (",
+            "                SELECT DATEADD(",
+            "                    DAY, -1, MAX(s_src.dt_ingestao)",
+            "                ) FROM {{ this }} AS s_src",
+            "            )",
+            "    )",
+            "{% endif %}",
         ]
     else:
         pk_str = _pk_literal(pk_targets)
@@ -162,16 +173,19 @@ class DbtGenerator:
     def generate(self, pipeline_contract: Dict[str, Any]) -> None:
         """Write SQL model and update schema.yml for the given pipeline contract."""
         target_table = pipeline_contract["target_table"]
+        source_table = pipeline_contract["source_sap_table"]
         logger.info(f"[Module 3] Generating dbt artifacts for: {target_table}")
 
         # --- SQL model ---
         sql_content = _build_sql(pipeline_contract, self.source_name)
-        sql_path = self.output_dir / f"{target_table}.sql"
+        sql_path = self.output_dir / source_table / f"{target_table}.sql"
+        sql_path.parent.mkdir(parents=True, exist_ok=True)
         sql_path.write_text(sql_content, encoding="utf-8")
         logger.info(f"[Module 3] SQL model saved → {sql_path}")
 
         # --- schema.yml (merge or create) ---
-        yml_path = self.output_dir / "schema.yml"
+        yml_path = self.output_dir / source_table / f"{target_table}.yml"
+        yml_path.parent.mkdir(parents=True, exist_ok=True)
         schema = _load_schema_yml(yml_path)
 
         # Replace existing entry for this model if present, otherwise append
