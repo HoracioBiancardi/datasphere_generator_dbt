@@ -1,0 +1,1618 @@
+{
+  "target_table": "stg_sap_mara",
+  "source_sap_table": "MARA",
+  "table_description": "Dados gerais de material",
+  "ingestion_strategy": {
+    "load_type": "FULL",
+    "primary_keys": [
+      "MANDT",
+      "MATNR"
+    ],
+    "watermark_column": null
+  },
+  "transformed_columns": [
+    {
+      "source_field": "MANDT",
+      "target_field": "mandante",
+      "target_type": "STRING",
+      "sql_expression": "MANDT",
+      "description": "Mandante"
+    },
+    {
+      "source_field": "MATNR",
+      "target_field": "material",
+      "target_type": "STRING",
+      "sql_expression": "MATNR",
+      "description": "Nº do material"
+    },
+    {
+      "source_field": "ERSDA",
+      "target_field": "criado_em",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN ERSDA = '00000000' OR ERSDA = '' THEN NULL ELSE TO_DATE(ERSDA, 'YYYYMMDD') END",
+      "description": "Data de criação"
+    },
+    {
+      "source_field": "ERNAM",
+      "target_field": "criado_por",
+      "target_type": "STRING",
+      "sql_expression": "ERNAM",
+      "description": "Nome do responsável que criou o objeto"
+    },
+    {
+      "source_field": "LAEDA",
+      "target_field": "ultima_modific",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN LAEDA = '00000000' OR LAEDA = '' THEN NULL ELSE TO_DATE(LAEDA, 'YYYYMMDD') END",
+      "description": "Data da última modificação"
+    },
+    {
+      "source_field": "AENAM",
+      "target_field": "modificado_por",
+      "target_type": "STRING",
+      "sql_expression": "AENAM",
+      "description": "Nome do responsável pela modificação do objeto"
+    },
+    {
+      "source_field": "VPSTA",
+      "target_field": "status_completo",
+      "target_type": "STRING",
+      "sql_expression": "VPSTA",
+      "description": "Status de atualização do material completo"
+    },
+    {
+      "source_field": "PSTAT",
+      "target_field": "status_atualiz",
+      "target_type": "STRING",
+      "sql_expression": "PSTAT",
+      "description": "Status de atualização"
+    },
+    {
+      "source_field": "LVORM",
+      "target_field": "marcpelnivmand",
+      "target_type": "STRING",
+      "sql_expression": "LVORM",
+      "description": "Marcar mat.para eliminação a nível de mandante"
+    },
+    {
+      "source_field": "MTART",
+      "target_field": "tipo_material",
+      "target_type": "STRING",
+      "sql_expression": "MTART",
+      "description": "Tipo de material"
+    },
+    {
+      "source_field": "MBRSH",
+      "target_field": "setorindustrial",
+      "target_type": "STRING",
+      "sql_expression": "MBRSH",
+      "description": "Setor industrial"
+    },
+    {
+      "source_field": "MATKL",
+      "target_field": "grpmercads",
+      "target_type": "STRING",
+      "sql_expression": "MATKL",
+      "description": "Grupo de mercadorias"
+    },
+    {
+      "source_field": "BISMT",
+      "target_field": "n_mat_antigo",
+      "target_type": "STRING",
+      "sql_expression": "BISMT",
+      "description": "Nº material antigo"
+    },
+    {
+      "source_field": "MEINS",
+      "target_field": "um_basica",
+      "target_type": "STRING",
+      "sql_expression": "MEINS",
+      "description": "Unidade de medida básica"
+    },
+    {
+      "source_field": "BSTME",
+      "target_field": "um_pedido",
+      "target_type": "STRING",
+      "sql_expression": "BSTME",
+      "description": "Unidade de medida do pedido"
+    },
+    {
+      "source_field": "ZEINR",
+      "target_field": "documento",
+      "target_type": "STRING",
+      "sql_expression": "ZEINR",
+      "description": "Nº documento (sem sistema de administração de documentos)"
+    },
+    {
+      "source_field": "ZEIAR",
+      "target_field": "tipo_documento",
+      "target_type": "STRING",
+      "sql_expression": "ZEIAR",
+      "description": "Tipo de documento (s/sistema administração documentos)"
+    },
+    {
+      "source_field": "ZEIVR",
+      "target_field": "versao_doc",
+      "target_type": "STRING",
+      "sql_expression": "ZEIVR",
+      "description": "Versão do documento (sem sistema administração documentos)"
+    },
+    {
+      "source_field": "ZEIFO",
+      "target_field": "formato_din",
+      "target_type": "STRING",
+      "sql_expression": "ZEIFO",
+      "description": "Formato DIN do documento (s/sistema administração documents)"
+    },
+    {
+      "source_field": "AESZN",
+      "target_field": "n_modif_doc",
+      "target_type": "STRING",
+      "sql_expression": "AESZN",
+      "description": "Nº modificação do documento (sem sistema de admin.docs.)"
+    },
+    {
+      "source_field": "BLATT",
+      "target_field": "n_folha",
+      "target_type": "STRING",
+      "sql_expression": "BLATT",
+      "description": "Nº folha do documento (sem sistema de admin. de documentos)"
+    },
+    {
+      "source_field": "BLANZ",
+      "target_field": "n_de_folhas",
+      "target_type": "STRING",
+      "sql_expression": "BLANZ",
+      "description": "Nº de folhas (sem sistema de admin. de documentos)"
+    },
+    {
+      "source_field": "FERTH",
+      "target_field": "prod_controle",
+      "target_type": "STRING",
+      "sql_expression": "FERTH",
+      "description": "Instrução de produção/de controle de qualidade"
+    },
+    {
+      "source_field": "FORMT",
+      "target_field": "formato_din",
+      "target_type": "STRING",
+      "sql_expression": "FORMT",
+      "description": "Formato DIN da instrução de produção"
+    },
+    {
+      "source_field": "GROES",
+      "target_field": "tamanho_dimens",
+      "target_type": "STRING",
+      "sql_expression": "GROES",
+      "description": "Tamanho/dimensão"
+    },
+    {
+      "source_field": "WRKST",
+      "target_field": "material_basico",
+      "target_type": "STRING",
+      "sql_expression": "WRKST",
+      "description": "Material básico"
+    },
+    {
+      "source_field": "NORMT",
+      "target_field": "denom_norma",
+      "target_type": "STRING",
+      "sql_expression": "NORMT",
+      "description": "Denominação da norma (p.ex. DIN)"
+    },
+    {
+      "source_field": "LABOR",
+      "target_field": "lab_escr",
+      "target_type": "STRING",
+      "sql_expression": "LABOR",
+      "description": "Laboratório/escritório de engenharia"
+    },
+    {
+      "source_field": "EKWSL",
+      "target_field": "chavevalcompras",
+      "target_type": "STRING",
+      "sql_expression": "EKWSL",
+      "description": "Chave de valores de Compras"
+    },
+    {
+      "source_field": "BRGEW",
+      "target_field": "peso_bruto",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(BRGEW AS DECIMAL(13, 3))",
+      "description": "Peso bruto"
+    },
+    {
+      "source_field": "NTGEW",
+      "target_field": "peso_liquido",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(NTGEW AS DECIMAL(13, 3))",
+      "description": "Peso líquido"
+    },
+    {
+      "source_field": "GEWEI",
+      "target_field": "unidade_de_peso",
+      "target_type": "STRING",
+      "sql_expression": "GEWEI",
+      "description": "Unidade de peso"
+    },
+    {
+      "source_field": "VOLUM",
+      "target_field": "volume",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(VOLUM AS DECIMAL(13, 3))",
+      "description": "Volume"
+    },
+    {
+      "source_field": "VOLEH",
+      "target_field": "unidade_volume",
+      "target_type": "STRING",
+      "sql_expression": "VOLEH",
+      "description": "Unidade de volume"
+    },
+    {
+      "source_field": "BEHVO",
+      "target_field": "recipiente",
+      "target_type": "STRING",
+      "sql_expression": "BEHVO",
+      "description": "Instrução de recipiente"
+    },
+    {
+      "source_field": "RAUBE",
+      "target_field": "conds_estocagem",
+      "target_type": "STRING",
+      "sql_expression": "RAUBE",
+      "description": "Condições de estocagem"
+    },
+    {
+      "source_field": "TEMPB",
+      "target_field": "temperatura",
+      "target_type": "STRING",
+      "sql_expression": "TEMPB",
+      "description": "Código para a condição de temperatura"
+    },
+    {
+      "source_field": "DISST",
+      "target_field": "nivel_mrp",
+      "target_type": "STRING",
+      "sql_expression": "DISST",
+      "description": "Nível de planejamento de necessidades (MRP)"
+    },
+    {
+      "source_field": "TRAGR",
+      "target_field": "grp_transporte",
+      "target_type": "STRING",
+      "sql_expression": "TRAGR",
+      "description": "Grupo de transporte"
+    },
+    {
+      "source_field": "STOFF",
+      "target_field": "n_substancia",
+      "target_type": "STRING",
+      "sql_expression": "STOFF",
+      "description": "Nº substância perigosa"
+    },
+    {
+      "source_field": "SPART",
+      "target_field": "setor_atividade",
+      "target_type": "STRING",
+      "sql_expression": "SPART",
+      "description": "Setor de atividade"
+    },
+    {
+      "source_field": "KUNNR",
+      "target_field": "concorrente",
+      "target_type": "STRING",
+      "sql_expression": "KUNNR",
+      "description": "Concorrente"
+    },
+    {
+      "source_field": "EANNR",
+      "target_field": "n_ean",
+      "target_type": "STRING",
+      "sql_expression": "EANNR",
+      "description": "Nº europeu do artigo - obsoleti!!!!!"
+    },
+    {
+      "source_field": "WESCH",
+      "target_field": "qtd_notas_em",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(WESCH AS DECIMAL(13, 3))",
+      "description": "Qtd.: determinação do número notas acompanhamento a imprimir"
+    },
+    {
+      "source_field": "BWVOR",
+      "target_field": "norma_suprim",
+      "target_type": "STRING",
+      "sql_expression": "BWVOR",
+      "description": "Norma de suprimento"
+    },
+    {
+      "source_field": "BWSCL",
+      "target_field": "fonte_supr",
+      "target_type": "STRING",
+      "sql_expression": "BWSCL",
+      "description": "Fonte de suprimento"
+    },
+    {
+      "source_field": "SAISO",
+      "target_field": "epoca",
+      "target_type": "STRING",
+      "sql_expression": "SAISO",
+      "description": "Ctg.sazonal"
+    },
+    {
+      "source_field": "ETIAR",
+      "target_field": "tipo_etiquetag",
+      "target_type": "STRING",
+      "sql_expression": "ETIAR",
+      "description": "Tipo de etiquetagem"
+    },
+    {
+      "source_field": "ETIFO",
+      "target_field": "forma_etiqueta",
+      "target_type": "STRING",
+      "sql_expression": "ETIFO",
+      "description": "Forma da etiqueta"
+    },
+    {
+      "source_field": "ENTAR",
+      "target_field": "campo_desativ",
+      "target_type": "STRING",
+      "sql_expression": "ENTAR",
+      "description": "Desativado"
+    },
+    {
+      "source_field": "EAN11",
+      "target_field": "codigo_ean_upc",
+      "target_type": "STRING",
+      "sql_expression": "EAN11",
+      "description": "Nº europeu do artigo (EAN)"
+    },
+    {
+      "source_field": "NUMTP",
+      "target_field": "ctg_ean",
+      "target_type": "STRING",
+      "sql_expression": "NUMTP",
+      "description": "Ctg.de número do nº europeu do artigo"
+    },
+    {
+      "source_field": "LAENG",
+      "target_field": "comprimento",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(LAENG AS DECIMAL(13, 3))",
+      "description": "Comprimento"
+    },
+    {
+      "source_field": "BREIT",
+      "target_field": "largura",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(BREIT AS DECIMAL(13, 3))",
+      "description": "Largura"
+    },
+    {
+      "source_field": "HOEHE",
+      "target_field": "altura",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(HOEHE AS DECIMAL(13, 3))",
+      "description": "Altura"
+    },
+    {
+      "source_field": "MEABM",
+      "target_field": "unidade",
+      "target_type": "STRING",
+      "sql_expression": "MEABM",
+      "description": "Unidade para comprimento/largura/altura"
+    },
+    {
+      "source_field": "PRDHA",
+      "target_field": "hierar_produtos",
+      "target_type": "STRING",
+      "sql_expression": "PRDHA",
+      "description": "Hierarquia de produtos"
+    },
+    {
+      "source_field": "AEKLK",
+      "target_field": "calc_net_change",
+      "target_type": "STRING",
+      "sql_expression": "AEKLK",
+      "description": "Transferência - cálculo de custos net-change"
+    },
+    {
+      "source_field": "CADKZ",
+      "target_field": "codigo_cad",
+      "target_type": "STRING",
+      "sql_expression": "CADKZ",
+      "description": "Código CAD"
+    },
+    {
+      "source_field": "QMPUR",
+      "target_field": "suprimento_qm",
+      "target_type": "STRING",
+      "sql_expression": "QMPUR",
+      "description": "QM no suprimento está ativo"
+    },
+    {
+      "source_field": "ERGEW",
+      "target_field": "peso_adm_emb",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(ERGEW AS DECIMAL(13, 3))",
+      "description": "Peso admissível da embalagem"
+    },
+    {
+      "source_field": "ERGEI",
+      "target_field": "unidade_de_peso",
+      "target_type": "STRING",
+      "sql_expression": "ERGEI",
+      "description": "Unidade de peso (peso admissível de embalagem)"
+    },
+    {
+      "source_field": "ERVOL",
+      "target_field": "volume_admiss",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(ERVOL AS DECIMAL(13, 3))",
+      "description": "Volume de embalagem admissível"
+    },
+    {
+      "source_field": "ERVOE",
+      "target_field": "unid_de_volume",
+      "target_type": "STRING",
+      "sql_expression": "ERVOE",
+      "description": "Unidade de volume (volume admissível de embalagem)"
+    },
+    {
+      "source_field": "GEWTO",
+      "target_field": "toler_excesso_peso",
+      "target_type": "DECIMAL(3, 1)",
+      "sql_expression": "CAST(GEWTO AS DECIMAL(3, 1))",
+      "description": "Tolerância excesso de peso da unidade comercial"
+    },
+    {
+      "source_field": "VOLTO",
+      "target_field": "tol_excesso_volume",
+      "target_type": "DECIMAL(3, 1)",
+      "sql_expression": "CAST(VOLTO AS DECIMAL(3, 1))",
+      "description": "Tolerância excesso de volume da unidade comercial"
+    },
+    {
+      "source_field": "VABME",
+      "target_field": "ump_variavel",
+      "target_type": "STRING",
+      "sql_expression": "VABME",
+      "description": "UM pedido variável ativa"
+    },
+    {
+      "source_field": "KZREV",
+      "target_field": "nivel_revisao",
+      "target_type": "STRING",
+      "sql_expression": "KZREV",
+      "description": "Código: foi atribuído um nível de revisão ao material"
+    },
+    {
+      "source_field": "KZKFG",
+      "target_field": "configuravel",
+      "target_type": "STRING",
+      "sql_expression": "KZKFG",
+      "description": "Material configurável"
+    },
+    {
+      "source_field": "XCHPF",
+      "target_field": "adminloteobrig",
+      "target_type": "STRING",
+      "sql_expression": "XCHPF",
+      "description": "Código para administração em lote obrigatória"
+    },
+    {
+      "source_field": "VHART",
+      "target_field": "tp_mater_embal",
+      "target_type": "STRING",
+      "sql_expression": "VHART",
+      "description": "Tipo de material de embalagem"
+    },
+    {
+      "source_field": "FUELG",
+      "target_field": "niv_preenchim",
+      "target_type": "DECIMAL(3, 0)",
+      "sql_expression": "CAST(FUELG AS DECIMAL(3, 0))",
+      "description": "Nível de preenchimento (por volume)"
+    },
+    {
+      "source_field": "STFAK",
+      "target_field": "fator_empilh",
+      "target_type": "INTEGER",
+      "sql_expression": "CAST(STFAK AS INTEGER)",
+      "description": "Fator de empilhamento"
+    },
+    {
+      "source_field": "MAGRV",
+      "target_field": "grp_mats_me",
+      "target_type": "STRING",
+      "sql_expression": "MAGRV",
+      "description": "Grupo de materiais material de embalagem"
+    },
+    {
+      "source_field": "BEGRU",
+      "target_field": "grp_autorizs",
+      "target_type": "STRING",
+      "sql_expression": "BEGRU",
+      "description": "Grupo de autorizações"
+    },
+    {
+      "source_field": "DATAB",
+      "target_field": "valido_desde",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN DATAB = '00000000' OR DATAB = '' THEN NULL ELSE TO_DATE(DATAB, 'YYYYMMDD') END",
+      "description": "Data de início da validade"
+    },
+    {
+      "source_field": "LIQDT",
+      "target_field": "valido_ate",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN LIQDT = '00000000' OR LIQDT = '' THEN NULL ELSE TO_DATE(LIQDT, 'YYYYMMDD') END",
+      "description": "Data da liquidação"
+    },
+    {
+      "source_field": "SAISJ",
+      "target_field": "exerc_saz",
+      "target_type": "STRING",
+      "sql_expression": "SAISJ",
+      "description": "Exercício sazonal"
+    },
+    {
+      "source_field": "PLGTP",
+      "target_field": "tip_faixa_preco",
+      "target_type": "STRING",
+      "sql_expression": "PLGTP",
+      "description": "Tipo de faixa de preço"
+    },
+    {
+      "source_field": "MLGUT",
+      "target_field": "c_lt_vasilhames",
+      "target_type": "STRING",
+      "sql_expression": "MLGUT",
+      "description": "Código: lista técnica de vasilhames"
+    },
+    {
+      "source_field": "EXTWG",
+      "target_field": "grupo_merc_ext",
+      "target_type": "STRING",
+      "sql_expression": "EXTWG",
+      "description": "Grupo de mercadorias externo"
+    },
+    {
+      "source_field": "SATNR",
+      "target_field": "mat_confg_geral",
+      "target_type": "STRING",
+      "sql_expression": "SATNR",
+      "description": "Material configurável geral"
+    },
+    {
+      "source_field": "ATTYP",
+      "target_field": "ctg_material",
+      "target_type": "STRING",
+      "sql_expression": "ATTYP",
+      "description": "Ctg.material"
+    },
+    {
+      "source_field": "KZKUP",
+      "target_field": "co_produto",
+      "target_type": "STRING",
+      "sql_expression": "KZKUP",
+      "description": "Código: o material pode ser um co-produto"
+    },
+    {
+      "source_field": "KZNFM",
+      "target_field": "mat_subseq",
+      "target_type": "STRING",
+      "sql_expression": "KZNFM",
+      "description": "Código: o material tem um material subsequente"
+    },
+    {
+      "source_field": "PMATA",
+      "target_field": "mat_ref_p_prc",
+      "target_type": "STRING",
+      "sql_expression": "PMATA",
+      "description": "Mat.ref.p/prç."
+    },
+    {
+      "source_field": "MSTAE",
+      "target_field": "st_mat_tod_cen",
+      "target_type": "STRING",
+      "sql_expression": "MSTAE",
+      "description": "Status material p/todos os centros"
+    },
+    {
+      "source_field": "MSTAV",
+      "target_field": "st_p_tod_can_v",
+      "target_type": "STRING",
+      "sql_expression": "MSTAV",
+      "description": "Status de material para todos os canais de vendas"
+    },
+    {
+      "source_field": "MSTDE",
+      "target_field": "valido_desde",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN MSTDE = '00000000' OR MSTDE = '' THEN NULL ELSE TO_DATE(MSTDE, 'YYYYMMDD') END",
+      "description": "Data a partir da qual stat.mat.p/todos os centros é válido"
+    },
+    {
+      "source_field": "MSTDV",
+      "target_field": "valido_desde",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN MSTDV = '00000000' OR MSTDV = '' THEN NULL ELSE TO_DATE(MSTDV, 'YYYYMMDD') END",
+      "description": "Data a partir da qual o status mat.p/todos can.dist.é válido"
+    },
+    {
+      "source_field": "TAKLV",
+      "target_field": "classif_fiscal",
+      "target_type": "STRING",
+      "sql_expression": "TAKLV",
+      "description": "Classificação fiscal do material"
+    },
+    {
+      "source_field": "RBNRM",
+      "target_field": "perf_catalogo",
+      "target_type": "STRING",
+      "sql_expression": "RBNRM",
+      "description": "Perfil do catálogo"
+    },
+    {
+      "source_field": "MHDRZ",
+      "target_field": "tmpvaldrest",
+      "target_type": "DECIMAL(4, 0)",
+      "sql_expression": "CAST(MHDRZ AS DECIMAL(4, 0))",
+      "description": "Tempo de validade restante"
+    },
+    {
+      "source_field": "MHDHB",
+      "target_field": "prazo_validade",
+      "target_type": "DECIMAL(4, 0)",
+      "sql_expression": "CAST(MHDHB AS DECIMAL(4, 0))",
+      "description": "Prazo de validade"
+    },
+    {
+      "source_field": "MHDLP",
+      "target_field": "para_armazen",
+      "target_type": "DECIMAL(3, 0)",
+      "sql_expression": "CAST(MHDLP AS DECIMAL(3, 0))",
+      "description": "Percentagem para armazenagem"
+    },
+    {
+      "source_field": "INHME",
+      "target_field": "um_conteudo",
+      "target_type": "STRING",
+      "sql_expression": "INHME",
+      "description": "Unidade de medida conteúdo"
+    },
+    {
+      "source_field": "INHAL",
+      "target_field": "conteudo_liq",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(INHAL AS DECIMAL(13, 3))",
+      "description": "Conteúdo líquido"
+    },
+    {
+      "source_field": "VPREH",
+      "target_field": "preco_comparac",
+      "target_type": "DECIMAL(5, 0)",
+      "sql_expression": "CAST(VPREH AS DECIMAL(5, 0))",
+      "description": "Preço de comparação"
+    },
+    {
+      "source_field": "ETIAG",
+      "target_field": "grupo_mat_etiq",
+      "target_type": "STRING",
+      "sql_expression": "ETIAG",
+      "description": "SAM etiquetagem: grupo de materiais (não ativo em 4.0)"
+    },
+    {
+      "source_field": "INHBR",
+      "target_field": "conteudo_bruto",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(INHBR AS DECIMAL(13, 3))",
+      "description": "Conteúdo bruto"
+    },
+    {
+      "source_field": "CMETH",
+      "target_field": "met_conversao",
+      "target_type": "STRING",
+      "sql_expression": "CMETH",
+      "description": "Método conversão quantidades"
+    },
+    {
+      "source_field": "CUOBF",
+      "target_field": "n_int_objeto",
+      "target_type": "STRING",
+      "sql_expression": "CUOBF",
+      "description": "Nº interno do objeto"
+    },
+    {
+      "source_field": "KZUMW",
+      "target_field": "relevmeioamb",
+      "target_type": "STRING",
+      "sql_expression": "KZUMW",
+      "description": "Código: relevância para o meio ambiente"
+    },
+    {
+      "source_field": "KOSCH",
+      "target_field": "contingente",
+      "target_type": "STRING",
+      "sql_expression": "KOSCH",
+      "description": "Alocação de produtos: esquema de alocação de produtos"
+    },
+    {
+      "source_field": "SPROF",
+      "target_field": "perfil_calculo",
+      "target_type": "STRING",
+      "sql_expression": "SPROF",
+      "description": "Perfil de cálculo para variantes"
+    },
+    {
+      "source_field": "NRFHG",
+      "target_field": "c_dir_bon_merc",
+      "target_type": "STRING",
+      "sql_expression": "NRFHG",
+      "description": "Material com direito a bonificação em espécie"
+    },
+    {
+      "source_field": "MFRPN",
+      "target_field": "n_peca_fabric",
+      "target_type": "STRING",
+      "sql_expression": "MFRPN",
+      "description": "Nº peça de fabricante"
+    },
+    {
+      "source_field": "MFRNR",
+      "target_field": "fabricante",
+      "target_type": "STRING",
+      "sql_expression": "MFRNR",
+      "description": "Nº de um fabricante"
+    },
+    {
+      "source_field": "BMATN",
+      "target_field": "mat_com_adm_estq",
+      "target_type": "STRING",
+      "sql_expression": "BMATN",
+      "description": "Nº do material interno (da firma) com admin.estoques"
+    },
+    {
+      "source_field": "MPROF",
+      "target_field": "perfil_peca_fabr",
+      "target_type": "STRING",
+      "sql_expression": "MPROF",
+      "description": "Perfil de peças de fabricante"
+    },
+    {
+      "source_field": "KZWSM",
+      "target_field": "utilizacao_um",
+      "target_type": "STRING",
+      "sql_expression": "KZWSM",
+      "description": "Utilização/categorias de unidades de medida"
+    },
+    {
+      "source_field": "SAITY",
+      "target_field": "colecao",
+      "target_type": "STRING",
+      "sql_expression": "SAITY",
+      "description": "Coleção em uma época"
+    },
+    {
+      "source_field": "PROFL",
+      "target_field": "perfil_cod_mp",
+      "target_type": "STRING",
+      "sql_expression": "PROFL",
+      "description": "Perfil para código de mercadoria perigosa"
+    },
+    {
+      "source_field": "IHIVI",
+      "target_field": "alta_viscosid",
+      "target_type": "STRING",
+      "sql_expression": "IHIVI",
+      "description": "Código: de alta viscosidade"
+    },
+    {
+      "source_field": "ILOOS",
+      "target_field": "a_granel_liq",
+      "target_type": "STRING",
+      "sql_expression": "ILOOS",
+      "description": "Código: a granel / líquido"
+    },
+    {
+      "source_field": "SERLV",
+      "target_field": "niv_serializ",
+      "target_type": "STRING",
+      "sql_expression": "SERLV",
+      "description": "Nível de univocidade para nº série"
+    },
+    {
+      "source_field": "KZGVH",
+      "target_field": "fechado",
+      "target_type": "STRING",
+      "sql_expression": "KZGVH",
+      "description": "O material de embalagem é uma embalagem fechada"
+    },
+    {
+      "source_field": "XGCHP",
+      "target_field": "protbatch_neces",
+      "target_type": "STRING",
+      "sql_expression": "XGCHP",
+      "description": "Código: é necessário protocolo de lotes autorizado"
+    },
+    {
+      "source_field": "KZEFF",
+      "target_field": "aval_validade",
+      "target_type": "STRING",
+      "sql_expression": "KZEFF",
+      "description": "Avaliar parâmetros de validade / substituir nºs modificação"
+    },
+    {
+      "source_field": "COMPL",
+      "target_field": "nivel_conclusao",
+      "target_type": "STRING",
+      "sql_expression": "COMPL",
+      "description": "Nível de conclusão de material"
+    },
+    {
+      "source_field": "IPRKZ",
+      "target_field": "codigo_periodo",
+      "target_type": "STRING",
+      "sql_expression": "IPRKZ",
+      "description": "Código de período para DV"
+    },
+    {
+      "source_field": "RDMHD",
+      "target_field": "rgr_arredmto",
+      "target_type": "STRING",
+      "sql_expression": "RDMHD",
+      "description": "Regra de arredondamento para cálculo DV"
+    },
+    {
+      "source_field": "PRZUS",
+      "target_field": "compos_produto",
+      "target_type": "STRING",
+      "sql_expression": "PRZUS",
+      "description": "Código: composição do produto impressa na embalagem"
+    },
+    {
+      "source_field": "MTPOS_MARA",
+      "target_field": "gr_ctg_itm_ger",
+      "target_type": "STRING",
+      "sql_expression": "MTPOS_MARA",
+      "description": "Grupo de categorias de item geral"
+    },
+    {
+      "source_field": "BFLME",
+      "target_field": "variantes_log",
+      "target_type": "STRING",
+      "sql_expression": "BFLME",
+      "description": "Material genérico com variantes logísticas"
+    },
+    {
+      "source_field": "MATFI",
+      "target_field": "fixado",
+      "target_type": "STRING",
+      "sql_expression": "MATFI",
+      "description": "Material foi fixado"
+    },
+    {
+      "source_field": "CMREL",
+      "target_field": "relevanc_cm",
+      "target_type": "STRING",
+      "sql_expression": "CMREL",
+      "description": "Relevante para administração de configuração"
+    },
+    {
+      "source_field": "BBTYP",
+      "target_field": "tip_lista_sort",
+      "target_type": "STRING",
+      "sql_expression": "BBTYP",
+      "description": "Tipo de lista de sortimento"
+    },
+    {
+      "source_field": "SLED_BBD",
+      "target_field": "dtv_dtexpiracao",
+      "target_type": "STRING",
+      "sql_expression": "SLED_BBD",
+      "description": "Data de vencimento / data de expiração"
+    },
+    {
+      "source_field": "GTIN_VARIANT",
+      "target_field": "variante_ean",
+      "target_type": "STRING",
+      "sql_expression": "GTIN_VARIANT",
+      "description": "Variante para Global Trade Item Number"
+    },
+    {
+      "source_field": "GENNR",
+      "target_field": "mat_generico",
+      "target_type": "STRING",
+      "sql_expression": "GENNR",
+      "description": "Nº do material genérico em materiais pré-embalados"
+    },
+    {
+      "source_field": "RMATP",
+      "target_field": "mat_ref_p_norma_emb",
+      "target_type": "STRING",
+      "sql_expression": "RMATP",
+      "description": "Material ref.p/materiais a serem embalados da mesma maneira"
+    },
+    {
+      "source_field": "GDS_RELEVANT",
+      "target_field": "relevante_p_gds",
+      "target_type": "STRING",
+      "sql_expression": "GDS_RELEVANT",
+      "description": "Código: relavante p/sincronização de dados globais"
+    },
+    {
+      "source_field": "WEORA",
+      "target_field": "retirada_forn",
+      "target_type": "STRING",
+      "sql_expression": "WEORA",
+      "description": "Retirada junto ao fornecedor"
+    },
+    {
+      "source_field": "HUTYP_DFLT",
+      "target_field": "tp_uc_standard",
+      "target_type": "STRING",
+      "sql_expression": "HUTYP_DFLT",
+      "description": "Tipo de unidade comercial standard"
+    },
+    {
+      "source_field": "PILFERABLE",
+      "target_field": "c_risco_roubo",
+      "target_type": "STRING",
+      "sql_expression": "PILFERABLE",
+      "description": "Com risco de roubo"
+    },
+    {
+      "source_field": "WHSTC",
+      "target_field": "condarmaz",
+      "target_type": "STRING",
+      "sql_expression": "WHSTC",
+      "description": "Condição de armazenamento"
+    },
+    {
+      "source_field": "WHMATGR",
+      "target_field": "grpmatestocavel",
+      "target_type": "STRING",
+      "sql_expression": "WHMATGR",
+      "description": "Grupo de materiais estocáveis"
+    },
+    {
+      "source_field": "HNDLCODE",
+      "target_field": "cod_manuseio",
+      "target_type": "STRING",
+      "sql_expression": "HNDLCODE",
+      "description": "Código de manuseio"
+    },
+    {
+      "source_field": "HAZMAT",
+      "target_field": "subst_perigosa",
+      "target_type": "STRING",
+      "sql_expression": "HAZMAT",
+      "description": "Relevante para substância perigosa"
+    },
+    {
+      "source_field": "HUTYP",
+      "target_field": "tp_uc",
+      "target_type": "STRING",
+      "sql_expression": "HUTYP",
+      "description": "Tipo de unidade comercial"
+    },
+    {
+      "source_field": "TARE_VAR",
+      "target_field": "ml_variavel",
+      "target_type": "STRING",
+      "sql_expression": "TARE_VAR",
+      "description": "Massa líquida variável"
+    },
+    {
+      "source_field": "MAXC",
+      "target_field": "capac_maxima",
+      "target_type": "DECIMAL(15, 3)",
+      "sql_expression": "CAST(MAXC AS DECIMAL(15, 3))",
+      "description": "Capacidade máxima permitida do material de embalagem"
+    },
+    {
+      "source_field": "MAXC_TOL",
+      "target_field": "toler_capacmax",
+      "target_type": "DECIMAL(3, 1)",
+      "sql_expression": "CAST(MAXC_TOL AS DECIMAL(3, 1))",
+      "description": "Tolerância de capacidade máxima da unidade comercial"
+    },
+    {
+      "source_field": "MAXL",
+      "target_field": "compr_max",
+      "target_type": "DECIMAL(15, 3)",
+      "sql_expression": "CAST(MAXL AS DECIMAL(15, 3))",
+      "description": "Comprimento máximo da embalagem de um material da embalagem"
+    },
+    {
+      "source_field": "MAXB",
+      "target_field": "larg_max_embal",
+      "target_type": "DECIMAL(15, 3)",
+      "sql_expression": "CAST(MAXB AS DECIMAL(15, 3))",
+      "description": "Largura máxima da embalagem de um material de embalagem"
+    },
+    {
+      "source_field": "MAXH",
+      "target_field": "altura_maxima",
+      "target_type": "DECIMAL(15, 3)",
+      "sql_expression": "CAST(MAXH AS DECIMAL(15, 3))",
+      "description": "Altura máx.da embalagem de um material de embalagem"
+    },
+    {
+      "source_field": "MAXDIM_UOM",
+      "target_field": "unidade_medida",
+      "target_type": "STRING",
+      "sql_expression": "MAXDIM_UOM",
+      "description": "Unid.medida p/altura/largura/comprimento máx.da embalagem"
+    },
+    {
+      "source_field": "HERKL",
+      "target_field": "pais_de_origem",
+      "target_type": "STRING",
+      "sql_expression": "HERKL",
+      "description": "País de origem do material (origem CCI)"
+    },
+    {
+      "source_field": "MFRGR",
+      "target_field": "grp_frete_mat",
+      "target_type": "STRING",
+      "sql_expression": "MFRGR",
+      "description": "Grupo de frete de material"
+    },
+    {
+      "source_field": "QQTIME",
+      "target_field": "quarentena",
+      "target_type": "DECIMAL(3, 0)",
+      "sql_expression": "CAST(QQTIME AS DECIMAL(3, 0))",
+      "description": "Quarentena"
+    },
+    {
+      "source_field": "QQTIMEUOM",
+      "target_field": "unidade_tempo",
+      "target_type": "STRING",
+      "sql_expression": "QQTIMEUOM",
+      "description": "Unidade de tempo para quarentena"
+    },
+    {
+      "source_field": "QGRP",
+      "target_field": "grp_ctrl_qual",
+      "target_type": "STRING",
+      "sql_expression": "QGRP",
+      "description": "Grupo de controle de qualidade"
+    },
+    {
+      "source_field": "SERIAL",
+      "target_field": "perf_ns_serie",
+      "target_type": "STRING",
+      "sql_expression": "SERIAL",
+      "description": "Perfil nºs de série"
+    },
+    {
+      "source_field": "PS_SMARTFORM",
+      "target_field": "nome_formulario",
+      "target_type": "STRING",
+      "sql_expression": "PS_SMARTFORM",
+      "description": "Nome do formulário"
+    },
+    {
+      "source_field": "LOGUNIT",
+      "target_field": "um_logistica",
+      "target_type": "STRING",
+      "sql_expression": "LOGUNIT",
+      "description": "EWM-CW: unidade de medida logística"
+    },
+    {
+      "source_field": "CWQREL",
+      "target_field": "relevante_p_cw",
+      "target_type": "STRING",
+      "sql_expression": "CWQREL",
+      "description": "EWM-CW: o material é um material Catch Weight"
+    },
+    {
+      "source_field": "CWQPROC",
+      "target_field": "perfil_cw",
+      "target_type": "STRING",
+      "sql_expression": "CWQPROC",
+      "description": "EWM-CW: perfil Catch Weight p/entrada da quantidade CW"
+    },
+    {
+      "source_field": "CWQTOLGR",
+      "target_field": "grp_tolerancia_cw",
+      "target_type": "STRING",
+      "sql_expression": "CWQTOLGR",
+      "description": "EWM-CW: grupo de tolerância Catch Weight p/EWM"
+    },
+    {
+      "source_field": "ADPROF",
+      "target_field": "perfil_ajuste",
+      "target_type": "STRING",
+      "sql_expression": "ADPROF",
+      "description": "Perfil de ajuste"
+    },
+    {
+      "source_field": "IPMIPPRODUCT",
+      "target_field": "propr_intelect",
+      "target_type": "STRING",
+      "sql_expression": "IPMIPPRODUCT",
+      "description": "ID de uma propriedade intelectual (produto CRM)"
+    },
+    {
+      "source_field": "ALLOW_PMAT_IGNO",
+      "target_field": "prc_variantes_perm",
+      "target_type": "STRING",
+      "sql_expression": "ALLOW_PMAT_IGNO",
+      "description": "Preço de variantes permitido (referente ao mestre artigos)"
+    },
+    {
+      "source_field": "MEDIUM",
+      "target_field": "meio",
+      "target_type": "STRING",
+      "sql_expression": "MEDIUM",
+      "description": "Meio"
+    },
+    {
+      "source_field": "COMMODITY",
+      "target_field": "commodity_fis",
+      "target_type": "STRING",
+      "sql_expression": "COMMODITY",
+      "description": "Commodity física"
+    },
+    {
+      "source_field": "ANIMAL_ORIGIN",
+      "target_field": "origem_animal",
+      "target_type": "STRING",
+      "sql_expression": "ANIMAL_ORIGIN",
+      "description": "Código: contém partes não têxteis de origem animal"
+    },
+    {
+      "source_field": "TEXTILE_COMP_IND",
+      "target_field": "compon_tex_atv",
+      "target_type": "STRING",
+      "sql_expression": "TEXTILE_COMP_IND",
+      "description": "Código: nova função de composição têxtil"
+    },
+    {
+      "source_field": "SGT_CSGR",
+      "target_field": "estrutura_segm",
+      "target_type": "STRING",
+      "sql_expression": "SGT_CSGR",
+      "description": "Estrutura de segmentação"
+    },
+    {
+      "source_field": "SGT_COVSA",
+      "target_field": "estrat_segm",
+      "target_type": "STRING",
+      "sql_expression": "SGT_COVSA",
+      "description": "Estratégia de segmentação"
+    },
+    {
+      "source_field": "SGT_STAT",
+      "target_field": "status_segm",
+      "target_type": "STRING",
+      "sql_expression": "SGT_STAT",
+      "description": "Status de segmentação mestre de materiais"
+    },
+    {
+      "source_field": "SGT_SCOPE",
+      "target_field": "escopo_segm",
+      "target_type": "STRING",
+      "sql_expression": "SGT_SCOPE",
+      "description": "Escopo da estratégia de segmentação"
+    },
+    {
+      "source_field": "SGT_REL",
+      "target_field": "relev_segm",
+      "target_type": "STRING",
+      "sql_expression": "SGT_REL",
+      "description": "Relev.p/segmentação"
+    },
+    {
+      "source_field": "FSH_MG_AT1",
+      "target_field": "atributo_fsh_1",
+      "target_type": "STRING",
+      "sql_expression": "FSH_MG_AT1",
+      "description": "Campo de informação Fashion: 1"
+    },
+    {
+      "source_field": "FSH_MG_AT2",
+      "target_field": "atributo_fsh_2",
+      "target_type": "STRING",
+      "sql_expression": "FSH_MG_AT2",
+      "description": "Campo de informação Fashion: 2"
+    },
+    {
+      "source_field": "FSH_MG_AT3",
+      "target_field": "atributo_fsh_3",
+      "target_type": "STRING",
+      "sql_expression": "FSH_MG_AT3",
+      "description": "Campo de informação Fashion: 3"
+    },
+    {
+      "source_field": "FSH_SEALV",
+      "target_field": "utiliz_epoca",
+      "target_type": "STRING",
+      "sql_expression": "FSH_SEALV",
+      "description": "Código: utilização de época"
+    },
+    {
+      "source_field": "FSH_SEAIM",
+      "target_field": "epoca_ativa_na_ae",
+      "target_type": "STRING",
+      "sql_expression": "FSH_SEAIM",
+      "description": "Código: época ativa na aministração estoques"
+    },
+    {
+      "source_field": "FSH_SC_MID",
+      "target_field": "id_conv_mat",
+      "target_type": "STRING",
+      "sql_expression": "FSH_SC_MID",
+      "description": "ID de conversão de material p/conversão valor característica"
+    },
+    {
+      "source_field": "ANP",
+      "target_field": "codigo_anp",
+      "target_type": "STRING",
+      "sql_expression": "ANP",
+      "description": "Código ANP"
+    },
+    {
+      "source_field": "PSM_CODE",
+      "target_field": "codigo_psm",
+      "target_type": "STRING",
+      "sql_expression": "PSM_CODE",
+      "description": "Código para administração de espécies protegidas"
+    },
+    {
+      "source_field": "/BEV1/LULEINH",
+      "target_field": "unidadescarga",
+      "target_type": "STRING",
+      "sql_expression": "\"/BEV1/LULEINH\"",
+      "description": "Unidades de carga"
+    },
+    {
+      "source_field": "/BEV1/LULDEGRP",
+      "target_field": "grp_unidades_carga",
+      "target_type": "STRING",
+      "sql_expression": "\"/BEV1/LULDEGRP\"",
+      "description": "Grupo de unidades de carga IS-Beverage"
+    },
+    {
+      "source_field": "/BEV1/NESTRUCCAT",
+      "target_field": "ctg_estrutura",
+      "target_type": "STRING",
+      "sql_expression": "\"/BEV1/NESTRUCCAT\"",
+      "description": "Categoria de estrutura para relação de material"
+    },
+    {
+      "source_field": "/DSD/SL_TOLTYP",
+      "target_field": "tp_toler",
+      "target_type": "STRING",
+      "sql_expression": "\"/DSD/SL_TOLTYP\"",
+      "description": "ID tipo de tolerância"
+    },
+    {
+      "source_field": "/DSD/SV_CNT_GRP",
+      "target_field": "grupo_contagem",
+      "target_type": "STRING",
+      "sql_expression": "\"/DSD/SV_CNT_GRP\"",
+      "description": "Grupo de contagem"
+    },
+    {
+      "source_field": "/DSD/VC_GROUP",
+      "target_field": "agrupamento_dsd",
+      "target_type": "STRING",
+      "sql_expression": "\"/DSD/VC_GROUP\"",
+      "description": "Agrupamento DSD"
+    },
+    {
+      "source_field": "/VSO/R_TILT_IND",
+      "target_field": "permit_deitar",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_TILT_IND\"",
+      "description": "Material pode ser colocado em posição deitada (OAC)"
+    },
+    {
+      "source_field": "/VSO/R_STACK_IND",
+      "target_field": "nao_empilhar",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_STACK_IND\"",
+      "description": "Empilhamento não permitido (otimização área carregamento)"
+    },
+    {
+      "source_field": "/VSO/R_BOT_IND",
+      "target_field": "camada_inferior",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_BOT_IND\"",
+      "description": "Camada inferior (otimização da área de carregamento)"
+    },
+    {
+      "source_field": "/VSO/R_TOP_IND",
+      "target_field": "camada_superior",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_TOP_IND\"",
+      "description": "Camada superior (otimização da área de carregamento)"
+    },
+    {
+      "source_field": "/VSO/R_STACK_NO",
+      "target_field": "fator_empilh",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_STACK_NO\"",
+      "description": "Fator de empilhamento (otimização da área de carregamento)"
+    },
+    {
+      "source_field": "/VSO/R_PAL_IND",
+      "target_field": "carregar_s_me",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_PAL_IND\"",
+      "description": "Carregar sem material de embalagem (otimiz.área carregamto.)"
+    },
+    {
+      "source_field": "/VSO/R_PAL_OVR_D",
+      "target_field": "saliencia_prof",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(\"/VSO/R_PAL_OVR_D\" AS DECIMAL(13, 3))",
+      "description": "Saliên.permit.(profundidade) p/mat.embal.(otim.área carreg.)"
+    },
+    {
+      "source_field": "/VSO/R_PAL_OVR_W",
+      "target_field": "salienc_largura",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(\"/VSO/R_PAL_OVR_W\" AS DECIMAL(13, 3))",
+      "description": "Saliência permit.(largura) p/mat.embal.(otim.área carreg.)"
+    },
+    {
+      "source_field": "/VSO/R_PAL_B_HT",
+      "target_field": "alt_max_embal",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(\"/VSO/R_PAL_B_HT\" AS DECIMAL(13, 3))",
+      "description": "Altura máx.material de embalagem (otimiz.área carregamento)"
+    },
+    {
+      "source_field": "/VSO/R_PAL_MIN_H",
+      "target_field": "alt_min_embal",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(\"/VSO/R_PAL_MIN_H\" AS DECIMAL(13, 3))",
+      "description": "Altura mínima do material de embalagem (otimiz.área carreg.)"
+    },
+    {
+      "source_field": "/VSO/R_TOL_B_HT",
+      "target_field": "exc_alt_embal",
+      "target_type": "DECIMAL(13, 3)",
+      "sql_expression": "CAST(\"/VSO/R_TOL_B_HT\" AS DECIMAL(13, 3))",
+      "description": "Excesso da altura máxima da embalagem (otimiz.área carreg.)"
+    },
+    {
+      "source_field": "/VSO/R_NO_P_GVH",
+      "target_field": "nmat_matembal",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_NO_P_GVH\"",
+      "description": "Nº de mats.por mat.embalagem fechado (otimiz.área carreg.)"
+    },
+    {
+      "source_field": "/VSO/R_QUAN_UNIT",
+      "target_field": "um_otimarcarr",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_QUAN_UNIT\"",
+      "description": "Unidade de medida da otimização da área de carregamento"
+    },
+    {
+      "source_field": "/VSO/R_KZGVH_IND",
+      "target_field": "me_fechd_neces",
+      "target_type": "STRING",
+      "sql_expression": "\"/VSO/R_KZGVH_IND\"",
+      "description": "Mat.embalagem fechado necessário (otimização área carreg.)"
+    },
+    {
+      "source_field": "PACKCODE",
+      "target_field": "cod_embalagem",
+      "target_type": "STRING",
+      "sql_expression": "PACKCODE",
+      "description": "Código de embalagem"
+    },
+    {
+      "source_field": "DG_PACK_STATUS",
+      "target_field": "stembprodperig",
+      "target_type": "STRING",
+      "sql_expression": "DG_PACK_STATUS",
+      "description": "Status da embalagem de produtos perigosos"
+    },
+    {
+      "source_field": "MCOND",
+      "target_field": "admin_status",
+      "target_type": "STRING",
+      "sql_expression": "MCOND",
+      "description": "Administração de status do material"
+    },
+    {
+      "source_field": "RETDELC",
+      "target_field": "cod_reembolso",
+      "target_type": "STRING",
+      "sql_expression": "RETDELC",
+      "description": "Código de reembolso"
+    },
+    {
+      "source_field": "LOGLEV_RETO",
+      "target_field": "reemb_ate_niv_log",
+      "target_type": "STRING",
+      "sql_expression": "LOGLEV_RETO",
+      "description": "Reembolso até nível logístico"
+    },
+    {
+      "source_field": "NSNID",
+      "target_field": "n_id_nato",
+      "target_type": "STRING",
+      "sql_expression": "NSNID",
+      "description": "Nº identificação NATO"
+    },
+    {
+      "source_field": "ADSPC_SPC",
+      "target_field": "spare_prt_class_code",
+      "target_type": "STRING",
+      "sql_expression": "ADSPC_SPC",
+      "description": "Spare Part Class Code"
+    },
+    {
+      "source_field": "IMATN",
+      "target_field": "classe_fff",
+      "target_type": "STRING",
+      "sql_expression": "IMATN",
+      "description": "Classe FFF"
+    },
+    {
+      "source_field": "PICNUM",
+      "target_field": "n_da_cadeia",
+      "target_type": "STRING",
+      "sql_expression": "PICNUM",
+      "description": "Nº de uma cadeia de substituições"
+    },
+    {
+      "source_field": "BSTAT",
+      "target_field": "status_criacao",
+      "target_type": "STRING",
+      "sql_expression": "BSTAT",
+      "description": "Status de criação suprimento por época"
+    },
+    {
+      "source_field": "COLOR_ATINN",
+      "target_field": "caract_interna",
+      "target_type": "STRING",
+      "sql_expression": "COLOR_ATINN",
+      "description": "Nº interno de característica para cores"
+    },
+    {
+      "source_field": "SIZE1_ATINN",
+      "target_field": "caract_interna",
+      "target_type": "STRING",
+      "sql_expression": "SIZE1_ATINN",
+      "description": "Nº interno em características para tamanhos principais"
+    },
+    {
+      "source_field": "SIZE2_ATINN",
+      "target_field": "caract_interna",
+      "target_type": "STRING",
+      "sql_expression": "SIZE2_ATINN",
+      "description": "Nº interno em características p/tamanhos secundários"
+    },
+    {
+      "source_field": "COLOR",
+      "target_field": "cor",
+      "target_type": "STRING",
+      "sql_expression": "COLOR",
+      "description": "Valor da característica para cores em variantes"
+    },
+    {
+      "source_field": "SIZE1",
+      "target_field": "tamanho_princ",
+      "target_type": "STRING",
+      "sql_expression": "SIZE1",
+      "description": "Valor da característica p/tamanho principal em variantes"
+    },
+    {
+      "source_field": "SIZE2",
+      "target_field": "tamanho_secund",
+      "target_type": "STRING",
+      "sql_expression": "SIZE2",
+      "description": "Valor da característica p/tamanho secundário em variantes"
+    },
+    {
+      "source_field": "FREE_CHAR",
+      "target_field": "valor_caract",
+      "target_type": "STRING",
+      "sql_expression": "FREE_CHAR",
+      "description": "Valor da característica para fins de análise"
+    },
+    {
+      "source_field": "CARE_CODE",
+      "target_field": "instrcuid",
+      "target_type": "STRING",
+      "sql_expression": "CARE_CODE",
+      "description": "Instruções cuidado (p.ex.,instr.lavag.,instr.pass.ferro,...)"
+    },
+    {
+      "source_field": "BRAND_ID",
+      "target_field": "marca",
+      "target_type": "STRING",
+      "sql_expression": "BRAND_ID",
+      "description": "Marca"
+    },
+    {
+      "source_field": "FIBER_CODE1",
+      "target_field": "componente1",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_CODE1",
+      "description": "Código de fibras para tecidos (componente 1)"
+    },
+    {
+      "source_field": "FIBER_PART1",
+      "target_field": "porcentagem_1",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_PART1",
+      "description": "Porcentagem de fibra (componente 1)"
+    },
+    {
+      "source_field": "FIBER_CODE2",
+      "target_field": "componente2",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_CODE2",
+      "description": "Código de fibras para têxteis (componente 2)"
+    },
+    {
+      "source_field": "FIBER_PART2",
+      "target_field": "porcentagem_2",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_PART2",
+      "description": "Porcentagem de fibra (componente 2)"
+    },
+    {
+      "source_field": "FIBER_CODE3",
+      "target_field": "componente3",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_CODE3",
+      "description": "Código de fibras para têxteis (componente 3)"
+    },
+    {
+      "source_field": "FIBER_PART3",
+      "target_field": "porcentagem_3",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_PART3",
+      "description": "Porcentagem de fibra (componente 3)"
+    },
+    {
+      "source_field": "FIBER_CODE4",
+      "target_field": "componente4",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_CODE4",
+      "description": "Código de fibras para têxteis (componente 4)"
+    },
+    {
+      "source_field": "FIBER_PART4",
+      "target_field": "porcentagem_4",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_PART4",
+      "description": "Porcentagem de fibra (componente 4)"
+    },
+    {
+      "source_field": "FIBER_CODE5",
+      "target_field": "componente5",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_CODE5",
+      "description": "Código de fibras para têxteis (componente 5)"
+    },
+    {
+      "source_field": "FIBER_PART5",
+      "target_field": "porcentagem_5",
+      "target_type": "STRING",
+      "sql_expression": "FIBER_PART5",
+      "description": "Porcentagem de fibra (componente 5)"
+    },
+    {
+      "source_field": "FASHGRD",
+      "target_field": "cvprmoda",
+      "target_type": "STRING",
+      "sql_expression": "FASHGRD",
+      "description": "Ciclo de vida do produto da moda"
+    }
+  ]
+}

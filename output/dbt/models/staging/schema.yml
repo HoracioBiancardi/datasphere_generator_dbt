@@ -1,0 +1,463 @@
+version: 2
+models:
+- name: stg_sap_mara
+  description: Dados gerais de material
+  columns:
+  - name: mandante
+    description: Mandante
+  - name: material
+    description: Nº do material
+  - name: criado_em
+    description: Data de criação
+  - name: criado_por
+    description: Nome do responsável que criou o objeto
+  - name: ultima_modific
+    description: Data da última modificação
+  - name: modificado_por
+    description: Nome do responsável pela modificação do objeto
+  - name: status_completo
+    description: Status de atualização do material completo
+  - name: status_atualiz
+    description: Status de atualização
+  - name: marcpelnivmand
+    description: Marcar mat.para eliminação a nível de mandante
+  - name: tipo_material
+    description: Tipo de material
+  - name: setorindustrial
+    description: Setor industrial
+  - name: grpmercads
+    description: Grupo de mercadorias
+  - name: n_mat_antigo
+    description: Nº material antigo
+  - name: um_basica
+    description: Unidade de medida básica
+  - name: um_pedido
+    description: Unidade de medida do pedido
+  - name: documento
+    description: Nº documento (sem sistema de administração de documentos)
+  - name: tipo_documento
+    description: Tipo de documento (s/sistema administração documentos)
+  - name: versao_doc
+    description: Versão do documento (sem sistema administração documentos)
+  - name: formato_din
+    description: Formato DIN do documento (s/sistema administração documents)
+  - name: n_modif_doc
+    description: Nº modificação do documento (sem sistema de admin.docs.)
+  - name: n_folha
+    description: Nº folha do documento (sem sistema de admin. de documentos)
+  - name: n_de_folhas
+    description: Nº de folhas (sem sistema de admin. de documentos)
+  - name: prod_controle
+    description: Instrução de produção/de controle de qualidade
+  - name: formato_din
+    description: Formato DIN da instrução de produção
+  - name: tamanho_dimens
+    description: Tamanho/dimensão
+  - name: material_basico
+    description: Material básico
+  - name: denom_norma
+    description: Denominação da norma (p.ex. DIN)
+  - name: lab_escr
+    description: Laboratório/escritório de engenharia
+  - name: chavevalcompras
+    description: Chave de valores de Compras
+  - name: peso_bruto
+    description: Peso bruto
+  - name: peso_liquido
+    description: Peso líquido
+  - name: unidade_de_peso
+    description: Unidade de peso
+  - name: volume
+    description: Volume
+  - name: unidade_volume
+    description: Unidade de volume
+  - name: recipiente
+    description: Instrução de recipiente
+  - name: conds_estocagem
+    description: Condições de estocagem
+  - name: temperatura
+    description: Código para a condição de temperatura
+  - name: nivel_mrp
+    description: Nível de planejamento de necessidades (MRP)
+  - name: grp_transporte
+    description: Grupo de transporte
+  - name: n_substancia
+    description: Nº substância perigosa
+  - name: setor_atividade
+    description: Setor de atividade
+  - name: concorrente
+    description: Concorrente
+  - name: n_ean
+    description: Nº europeu do artigo - obsoleti!!!!!
+  - name: qtd_notas_em
+    description: 'Qtd.: determinação do número notas acompanhamento a imprimir'
+  - name: norma_suprim
+    description: Norma de suprimento
+  - name: fonte_supr
+    description: Fonte de suprimento
+  - name: epoca
+    description: Ctg.sazonal
+  - name: tipo_etiquetag
+    description: Tipo de etiquetagem
+  - name: forma_etiqueta
+    description: Forma da etiqueta
+  - name: campo_desativ
+    description: Desativado
+  - name: codigo_ean_upc
+    description: Nº europeu do artigo (EAN)
+  - name: ctg_ean
+    description: Ctg.de número do nº europeu do artigo
+  - name: comprimento
+    description: Comprimento
+  - name: largura
+    description: Largura
+  - name: altura
+    description: Altura
+  - name: unidade
+    description: Unidade para comprimento/largura/altura
+  - name: hierar_produtos
+    description: Hierarquia de produtos
+  - name: calc_net_change
+    description: Transferência - cálculo de custos net-change
+  - name: codigo_cad
+    description: Código CAD
+  - name: suprimento_qm
+    description: QM no suprimento está ativo
+  - name: peso_adm_emb
+    description: Peso admissível da embalagem
+  - name: unidade_de_peso
+    description: Unidade de peso (peso admissível de embalagem)
+  - name: volume_admiss
+    description: Volume de embalagem admissível
+  - name: unid_de_volume
+    description: Unidade de volume (volume admissível de embalagem)
+  - name: toler_excesso_peso
+    description: Tolerância excesso de peso da unidade comercial
+  - name: tol_excesso_volume
+    description: Tolerância excesso de volume da unidade comercial
+  - name: ump_variavel
+    description: UM pedido variável ativa
+  - name: nivel_revisao
+    description: 'Código: foi atribuído um nível de revisão ao material'
+  - name: configuravel
+    description: Material configurável
+  - name: adminloteobrig
+    description: Código para administração em lote obrigatória
+  - name: tp_mater_embal
+    description: Tipo de material de embalagem
+  - name: niv_preenchim
+    description: Nível de preenchimento (por volume)
+  - name: fator_empilh
+    description: Fator de empilhamento
+  - name: grp_mats_me
+    description: Grupo de materiais material de embalagem
+  - name: grp_autorizs
+    description: Grupo de autorizações
+  - name: valido_desde
+    description: Data de início da validade
+  - name: valido_ate
+    description: Data da liquidação
+  - name: exerc_saz
+    description: Exercício sazonal
+  - name: tip_faixa_preco
+    description: Tipo de faixa de preço
+  - name: c_lt_vasilhames
+    description: 'Código: lista técnica de vasilhames'
+  - name: grupo_merc_ext
+    description: Grupo de mercadorias externo
+  - name: mat_confg_geral
+    description: Material configurável geral
+  - name: ctg_material
+    description: Ctg.material
+  - name: co_produto
+    description: 'Código: o material pode ser um co-produto'
+  - name: mat_subseq
+    description: 'Código: o material tem um material subsequente'
+  - name: mat_ref_p_prc
+    description: Mat.ref.p/prç.
+  - name: st_mat_tod_cen
+    description: Status material p/todos os centros
+  - name: st_p_tod_can_v
+    description: Status de material para todos os canais de vendas
+  - name: valido_desde
+    description: Data a partir da qual stat.mat.p/todos os centros é válido
+  - name: valido_desde
+    description: Data a partir da qual o status mat.p/todos can.dist.é válido
+  - name: classif_fiscal
+    description: Classificação fiscal do material
+  - name: perf_catalogo
+    description: Perfil do catálogo
+  - name: tmpvaldrest
+    description: Tempo de validade restante
+  - name: prazo_validade
+    description: Prazo de validade
+  - name: para_armazen
+    description: Percentagem para armazenagem
+  - name: um_conteudo
+    description: Unidade de medida conteúdo
+  - name: conteudo_liq
+    description: Conteúdo líquido
+  - name: preco_comparac
+    description: Preço de comparação
+  - name: grupo_mat_etiq
+    description: 'SAM etiquetagem: grupo de materiais (não ativo em 4.0)'
+  - name: conteudo_bruto
+    description: Conteúdo bruto
+  - name: met_conversao
+    description: Método conversão quantidades
+  - name: n_int_objeto
+    description: Nº interno do objeto
+  - name: relevmeioamb
+    description: 'Código: relevância para o meio ambiente'
+  - name: contingente
+    description: 'Alocação de produtos: esquema de alocação de produtos'
+  - name: perfil_calculo
+    description: Perfil de cálculo para variantes
+  - name: c_dir_bon_merc
+    description: Material com direito a bonificação em espécie
+  - name: n_peca_fabric
+    description: Nº peça de fabricante
+  - name: fabricante
+    description: Nº de um fabricante
+  - name: mat_com_adm_estq
+    description: Nº do material interno (da firma) com admin.estoques
+  - name: perfil_peca_fabr
+    description: Perfil de peças de fabricante
+  - name: utilizacao_um
+    description: Utilização/categorias de unidades de medida
+  - name: colecao
+    description: Coleção em uma época
+  - name: perfil_cod_mp
+    description: Perfil para código de mercadoria perigosa
+  - name: alta_viscosid
+    description: 'Código: de alta viscosidade'
+  - name: a_granel_liq
+    description: 'Código: a granel / líquido'
+  - name: niv_serializ
+    description: Nível de univocidade para nº série
+  - name: fechado
+    description: O material de embalagem é uma embalagem fechada
+  - name: protbatch_neces
+    description: 'Código: é necessário protocolo de lotes autorizado'
+  - name: aval_validade
+    description: Avaliar parâmetros de validade / substituir nºs modificação
+  - name: nivel_conclusao
+    description: Nível de conclusão de material
+  - name: codigo_periodo
+    description: Código de período para DV
+  - name: rgr_arredmto
+    description: Regra de arredondamento para cálculo DV
+  - name: compos_produto
+    description: 'Código: composição do produto impressa na embalagem'
+  - name: gr_ctg_itm_ger
+    description: Grupo de categorias de item geral
+  - name: variantes_log
+    description: Material genérico com variantes logísticas
+  - name: fixado
+    description: Material foi fixado
+  - name: relevanc_cm
+    description: Relevante para administração de configuração
+  - name: tip_lista_sort
+    description: Tipo de lista de sortimento
+  - name: dtv_dtexpiracao
+    description: Data de vencimento / data de expiração
+  - name: variante_ean
+    description: Variante para Global Trade Item Number
+  - name: mat_generico
+    description: Nº do material genérico em materiais pré-embalados
+  - name: mat_ref_p_norma_emb
+    description: Material ref.p/materiais a serem embalados da mesma maneira
+  - name: relevante_p_gds
+    description: 'Código: relavante p/sincronização de dados globais'
+  - name: retirada_forn
+    description: Retirada junto ao fornecedor
+  - name: tp_uc_standard
+    description: Tipo de unidade comercial standard
+  - name: c_risco_roubo
+    description: Com risco de roubo
+  - name: condarmaz
+    description: Condição de armazenamento
+  - name: grpmatestocavel
+    description: Grupo de materiais estocáveis
+  - name: cod_manuseio
+    description: Código de manuseio
+  - name: subst_perigosa
+    description: Relevante para substância perigosa
+  - name: tp_uc
+    description: Tipo de unidade comercial
+  - name: ml_variavel
+    description: Massa líquida variável
+  - name: capac_maxima
+    description: Capacidade máxima permitida do material de embalagem
+  - name: toler_capacmax
+    description: Tolerância de capacidade máxima da unidade comercial
+  - name: compr_max
+    description: Comprimento máximo da embalagem de um material da embalagem
+  - name: larg_max_embal
+    description: Largura máxima da embalagem de um material de embalagem
+  - name: altura_maxima
+    description: Altura máx.da embalagem de um material de embalagem
+  - name: unidade_medida
+    description: Unid.medida p/altura/largura/comprimento máx.da embalagem
+  - name: pais_de_origem
+    description: País de origem do material (origem CCI)
+  - name: grp_frete_mat
+    description: Grupo de frete de material
+  - name: quarentena
+    description: Quarentena
+  - name: unidade_tempo
+    description: Unidade de tempo para quarentena
+  - name: grp_ctrl_qual
+    description: Grupo de controle de qualidade
+  - name: perf_ns_serie
+    description: Perfil nºs de série
+  - name: nome_formulario
+    description: Nome do formulário
+  - name: um_logistica
+    description: 'EWM-CW: unidade de medida logística'
+  - name: relevante_p_cw
+    description: 'EWM-CW: o material é um material Catch Weight'
+  - name: perfil_cw
+    description: 'EWM-CW: perfil Catch Weight p/entrada da quantidade CW'
+  - name: grp_tolerancia_cw
+    description: 'EWM-CW: grupo de tolerância Catch Weight p/EWM'
+  - name: perfil_ajuste
+    description: Perfil de ajuste
+  - name: propr_intelect
+    description: ID de uma propriedade intelectual (produto CRM)
+  - name: prc_variantes_perm
+    description: Preço de variantes permitido (referente ao mestre artigos)
+  - name: meio
+    description: Meio
+  - name: commodity_fis
+    description: Commodity física
+  - name: origem_animal
+    description: 'Código: contém partes não têxteis de origem animal'
+  - name: compon_tex_atv
+    description: 'Código: nova função de composição têxtil'
+  - name: estrutura_segm
+    description: Estrutura de segmentação
+  - name: estrat_segm
+    description: Estratégia de segmentação
+  - name: status_segm
+    description: Status de segmentação mestre de materiais
+  - name: escopo_segm
+    description: Escopo da estratégia de segmentação
+  - name: relev_segm
+    description: Relev.p/segmentação
+  - name: atributo_fsh_1
+    description: 'Campo de informação Fashion: 1'
+  - name: atributo_fsh_2
+    description: 'Campo de informação Fashion: 2'
+  - name: atributo_fsh_3
+    description: 'Campo de informação Fashion: 3'
+  - name: utiliz_epoca
+    description: 'Código: utilização de época'
+  - name: epoca_ativa_na_ae
+    description: 'Código: época ativa na aministração estoques'
+  - name: id_conv_mat
+    description: ID de conversão de material p/conversão valor característica
+  - name: codigo_anp
+    description: Código ANP
+  - name: codigo_psm
+    description: Código para administração de espécies protegidas
+  - name: unidadescarga
+    description: Unidades de carga
+  - name: grp_unidades_carga
+    description: Grupo de unidades de carga IS-Beverage
+  - name: ctg_estrutura
+    description: Categoria de estrutura para relação de material
+  - name: tp_toler
+    description: ID tipo de tolerância
+  - name: grupo_contagem
+    description: Grupo de contagem
+  - name: agrupamento_dsd
+    description: Agrupamento DSD
+  - name: permit_deitar
+    description: Material pode ser colocado em posição deitada (OAC)
+  - name: nao_empilhar
+    description: Empilhamento não permitido (otimização área carregamento)
+  - name: camada_inferior
+    description: Camada inferior (otimização da área de carregamento)
+  - name: camada_superior
+    description: Camada superior (otimização da área de carregamento)
+  - name: fator_empilh
+    description: Fator de empilhamento (otimização da área de carregamento)
+  - name: carregar_s_me
+    description: Carregar sem material de embalagem (otimiz.área carregamto.)
+  - name: saliencia_prof
+    description: Saliên.permit.(profundidade) p/mat.embal.(otim.área carreg.)
+  - name: salienc_largura
+    description: Saliência permit.(largura) p/mat.embal.(otim.área carreg.)
+  - name: alt_max_embal
+    description: Altura máx.material de embalagem (otimiz.área carregamento)
+  - name: alt_min_embal
+    description: Altura mínima do material de embalagem (otimiz.área carreg.)
+  - name: exc_alt_embal
+    description: Excesso da altura máxima da embalagem (otimiz.área carreg.)
+  - name: nmat_matembal
+    description: Nº de mats.por mat.embalagem fechado (otimiz.área carreg.)
+  - name: um_otimarcarr
+    description: Unidade de medida da otimização da área de carregamento
+  - name: me_fechd_neces
+    description: Mat.embalagem fechado necessário (otimização área carreg.)
+  - name: cod_embalagem
+    description: Código de embalagem
+  - name: stembprodperig
+    description: Status da embalagem de produtos perigosos
+  - name: admin_status
+    description: Administração de status do material
+  - name: cod_reembolso
+    description: Código de reembolso
+  - name: reemb_ate_niv_log
+    description: Reembolso até nível logístico
+  - name: n_id_nato
+    description: Nº identificação NATO
+  - name: spare_prt_class_code
+    description: Spare Part Class Code
+  - name: classe_fff
+    description: Classe FFF
+  - name: n_da_cadeia
+    description: Nº de uma cadeia de substituições
+  - name: status_criacao
+    description: Status de criação suprimento por época
+  - name: caract_interna
+    description: Nº interno de característica para cores
+  - name: caract_interna
+    description: Nº interno em características para tamanhos principais
+  - name: caract_interna
+    description: Nº interno em características p/tamanhos secundários
+  - name: cor
+    description: Valor da característica para cores em variantes
+  - name: tamanho_princ
+    description: Valor da característica p/tamanho principal em variantes
+  - name: tamanho_secund
+    description: Valor da característica p/tamanho secundário em variantes
+  - name: valor_caract
+    description: Valor da característica para fins de análise
+  - name: instrcuid
+    description: Instruções cuidado (p.ex.,instr.lavag.,instr.pass.ferro,...)
+  - name: marca
+    description: Marca
+  - name: componente1
+    description: Código de fibras para tecidos (componente 1)
+  - name: porcentagem_1
+    description: Porcentagem de fibra (componente 1)
+  - name: componente2
+    description: Código de fibras para têxteis (componente 2)
+  - name: porcentagem_2
+    description: Porcentagem de fibra (componente 2)
+  - name: componente3
+    description: Código de fibras para têxteis (componente 3)
+  - name: porcentagem_3
+    description: Porcentagem de fibra (componente 3)
+  - name: componente4
+    description: Código de fibras para têxteis (componente 4)
+  - name: porcentagem_4
+    description: Porcentagem de fibra (componente 4)
+  - name: componente5
+    description: Código de fibras para têxteis (componente 5)
+  - name: porcentagem_5
+    description: Porcentagem de fibra (componente 5)
+  - name: cvprmoda
+    description: Ciclo de vida do produto da moda
