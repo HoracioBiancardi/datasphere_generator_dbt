@@ -27,8 +27,8 @@ Framework modular de engenharia de dados que extrai metadados do Dicionário de 
 │  DbtGenerator                        │
 └──────────────────────────────────────┘
        │
-       ├─► output/dbt/models/staging/stg_sap_[tabela].sql
-       └─► output/dbt/models/staging/schema.yml
+       ├─► output/dbt/models/staging/[TABELA]/stg_sap_[tabela].sql
+       └─► output/dbt/models/staging/[TABELA]/stg_sap_[tabela].yml
 ```
 
 Os módulos são **totalmente independentes**, conectados apenas por contratos JSON em disco. Cada um pode ser executado isoladamente.
@@ -78,8 +78,12 @@ DDIC_SCHEMA=IB_SAPECC
 DDIC_LANGUAGE=P
 
 # ── Módulo 3: Gerador dbt ─────────────────────────────────────────────────────
-# Nome usado em {{ source('sap', 'TABELA') }} nos modelos gerados
-DBT_SOURCE_NAME=sap
+# Nome usado em {{ source(...) }} nos modelos gerados
+DBT_SOURCE_NAME=dataspherev2
+# Database dbt (usado no sources.yml)
+DBT_DATABASE=BRONZE
+# Schema dbt (usado no sources.yml)
+DBT_SCHEMA=dataspherev2
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 LOG_LEVEL=INFO
@@ -113,7 +117,7 @@ uv run main.py mara bseg
 **Módulo 1 — apenas extração DDIC:**
 
 ```python
-from datasphere_extractor import DatasphereConnector, DatasphereExtractor
+from datasphere.datasphere_extractor import DatasphereConnector, DatasphereExtractor
 from sap_generator.ddic_extractor import DDICExtractor
 
 connector = DatasphereConnector({"host": "...", "port": 443, "user": "...", "password": "..."})
@@ -139,10 +143,10 @@ pipeline = translator.translate_from_file("output/contracts/ddic/ddic_schema_mar
 ```python
 from sap_generator.dbt_generator import DbtGenerator
 
-generator = DbtGenerator(source_name="sap")
+generator = DbtGenerator(source_name="dataspherev2", database="BRONZE", schema="dataspherev2")
 generator.generate_from_file("output/contracts/pipeline/ingestor_pipeline_mara.json")
-# Salvo em: output/dbt/models/staging/stg_sap_mara.sql
-#           output/dbt/models/staging/schema.yml
+# Salvo em: output/dbt/models/staging/MARA/stg_sap_mara.sql
+#           output/dbt/models/staging/MARA/stg_sap_mara.yml
 ```
 
 ---
@@ -156,8 +160,12 @@ generator.generate_from_file("output/contracts/pipeline/ingestor_pipeline_mara.j
   "sap_table_name": "MARA",
   "table_description": "Dados gerais do material",
   "table_class": "TRANSP",
+  "table_class_label": "Tabela Transparente (Física)",
   "data_class": "APPL0",
+  "data_class_label": "Dados Mestre (Master Data)",
   "size_category": 3,
+  "size_category_label": "Até 650.000 registros",
+  "primary_keys": ["MANDT", "MATNR"],
   "columns": [
     {
       "field_name": "MATNR",
@@ -167,7 +175,9 @@ generator.generate_from_file("output/contracts/pipeline/ingestor_pipeline_mara.j
       "length": 18,
       "decimals": 0,
       "data_element": "MATNR",
+      "domain_name": "MATNR",
       "field_description": "Número do material",
+      "field_label": "Material",
       "possivel_data": false
     },
     {
@@ -178,7 +188,9 @@ generator.generate_from_file("output/contracts/pipeline/ingestor_pipeline_mara.j
       "length": 8,
       "decimals": 0,
       "data_element": "ZCHAR8",
+      "domain_name": "ZCHAR8",
       "field_description": "Data do envio da mercadoria",
+      "field_label": "Dt. Envio",
       "possivel_data": true
     }
   ]
@@ -194,68 +206,86 @@ generator.generate_from_file("output/contracts/pipeline/ingestor_pipeline_mara.j
   "table_description": "Dados gerais do material",
   "ingestion_strategy": {
     "load_type": "INCREMENTAL",
-    "primary_keys": ["mandt", "numero_material"],
+    "primary_keys": ["MANDT", "MATNR"],
     "watermark_column": "data_ultima_modificacao"
   },
   "transformed_columns": [
     {
       "source_field": "MATNR",
-      "target_field": "numero_material",
+      "target_field": "material",
       "target_type": "STRING",
-      "sql_expression": "CAST(matnr AS STRING)",
+      "sql_expression": "MATNR",
       "description": "Número do material"
     },
     {
       "source_field": "ZZ_DT_ENVIO",
-      "target_field": "data_envio_mercadoria",
+      "target_field": "dt_envio",
       "target_type": "DATE",
-      "sql_expression": "CASE WHEN zz_dt_envio = '00000000' OR zz_dt_envio = '' THEN NULL ELSE TO_DATE(zz_dt_envio, 'YYYYMMDD') END",
-      "description": "Data do envio da mercadoria (Convertido de CHAR)"
+      "sql_expression": "CASE WHEN ZZ_DT_ENVIO = '00000000' OR ZZ_DT_ENVIO = '' THEN NULL ELSE TO_DATE(ZZ_DT_ENVIO, 'YYYYMMDD') END",
+      "description": "Data do envio da mercadoria"
     }
   ]
 }
 ```
 
-### Módulo 3 → `stg_sap_mara.sql`
+### Módulo 3 → `stg_sap_mara.sql` (INCREMENTAL)
 
 ```sql
-{{ config(
-    materialized='incremental',
-    unique_key=['mandt', 'numero_material'],
-    incremental_strategy='merge'
-) }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='delete+insert',
+        alias='mara'
+        tags=['sap','datasphere','silver', 'MARA']
+        unique_key='mandt',
+    )
+}}
+{% if is_incremental() %}
+    WITH novos_hashes AS (
+        SELECT s_tgt.hash_pk
+        FROM {{ source('dataspherev2', 'mara') }} AS s_tgt
+        WHERE TRY_CONVERT(DATETIME2, s_tgt.dt_ingestao) >= (
+                SELECT DATEADD(
+                    DAY, -1, MAX(s_src.dt_ingestao)
+                ) FROM {{ this }} AS s_src
+            )
+    )
+{% endif %}
 
 SELECT
-    CAST(mandt AS STRING) AS mandt,
-    CAST(matnr AS STRING) AS numero_material,
-    CASE WHEN zz_dt_envio = '00000000' OR zz_dt_envio = '' THEN NULL ELSE TO_DATE(zz_dt_envio, 'YYYYMMDD') END AS data_envio_mercadoria
-FROM {{ source('sap', 'MARA') }}
+    MANDT AS mandt,
+    MATNR AS material,
+    CASE WHEN ZZ_DT_ENVIO = '00000000' OR ZZ_DT_ENVIO = '' THEN NULL ELSE TO_DATE(ZZ_DT_ENVIO, 'YYYYMMDD') END AS dt_envio
+FROM {{ source('dataspherev2', 'MARA') }}
 {%- if is_incremental() %}
 WHERE data_ultima_modificacao > (SELECT MAX(data_ultima_modificacao) FROM {{ this }})
 {%- endif %}
 ```
 
-### Módulo 3 → `schema.yml`
+### Módulo 3 → `stg_sap_mara.yml` (sources)
 
 ```yaml
-version: 2
+sources:
+  - name: dataspherev2
+    database: BRONZE
+    schema: dataspherev2
+    tables:
+      - name: mara
+        description: "Dados gerais do material"
+        config:
+          materialized: incremental
+          incremental_strategy: "delete+insert"
+          unique_key: "hash_pk"
+          tags: ["dataspherev2", "silver"]
 
-models:
-  - name: stg_sap_mara
-    description: Dados gerais do material
-    columns:
-      - name: mandt
-        description: Mandante
-        tests:
-          - unique
-          - not_null
-      - name: numero_material
-        description: Número do material
-        tests:
-          - unique
-          - not_null
-      - name: data_envio_mercadoria
-        description: Data do envio da mercadoria (Convertido de CHAR)
+        columns:
+          # Chaves Primárias / Identificadores
+          - name: mandt
+            description: "Mandante"
+          - name: material
+            description: "Número do material"
+          - name: dt_envio
+            description: "Data do envio da mercadoria"
 ```
 
 ---
@@ -268,31 +298,39 @@ Campos `CHAR` ou `NUMC` com tamanho entre 8 e 10 caracteres são marcados com `p
 
 `DATA`, `DT`, `DATUM`, `TIMESTAMP`, `DATE`, `CRIADO`, `MODIFICADO`
 
+### Módulo 1 — Nomenclatura de Colunas (`field_label`)
+
+O nome-alvo da coluna no dbt é gerado a partir do texto curto de tela do campo (SCRTEXT_M → SCRTEXT_L → DDTEXT), convertido para `snake_case`. Isso produz nomes mais concisos que o texto longo original.
+
 ### Módulo 2 — Tipo de Carga
 
 | Condição | load_type |
 |---|---|
 | `table_class` é `VIEW` ou `INTTAB` | `FULL` |
+| `data_class` é `APPL0` (Dados Mestre) | `FULL` |
 | `data_class` é `APPL2` (Customização) | `FULL` |
 | `data_class` é `APPL1` (Transacional) | `INCREMENTAL` |
 | `size_category` >= 3 | `INCREMENTAL` |
-| Demais casos (APPL0 — Dados Mestre) | `FULL` |
+| Demais casos | `FULL` |
 
 ### Módulo 2 — Mapeamento de Tipos SAP → dbt
 
 | Tipo SAP | Tipo alvo | Expressão SQL |
 |---|---|---|
-| `CLNT`, `CHAR`, `NUMC`, `TIMS` | `STRING` | `CAST(campo AS STRING)` |
+| `CLNT`, `CHAR`, `NUMC`, `TIMS`, `UNIT`, `CUKY`, `LANG`, `ACCP` | `STRING` | referência direta (já é NVARCHAR no HANA) |
 | `DATS` | `DATE` | `CASE WHEN campo = '00000000' ... ELSE TO_DATE(campo, 'YYYYMMDD') END` |
 | `CURR`, `QUAN`, `DEC` | `DECIMAL(len, dec)` | `CAST(campo AS DECIMAL(len, dec))` |
 | `INT1`, `INT2`, `INT4`, `INT8` | `INTEGER` | `CAST(campo AS INTEGER)` |
 | `possivel_data: true` | `DATE` | mesma expressão que `DATS` |
+| Outros | `STRING` | referência direta |
+
+> Tipos de texto SAP são nativamente `NVARCHAR` no HANA/Datasphere — nenhum `CAST` é emitido para eles.
 
 ### Módulo 2 — Watermark (cargas incrementais)
 
 Prioridade de seleção do campo watermark:
 
-1. Campo SAP padrão presente na tabela: `AEDAT` → `ERDAT` → `CPUDT` → `UDATE` → `BUDAT`
+1. Campo SAP padrão presente na tabela: `AEDAT` → `ERDAT` → `CPUDT` → `UDATE` → `BUDAT` → `UPDDT`
 2. Primeiro campo com `possivel_data: true`
 3. `null` se nenhum candidato for encontrado
 
@@ -307,13 +345,14 @@ datasphere_generator_dbt/
 ├── sap_generator/
 │   ├── ddic_extractor/         # Módulo 1: queries DDIC + heurística de datas
 │   ├── ingestor/               # Módulo 2: mapeamento de tipos + estratégia de carga
-│   └── dbt_generator/          # Módulo 3: geração de .sql e schema.yml
+│   └── dbt_generator/          # Módulo 3: geração de .sql e sources.yml
 ├── output/
 │   ├── contracts/
 │   │   ├── ddic/               # ddic_schema_*.json
 │   │   └── pipeline/           # ingestor_pipeline_*.json
 │   └── dbt/
-│       └── models/staging/     # stg_sap_*.sql + schema.yml
+│       └── models/staging/
+│           └── [TABELA]/       # stg_sap_*.sql + stg_sap_*.yml (por tabela)
 ├── logger.py
 ├── main.py                     # Orquestrador CLI
 └── pyproject.toml
