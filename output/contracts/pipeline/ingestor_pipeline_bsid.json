@@ -1,0 +1,1277 @@
+{
+  "target_table": "stg_sap_bsid",
+  "source_sap_table": "BSID",
+  "table_description": "Contabilidade: índice secundário para clientes",
+  "ingestion_strategy": {
+    "load_type": "INCREMENTAL",
+    "primary_keys": [
+      "MANDT",
+      "BUKRS",
+      "KUNNR",
+      "UMSKS",
+      "UMSKZ",
+      "AUGDT",
+      "AUGBL",
+      "ZUONR",
+      "GJAHR",
+      "BELNR",
+      "BUZEI"
+    ],
+    "watermark_column": "data_da_entrada_do_documento_contabil"
+  },
+  "transformed_columns": [
+    {
+      "source_field": "MANDT",
+      "target_field": "mandante",
+      "target_type": "STRING",
+      "sql_expression": "MANDT",
+      "description": "Mandante"
+    },
+    {
+      "source_field": "BUKRS",
+      "target_field": "empresa",
+      "target_type": "STRING",
+      "sql_expression": "BUKRS",
+      "description": "Empresa"
+    },
+    {
+      "source_field": "KUNNR",
+      "target_field": "cliente",
+      "target_type": "STRING",
+      "sql_expression": "KUNNR",
+      "description": "Nº cliente"
+    },
+    {
+      "source_field": "UMSKS",
+      "target_field": "classe_operacao",
+      "target_type": "STRING",
+      "sql_expression": "UMSKS",
+      "description": "Classe de operação de Razão Especial"
+    },
+    {
+      "source_field": "UMSKZ",
+      "target_field": "codigo_rze",
+      "target_type": "STRING",
+      "sql_expression": "UMSKZ",
+      "description": "Código de Razão Especial"
+    },
+    {
+      "source_field": "AUGDT",
+      "target_field": "compensacao",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN AUGDT = '00000000' OR AUGDT = '' THEN NULL ELSE TO_DATE(AUGDT, 'YYYYMMDD') END",
+      "description": "Data de compensação"
+    },
+    {
+      "source_field": "AUGBL",
+      "target_field": "doccompens",
+      "target_type": "STRING",
+      "sql_expression": "AUGBL",
+      "description": "Nº documento de compensação"
+    },
+    {
+      "source_field": "ZUONR",
+      "target_field": "atribuicao",
+      "target_type": "STRING",
+      "sql_expression": "ZUONR",
+      "description": "Nº atribuição"
+    },
+    {
+      "source_field": "GJAHR",
+      "target_field": "exercicio",
+      "target_type": "STRING",
+      "sql_expression": "GJAHR",
+      "description": "Exercício"
+    },
+    {
+      "source_field": "BELNR",
+      "target_field": "n_documento",
+      "target_type": "STRING",
+      "sql_expression": "BELNR",
+      "description": "Nº documento de um documento contábil"
+    },
+    {
+      "source_field": "BUZEI",
+      "target_field": "item",
+      "target_type": "STRING",
+      "sql_expression": "BUZEI",
+      "description": "Nº linha de lançamento no documento contábil"
+    },
+    {
+      "source_field": "BUDAT",
+      "target_field": "data_lcto",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN BUDAT = '00000000' OR BUDAT = '' THEN NULL ELSE TO_DATE(BUDAT, 'YYYYMMDD') END",
+      "description": "Data de lançamento no documento"
+    },
+    {
+      "source_field": "BLDAT",
+      "target_field": "data_documento",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN BLDAT = '00000000' OR BLDAT = '' THEN NULL ELSE TO_DATE(BLDAT, 'YYYYMMDD') END",
+      "description": "Data no documento"
+    },
+    {
+      "source_field": "CPUDT",
+      "target_field": "entrado_em",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN CPUDT = '00000000' OR CPUDT = '' THEN NULL ELSE TO_DATE(CPUDT, 'YYYYMMDD') END",
+      "description": "Data da entrada do documento contábil"
+    },
+    {
+      "source_field": "WAERS",
+      "target_field": "moeda",
+      "target_type": "STRING",
+      "sql_expression": "WAERS",
+      "description": "Código da moeda"
+    },
+    {
+      "source_field": "XBLNR",
+      "target_field": "referencia",
+      "target_type": "STRING",
+      "sql_expression": "XBLNR",
+      "description": "Nº documento de referência"
+    },
+    {
+      "source_field": "BLART",
+      "target_field": "tp_doc",
+      "target_type": "STRING",
+      "sql_expression": "BLART",
+      "description": "Tipo de documento"
+    },
+    {
+      "source_field": "MONAT",
+      "target_field": "periodo",
+      "target_type": "STRING",
+      "sql_expression": "MONAT",
+      "description": "Mês do exercício"
+    },
+    {
+      "source_field": "BSCHL",
+      "target_field": "chv_lancamento",
+      "target_type": "STRING",
+      "sql_expression": "BSCHL",
+      "description": "Chave de lançamento"
+    },
+    {
+      "source_field": "ZUMSK",
+      "target_field": "cd_rze_destinac",
+      "target_type": "STRING",
+      "sql_expression": "ZUMSK",
+      "description": "Código de Razão Especial de destino"
+    },
+    {
+      "source_field": "SHKZG",
+      "target_field": "debito_credito",
+      "target_type": "STRING",
+      "sql_expression": "SHKZG",
+      "description": "Código débito/crédito"
+    },
+    {
+      "source_field": "GSBER",
+      "target_field": "divisao",
+      "target_type": "STRING",
+      "sql_expression": "GSBER",
+      "description": "Divisão"
+    },
+    {
+      "source_field": "MWSKZ",
+      "target_field": "cod_imposto",
+      "target_type": "STRING",
+      "sql_expression": "MWSKZ",
+      "description": "Código do IVA"
+    },
+    {
+      "source_field": "DMBTR",
+      "target_field": "montante_mi",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMBTR AS DECIMAL(13, 2))",
+      "description": "Montante em moeda interna"
+    },
+    {
+      "source_field": "WRBTR",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(WRBTR AS DECIMAL(13, 2))",
+      "description": "Montante em moeda do documento"
+    },
+    {
+      "source_field": "MWSTS",
+      "target_field": "imposto_mi",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(MWSTS AS DECIMAL(13, 2))",
+      "description": "Montante de imposto em MI"
+    },
+    {
+      "source_field": "WMWST",
+      "target_field": "mont_imposto",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(WMWST AS DECIMAL(13, 2))",
+      "description": "Montante de imposto na moeda do documento"
+    },
+    {
+      "source_field": "BDIFF",
+      "target_field": "difer_avaliacao",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(BDIFF AS DECIMAL(13, 2))",
+      "description": "Diferença de avaliação"
+    },
+    {
+      "source_field": "BDIF2",
+      "target_field": "diferenca_avaliac_2",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(BDIF2 AS DECIMAL(13, 2))",
+      "description": "Diferença de avaliação para a moeda interna-2"
+    },
+    {
+      "source_field": "SGTXT",
+      "target_field": "texto",
+      "target_type": "STRING",
+      "sql_expression": "SGTXT",
+      "description": "Texto do item"
+    },
+    {
+      "source_field": "PROJN",
+      "target_field": "sem_utilizacao",
+      "target_type": "STRING",
+      "sql_expression": "PROJN",
+      "description": "Ultrapassado: nº projeto : NÃO utilizar mais!! -> PS_POSNR"
+    },
+    {
+      "source_field": "AUFNR",
+      "target_field": "ordem",
+      "target_type": "STRING",
+      "sql_expression": "AUFNR",
+      "description": "Nº ordem"
+    },
+    {
+      "source_field": "ANLN1",
+      "target_field": "imobilizado",
+      "target_type": "STRING",
+      "sql_expression": "ANLN1",
+      "description": "Nº principal do imobilizado"
+    },
+    {
+      "source_field": "ANLN2",
+      "target_field": "subn",
+      "target_type": "STRING",
+      "sql_expression": "ANLN2",
+      "description": "Subnº do imobilizado"
+    },
+    {
+      "source_field": "SAKNR",
+      "target_field": "conta_do_razao",
+      "target_type": "STRING",
+      "sql_expression": "SAKNR",
+      "description": "Nº conta do Razão"
+    },
+    {
+      "source_field": "HKONT",
+      "target_field": "razao",
+      "target_type": "STRING",
+      "sql_expression": "HKONT",
+      "description": "Conta do Razão"
+    },
+    {
+      "source_field": "FKONT",
+      "target_field": "pl_financ",
+      "target_type": "STRING",
+      "sql_expression": "FKONT",
+      "description": "Item do plano financeiro"
+    },
+    {
+      "source_field": "FILKD",
+      "target_field": "filial",
+      "target_type": "STRING",
+      "sql_expression": "FILKD",
+      "description": "Nº conta da filial"
+    },
+    {
+      "source_field": "ZFBDT",
+      "target_field": "data_base",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN ZFBDT = '00000000' OR ZFBDT = '' THEN NULL ELSE TO_DATE(ZFBDT, 'YYYYMMDD') END",
+      "description": "Data base para cálculo do vencimento"
+    },
+    {
+      "source_field": "ZTERM",
+      "target_field": "conds_pgto",
+      "target_type": "STRING",
+      "sql_expression": "ZTERM",
+      "description": "Chave de condições de pagamento"
+    },
+    {
+      "source_field": "ZBD1T",
+      "target_field": "dia_1",
+      "target_type": "DECIMAL(3, 0)",
+      "sql_expression": "CAST(ZBD1T AS DECIMAL(3, 0))",
+      "description": "Dias de desconto 1"
+    },
+    {
+      "source_field": "ZBD2T",
+      "target_field": "dias_2",
+      "target_type": "DECIMAL(3, 0)",
+      "sql_expression": "CAST(ZBD2T AS DECIMAL(3, 0))",
+      "description": "Dias de desconto 2"
+    },
+    {
+      "source_field": "ZBD3T",
+      "target_field": "dias_liquido",
+      "target_type": "DECIMAL(3, 0)",
+      "sql_expression": "CAST(ZBD3T AS DECIMAL(3, 0))",
+      "description": "Prazo para condição líquida"
+    },
+    {
+      "source_field": "ZBD1P",
+      "target_field": "desconto_1",
+      "target_type": "DECIMAL(5, 3)",
+      "sql_expression": "CAST(ZBD1P AS DECIMAL(5, 3))",
+      "description": "Taxa de desconto 1"
+    },
+    {
+      "source_field": "ZBD2P",
+      "target_field": "desconto_2",
+      "target_type": "DECIMAL(5, 3)",
+      "sql_expression": "CAST(ZBD2P AS DECIMAL(5, 3))",
+      "description": "Taxa de desconto 2"
+    },
+    {
+      "source_field": "SKFBT",
+      "target_field": "base_descon",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(SKFBT AS DECIMAL(13, 2))",
+      "description": "Mont.c/direito a desconto em moeda doc."
+    },
+    {
+      "source_field": "SKNTO",
+      "target_field": "mont_descont",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(SKNTO AS DECIMAL(13, 2))",
+      "description": "Mont.desconto em moeda int."
+    },
+    {
+      "source_field": "WSKTO",
+      "target_field": "mont_descon",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(WSKTO AS DECIMAL(13, 2))",
+      "description": "Montante do desconto em moeda do documento"
+    },
+    {
+      "source_field": "ZLSCH",
+      "target_field": "frmpgto",
+      "target_type": "STRING",
+      "sql_expression": "ZLSCH",
+      "description": "Forma de pagamento"
+    },
+    {
+      "source_field": "ZLSPR",
+      "target_field": "bloq_pgto",
+      "target_type": "STRING",
+      "sql_expression": "ZLSPR",
+      "description": "Chave para o bloqueio de pagamento"
+    },
+    {
+      "source_field": "ZBFIX",
+      "target_field": "fixado",
+      "target_type": "STRING",
+      "sql_expression": "ZBFIX",
+      "description": "Condição de pagamento fixada"
+    },
+    {
+      "source_field": "HBKID",
+      "target_field": "banco_empresa",
+      "target_type": "STRING",
+      "sql_expression": "HBKID",
+      "description": "Chave breve de um banco da empresa"
+    },
+    {
+      "source_field": "BVTYP",
+      "target_field": "tp_banco_parc",
+      "target_type": "STRING",
+      "sql_expression": "BVTYP",
+      "description": "Tipo de banco do parceiro"
+    },
+    {
+      "source_field": "REBZG",
+      "target_field": "fat_relacion",
+      "target_type": "STRING",
+      "sql_expression": "REBZG",
+      "description": "Nº documento da fatura à qual pertence a operação"
+    },
+    {
+      "source_field": "REBZJ",
+      "target_field": "exercicio",
+      "target_type": "STRING",
+      "sql_expression": "REBZJ",
+      "description": "Exercício da fatura relacionada (em caso de nota crédito)"
+    },
+    {
+      "source_field": "REBZZ",
+      "target_field": "item",
+      "target_type": "STRING",
+      "sql_expression": "REBZZ",
+      "description": "Item de lançamento na fatura relacionada"
+    },
+    {
+      "source_field": "SAMNR",
+      "target_field": "nfaturcolet",
+      "target_type": "STRING",
+      "sql_expression": "SAMNR",
+      "description": "Nº lista de faturas"
+    },
+    {
+      "source_field": "ANFBN",
+      "target_field": "solicitacao_l_c",
+      "target_type": "STRING",
+      "sql_expression": "ANFBN",
+      "description": "Nº documento da solicitação de letra de câmbio"
+    },
+    {
+      "source_field": "ANFBJ",
+      "target_field": "exercicio_do_documento_de_solicitacao_de_letra_de_cambio",
+      "target_type": "STRING",
+      "sql_expression": "ANFBJ",
+      "description": "Exercício do documento de solicitação de letra de câmbio"
+    },
+    {
+      "source_field": "ANFBU",
+      "target_field": "empresa",
+      "target_type": "STRING",
+      "sql_expression": "ANFBU",
+      "description": "Empresa, na qual foi registrada a solicitação de L/C"
+    },
+    {
+      "source_field": "ANFAE",
+      "target_field": "reenvio_ate",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN ANFAE = '00000000' OR ANFAE = '' THEN NULL ELSE TO_DATE(ANFAE, 'YYYYMMDD') END",
+      "description": "Vencimento da solicitação de letra de câmbio"
+    },
+    {
+      "source_field": "MANSP",
+      "target_field": "bloq_advert",
+      "target_type": "STRING",
+      "sql_expression": "MANSP",
+      "description": "Bloqueio de advertências"
+    },
+    {
+      "source_field": "MSCHL",
+      "target_field": "chv_advert",
+      "target_type": "STRING",
+      "sql_expression": "MSCHL",
+      "description": "Chave de advertência"
+    },
+    {
+      "source_field": "MADAT",
+      "target_field": "ult_cobr",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN MADAT = '00000000' OR MADAT = '' THEN NULL ELSE TO_DATE(MADAT, 'YYYYMMDD') END",
+      "description": "Data da última advertência"
+    },
+    {
+      "source_field": "MANST",
+      "target_field": "niv_adv",
+      "target_type": "STRING",
+      "sql_expression": "MANST",
+      "description": "Nível de advertência"
+    },
+    {
+      "source_field": "MABER",
+      "target_field": "areaadvert",
+      "target_type": "STRING",
+      "sql_expression": "MABER",
+      "description": "Área de advertência"
+    },
+    {
+      "source_field": "XNETB",
+      "target_field": "tip_doc_liquido",
+      "target_type": "STRING",
+      "sql_expression": "XNETB",
+      "description": "Código: documento registrado com valor líquido ?"
+    },
+    {
+      "source_field": "XANET",
+      "target_field": "cod_adiantamento_no_proc_contabilizacao_liquida",
+      "target_type": "STRING",
+      "sql_expression": "XANET",
+      "description": "Cód.: adiantamento no proc.contabilização líquida?"
+    },
+    {
+      "source_field": "XCPDD",
+      "target_field": "c_indiv",
+      "target_type": "STRING",
+      "sql_expression": "XCPDD",
+      "description": "Código: endereço e dados do banco fixados individualmente"
+    },
+    {
+      "source_field": "XINVE",
+      "target_field": "cod_invest",
+      "target_type": "STRING",
+      "sql_expression": "XINVE",
+      "description": "Código: referência a bens de investimento ?"
+    },
+    {
+      "source_field": "XZAHL",
+      "target_field": "operpagmto",
+      "target_type": "STRING",
+      "sql_expression": "XZAHL",
+      "description": "Código: trata-se de uma operação de pagamento ?"
+    },
+    {
+      "source_field": "MWSK1",
+      "target_field": "cod_imp",
+      "target_type": "STRING",
+      "sql_expression": "MWSK1",
+      "description": "Código IVA para repartição"
+    },
+    {
+      "source_field": "DMBT1",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMBT1 AS DECIMAL(13, 2))",
+      "description": "Montante em moeda interna para divisão dos impostos"
+    },
+    {
+      "source_field": "WRBT1",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(WRBT1 AS DECIMAL(13, 2))",
+      "description": "Montante em moeda estrangeira da repartição dos impostos"
+    },
+    {
+      "source_field": "MWSK2",
+      "target_field": "cod_imp",
+      "target_type": "STRING",
+      "sql_expression": "MWSK2",
+      "description": "Código IVA para repartição"
+    },
+    {
+      "source_field": "DMBT2",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMBT2 AS DECIMAL(13, 2))",
+      "description": "Montante em moeda interna para divisão dos impostos"
+    },
+    {
+      "source_field": "WRBT2",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(WRBT2 AS DECIMAL(13, 2))",
+      "description": "Montante em moeda estrangeira da repartição dos impostos"
+    },
+    {
+      "source_field": "MWSK3",
+      "target_field": "cod_imp",
+      "target_type": "STRING",
+      "sql_expression": "MWSK3",
+      "description": "Código IVA para repartição"
+    },
+    {
+      "source_field": "DMBT3",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMBT3 AS DECIMAL(13, 2))",
+      "description": "Montante em moeda interna para divisão dos impostos"
+    },
+    {
+      "source_field": "WRBT3",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(WRBT3 AS DECIMAL(13, 2))",
+      "description": "Montante em moeda estrangeira da repartição dos impostos"
+    },
+    {
+      "source_field": "BSTAT",
+      "target_field": "status_doc",
+      "target_type": "STRING",
+      "sql_expression": "BSTAT",
+      "description": "Status do documento"
+    },
+    {
+      "source_field": "VBUND",
+      "target_field": "soc_parc_negs",
+      "target_type": "STRING",
+      "sql_expression": "VBUND",
+      "description": "Nº sociedade parceira"
+    },
+    {
+      "source_field": "VBELN",
+      "target_field": "docfat",
+      "target_type": "STRING",
+      "sql_expression": "VBELN",
+      "description": "Documento de faturamento"
+    },
+    {
+      "source_field": "REBZT",
+      "target_field": "tp_doc_subsequente",
+      "target_type": "STRING",
+      "sql_expression": "REBZT",
+      "description": "Tp.doc.subsequente"
+    },
+    {
+      "source_field": "INFAE",
+      "target_field": "vencimtoinvert",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN INFAE = '00000000' OR INFAE = '' THEN NULL ELSE TO_DATE(INFAE, 'YYYYMMDD') END",
+      "description": "Data invertida do vendimento líquido"
+    },
+    {
+      "source_field": "STCEG",
+      "target_field": "nidfisiva",
+      "target_type": "STRING",
+      "sql_expression": "STCEG",
+      "description": "Nº de identificação fiscal de IVA"
+    },
+    {
+      "source_field": "EGBLD",
+      "target_field": "pais_de_destino",
+      "target_type": "STRING",
+      "sql_expression": "EGBLD",
+      "description": "País de destino p/fornecimento da mercadoria"
+    },
+    {
+      "source_field": "EGLLD",
+      "target_field": "pais_fornecedor",
+      "target_type": "STRING",
+      "sql_expression": "EGLLD",
+      "description": "País fornecedor da mercadoria"
+    },
+    {
+      "source_field": "RSTGR",
+      "target_field": "mot_diferenca",
+      "target_type": "STRING",
+      "sql_expression": "RSTGR",
+      "description": "Motivo diferença em pagamentos"
+    },
+    {
+      "source_field": "XNOZA",
+      "target_field": "codigo_conta_nao_e_paga",
+      "target_type": "STRING",
+      "sql_expression": "XNOZA",
+      "description": "Código: conta não é paga"
+    },
+    {
+      "source_field": "VERTT",
+      "target_field": "tipo_contrato",
+      "target_type": "STRING",
+      "sql_expression": "VERTT",
+      "description": "Tipo de contrato"
+    },
+    {
+      "source_field": "VERTN",
+      "target_field": "n_contrato",
+      "target_type": "STRING",
+      "sql_expression": "VERTN",
+      "description": "Nº contrato"
+    },
+    {
+      "source_field": "VBEWA",
+      "target_field": "tipo_movimento",
+      "target_type": "STRING",
+      "sql_expression": "VBEWA",
+      "description": "Tp.movimento"
+    },
+    {
+      "source_field": "WVERW",
+      "target_field": "utilizacao",
+      "target_type": "STRING",
+      "sql_expression": "WVERW",
+      "description": "Tipo de utilização de letra de câmbio"
+    },
+    {
+      "source_field": "PROJK",
+      "target_field": "elemento_pep",
+      "target_type": "STRING",
+      "sql_expression": "PROJK",
+      "description": "Elemento do plano da estrutura do projeto (elemento PEP)"
+    },
+    {
+      "source_field": "FIPOS",
+      "target_field": "item_financeiro",
+      "target_type": "STRING",
+      "sql_expression": "FIPOS",
+      "description": "Item financeiro"
+    },
+    {
+      "source_field": "NPLNR",
+      "target_field": "diagrede",
+      "target_type": "STRING",
+      "sql_expression": "NPLNR",
+      "description": "Nº diagrama de rede para classificação contábil"
+    },
+    {
+      "source_field": "AUFPL",
+      "target_field": "n_rot_operacao",
+      "target_type": "STRING",
+      "sql_expression": "AUFPL",
+      "description": "Nº de roteiro de operações na ordem"
+    },
+    {
+      "source_field": "APLZL",
+      "target_field": "contador",
+      "target_type": "STRING",
+      "sql_expression": "APLZL",
+      "description": "Numerador interno"
+    },
+    {
+      "source_field": "XEGDR",
+      "target_field": "neg_triangul_ue",
+      "target_type": "STRING",
+      "sql_expression": "XEGDR",
+      "description": "Código: negócio triangular no âmbito da UE?"
+    },
+    {
+      "source_field": "DMBE2",
+      "target_field": "mont_mi2",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMBE2 AS DECIMAL(13, 2))",
+      "description": "Montante na 2ª moeda interna"
+    },
+    {
+      "source_field": "DMBE3",
+      "target_field": "mont_mi3",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMBE3 AS DECIMAL(13, 2))",
+      "description": "Montante na 3ª moeda interna"
+    },
+    {
+      "source_field": "DMB21",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMB21 AS DECIMAL(13, 2))",
+      "description": "Montante na moeda interna-2 para repartição do imposto"
+    },
+    {
+      "source_field": "DMB22",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMB22 AS DECIMAL(13, 2))",
+      "description": "Montante na moeda interna-2 para repartição do imposto"
+    },
+    {
+      "source_field": "DMB23",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMB23 AS DECIMAL(13, 2))",
+      "description": "Montante na moeda interna-2 para repartição do imposto"
+    },
+    {
+      "source_field": "DMB31",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMB31 AS DECIMAL(13, 2))",
+      "description": "Montante na moeda interna-3 para repartição do imposto"
+    },
+    {
+      "source_field": "DMB32",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMB32 AS DECIMAL(13, 2))",
+      "description": "Montante na moeda interna-3 para repartição do imposto"
+    },
+    {
+      "source_field": "DMB33",
+      "target_field": "montante",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(DMB33 AS DECIMAL(13, 2))",
+      "description": "Montante na moeda interna-3 para repartição do imposto"
+    },
+    {
+      "source_field": "BDIF3",
+      "target_field": "difer_avaliacao_3",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(BDIF3 AS DECIMAL(13, 2))",
+      "description": "Diferença de avaliação para a 3ª moeda interna"
+    },
+    {
+      "source_field": "XRAGL",
+      "target_field": "anular_compensacao",
+      "target_type": "STRING",
+      "sql_expression": "XRAGL",
+      "description": "Código: anular compensação"
+    },
+    {
+      "source_field": "UZAWE",
+      "target_field": "supl_frm_pgto",
+      "target_type": "STRING",
+      "sql_expression": "UZAWE",
+      "description": "Suplemento à forma de pagamento"
+    },
+    {
+      "source_field": "XSTOV",
+      "target_field": "marc_p_estorno",
+      "target_type": "STRING",
+      "sql_expression": "XSTOV",
+      "description": "Código: documento marcado para estorno"
+    },
+    {
+      "source_field": "MWST2",
+      "target_field": "iva_mi_2",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(MWST2 AS DECIMAL(13, 2))",
+      "description": "Montante IVA na moeda interna-2"
+    },
+    {
+      "source_field": "MWST3",
+      "target_field": "imposto_mi_3",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(MWST3 AS DECIMAL(13, 2))",
+      "description": "Montante do imposto na moeda interna-3"
+    },
+    {
+      "source_field": "SKNT2",
+      "target_field": "desconto_mi2",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(SKNT2 AS DECIMAL(13, 2))",
+      "description": "Montante do desconto na moeda interna-2"
+    },
+    {
+      "source_field": "SKNT3",
+      "target_field": "desconto_mi3",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(SKNT3 AS DECIMAL(13, 2))",
+      "description": "Montante do desconto na moeda interna-3"
+    },
+    {
+      "source_field": "XREF1",
+      "target_field": "chave_refer_1",
+      "target_type": "STRING",
+      "sql_expression": "XREF1",
+      "description": "Chave de referência do parceiro de negócios"
+    },
+    {
+      "source_field": "XREF2",
+      "target_field": "chave_refer_2",
+      "target_type": "STRING",
+      "sql_expression": "XREF2",
+      "description": "Chave de referência do parceiro de negócios"
+    },
+    {
+      "source_field": "XARCH",
+      "target_field": "arquivo",
+      "target_type": "STRING",
+      "sql_expression": "XARCH",
+      "description": "Código: documento já arquivado ?"
+    },
+    {
+      "source_field": "PSWSL",
+      "target_field": "moeda_razao",
+      "target_type": "STRING",
+      "sql_expression": "PSWSL",
+      "description": "Moeda de atualização p/movimentação no período do Razão"
+    },
+    {
+      "source_field": "PSWBT",
+      "target_field": "montante_razao",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(PSWBT AS DECIMAL(13, 2))",
+      "description": "Montante para atualização no Razão"
+    },
+    {
+      "source_field": "LZBKZ",
+      "target_field": "cd_banccentr",
+      "target_type": "STRING",
+      "sql_expression": "LZBKZ",
+      "description": "Código do Banco Central"
+    },
+    {
+      "source_field": "LANDL",
+      "target_field": "pais_fornec",
+      "target_type": "STRING",
+      "sql_expression": "LANDL",
+      "description": "País do fornecedor"
+    },
+    {
+      "source_field": "IMKEY",
+      "target_field": "chv_bensimoveis",
+      "target_type": "STRING",
+      "sql_expression": "IMKEY",
+      "description": "Chave interna para objeto de bens imóveis"
+    },
+    {
+      "source_field": "VBEL2",
+      "target_field": "doc_vendas",
+      "target_type": "STRING",
+      "sql_expression": "VBEL2",
+      "description": "Documento de vendas"
+    },
+    {
+      "source_field": "VPOS2",
+      "target_field": "n",
+      "target_type": "STRING",
+      "sql_expression": "VPOS2",
+      "description": "Campo numérico de comprimento 6"
+    },
+    {
+      "source_field": "POSN2",
+      "target_field": "item",
+      "target_type": "STRING",
+      "sql_expression": "POSN2",
+      "description": "Item do documento de vendas"
+    },
+    {
+      "source_field": "ETEN2",
+      "target_field": "divremessa",
+      "target_type": "STRING",
+      "sql_expression": "ETEN2",
+      "description": "Nº da divisão de remessa"
+    },
+    {
+      "source_field": "FISTL",
+      "target_field": "cen_financeiro",
+      "target_type": "STRING",
+      "sql_expression": "FISTL",
+      "description": "Centro financeiro"
+    },
+    {
+      "source_field": "GEBER",
+      "target_field": "fundos",
+      "target_type": "STRING",
+      "sql_expression": "GEBER",
+      "description": "Fundos"
+    },
+    {
+      "source_field": "DABRZ",
+      "target_field": "data_ref",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN DABRZ = '00000000' OR DABRZ = '' THEN NULL ELSE TO_DATE(DABRZ, 'YYYYMMDD') END",
+      "description": "Data de referência para liquidação"
+    },
+    {
+      "source_field": "XNEGP",
+      "target_field": "lancamento_neg",
+      "target_type": "STRING",
+      "sql_expression": "XNEGP",
+      "description": "Código: lançamento negativo"
+    },
+    {
+      "source_field": "KOSTL",
+      "target_field": "centro_custo",
+      "target_type": "STRING",
+      "sql_expression": "KOSTL",
+      "description": "Centro de custo"
+    },
+    {
+      "source_field": "RFZEI",
+      "target_field": "item_cart_pagto",
+      "target_type": "STRING",
+      "sql_expression": "RFZEI",
+      "description": "Item de cartão de pagamento"
+    },
+    {
+      "source_field": "KKBER",
+      "target_field": "area_ctrl_cred",
+      "target_type": "STRING",
+      "sql_expression": "KKBER",
+      "description": "Área de controle de créditos"
+    },
+    {
+      "source_field": "EMPFB",
+      "target_field": "pagador",
+      "target_type": "STRING",
+      "sql_expression": "EMPFB",
+      "description": "Recebedor de pagamento/pagador"
+    },
+    {
+      "source_field": "PRCTR",
+      "target_field": "centro_de_lucro",
+      "target_type": "STRING",
+      "sql_expression": "PRCTR",
+      "description": "Centro de lucro"
+    },
+    {
+      "source_field": "XREF3",
+      "target_field": "chave_refer_3",
+      "target_type": "STRING",
+      "sql_expression": "XREF3",
+      "description": "Chave de referência para item de doc."
+    },
+    {
+      "source_field": "QSSKZ",
+      "target_field": "codigo_irf",
+      "target_type": "STRING",
+      "sql_expression": "QSSKZ",
+      "description": "Código de imposto retido na fonte"
+    },
+    {
+      "source_field": "ZINKZ",
+      "target_field": "bloqueio_juros",
+      "target_type": "STRING",
+      "sql_expression": "ZINKZ",
+      "description": "Exclusão do cálculo de juros"
+    },
+    {
+      "source_field": "DTWS1",
+      "target_field": "instrucao_1",
+      "target_type": "STRING",
+      "sql_expression": "DTWS1",
+      "description": "Instrução 1"
+    },
+    {
+      "source_field": "DTWS2",
+      "target_field": "instrucao_2",
+      "target_type": "STRING",
+      "sql_expression": "DTWS2",
+      "description": "Instrução 2"
+    },
+    {
+      "source_field": "DTWS3",
+      "target_field": "instrucao_3",
+      "target_type": "STRING",
+      "sql_expression": "DTWS3",
+      "description": "Instrução 3"
+    },
+    {
+      "source_field": "DTWS4",
+      "target_field": "instrucao_4",
+      "target_type": "STRING",
+      "sql_expression": "DTWS4",
+      "description": "Instrução 4"
+    },
+    {
+      "source_field": "XPYPR",
+      "target_field": "pagto_a_caminho",
+      "target_type": "STRING",
+      "sql_expression": "XPYPR",
+      "description": "Código: partida bloqueada pelo programa de pagamento"
+    },
+    {
+      "source_field": "KIDNO",
+      "target_field": "ref_pgto",
+      "target_type": "STRING",
+      "sql_expression": "KIDNO",
+      "description": "Referência de pagamento"
+    },
+    {
+      "source_field": "ABSBT",
+      "target_field": "mont_garantido",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(ABSBT AS DECIMAL(13, 2))",
+      "description": "Administração de créditos: montante garantido"
+    },
+    {
+      "source_field": "CCBTC",
+      "target_field": "liquidacao",
+      "target_type": "STRING",
+      "sql_expression": "CCBTC",
+      "description": "Cartões de pagamento: processo de liquidação"
+    },
+    {
+      "source_field": "PYCUR",
+      "target_field": "moeda_pagto",
+      "target_type": "STRING",
+      "sql_expression": "PYCUR",
+      "description": "Moeda para o pagamento automático"
+    },
+    {
+      "source_field": "PYAMT",
+      "target_field": "mont_moedpgt",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(PYAMT AS DECIMAL(13, 2))",
+      "description": "Montante em moeda de pagamento"
+    },
+    {
+      "source_field": "BUPLA",
+      "target_field": "loc_negocios",
+      "target_type": "STRING",
+      "sql_expression": "BUPLA",
+      "description": "Local de negócios"
+    },
+    {
+      "source_field": "SECCO",
+      "target_field": "irf_secao",
+      "target_type": "STRING",
+      "sql_expression": "SECCO",
+      "description": "IRF - seção"
+    },
+    {
+      "source_field": "CESSION_KZ",
+      "target_field": "codigo_d_cessao",
+      "target_type": "STRING",
+      "sql_expression": "CESSION_KZ",
+      "description": "Código de cessão"
+    },
+    {
+      "source_field": "PPDIFF",
+      "target_field": "diferenc_realiz",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(PPDIFF AS DECIMAL(13, 2))",
+      "description": "Ganhos/perdas realiz.pela difer.câmbio 1ª MI(pgtos.parciais)"
+    },
+    {
+      "source_field": "PPDIF2",
+      "target_field": "diferenc_realiz",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(PPDIF2 AS DECIMAL(13, 2))",
+      "description": "Ganhos/perdas realiz.pela difer.câmbio 2ª MI(pgtos.parciais)"
+    },
+    {
+      "source_field": "PPDIF3",
+      "target_field": "diferenc_realiz",
+      "target_type": "DECIMAL(13, 2)",
+      "sql_expression": "CAST(PPDIF3 AS DECIMAL(13, 2))",
+      "description": "Ganhos/perdas realiz.pela difer.câmbio 3ª MI(pgtos.parciais)"
+    },
+    {
+      "source_field": "KBLNR",
+      "target_field": "fundos_destins",
+      "target_type": "STRING",
+      "sql_expression": "KBLNR",
+      "description": "Nº documento fundos destinados"
+    },
+    {
+      "source_field": "KBLPOS",
+      "target_field": "item_documento",
+      "target_type": "STRING",
+      "sql_expression": "KBLPOS",
+      "description": "Item doc.fundos destinados"
+    },
+    {
+      "source_field": "GRANT_NBR",
+      "target_field": "subspubl",
+      "target_type": "STRING",
+      "sql_expression": "GRANT_NBR",
+      "description": "Subsídio público"
+    },
+    {
+      "source_field": "GMVKZ",
+      "target_field": "execucao",
+      "target_type": "STRING",
+      "sql_expression": "GMVKZ",
+      "description": "Partida em execução"
+    },
+    {
+      "source_field": "SRTYPE",
+      "target_field": "cta_receb_adic",
+      "target_type": "STRING",
+      "sql_expression": "SRTYPE",
+      "description": "Tipo da conta a receber adicional"
+    },
+    {
+      "source_field": "LOTKZ",
+      "target_field": "n_de_ordem",
+      "target_type": "STRING",
+      "sql_expression": "LOTKZ",
+      "description": "Nº de agrupamento para ordens"
+    },
+    {
+      "source_field": "FKBER",
+      "target_field": "area_funcional",
+      "target_type": "STRING",
+      "sql_expression": "FKBER",
+      "description": "Área funcional"
+    },
+    {
+      "source_field": "INTRENO",
+      "target_field": "chavbensimov_re",
+      "target_type": "STRING",
+      "sql_expression": "INTRENO",
+      "description": "Imóveis internos codificação dos dados mestre"
+    },
+    {
+      "source_field": "PPRCT",
+      "target_field": "cenlcr_parcs",
+      "target_type": "STRING",
+      "sql_expression": "PPRCT",
+      "description": "Centro de lucro de parceiros"
+    },
+    {
+      "source_field": "BUZID",
+      "target_field": "id_linha_lcto",
+      "target_type": "STRING",
+      "sql_expression": "BUZID",
+      "description": "Identificação da linha de lançamento"
+    },
+    {
+      "source_field": "AUGGJ",
+      "target_field": "exerc_compens",
+      "target_type": "STRING",
+      "sql_expression": "AUGGJ",
+      "description": "Exercício fiscal do doc.de compensação"
+    },
+    {
+      "source_field": "HKTID",
+      "target_field": "id_da_conta",
+      "target_type": "STRING",
+      "sql_expression": "HKTID",
+      "description": "Chave breve para detalhes da conta"
+    },
+    {
+      "source_field": "BUDGET_PD",
+      "target_field": "per_orcamento",
+      "target_type": "STRING",
+      "sql_expression": "BUDGET_PD",
+      "description": "AdO: período de orçamento"
+    },
+    {
+      "source_field": "PAYS_PROV",
+      "target_field": "fsp",
+      "target_type": "STRING",
+      "sql_expression": "PAYS_PROV",
+      "description": "Fornecedor de serviços de pagamento"
+    },
+    {
+      "source_field": "PAYS_TRAN",
+      "target_field": "refpgtofornservpgto",
+      "target_type": "STRING",
+      "sql_expression": "PAYS_TRAN",
+      "description": "Referência do pagamento do fornecedor serviços de pagamento"
+    },
+    {
+      "source_field": "MNDID",
+      "target_field": "ref_mandato",
+      "target_type": "STRING",
+      "sql_expression": "MNDID",
+      "description": "Referência única ao mandato por recebedor do pagamento"
+    },
+    {
+      "source_field": "KONTT",
+      "target_field": "categoria_clc",
+      "target_type": "STRING",
+      "sql_expression": "KONTT",
+      "description": "Categoria de classificação contábil"
+    },
+    {
+      "source_field": "KONTL",
+      "target_field": "clc",
+      "target_type": "STRING",
+      "sql_expression": "KONTL",
+      "description": "Barra de classific.contábil p/clas.cont.específicas do setor"
+    },
+    {
+      "source_field": "UEBGDAT",
+      "target_field": "dta_proc_jud_cobr",
+      "target_type": "DATE",
+      "sql_expression": "CASE WHEN UEBGDAT = '00000000' OR UEBGDAT = '' THEN NULL ELSE TO_DATE(UEBGDAT, 'YYYYMMDD') END",
+      "description": "Data da transferência de partida p/proc.judicial cobrança"
+    },
+    {
+      "source_field": "VNAME",
+      "target_field": "joint_venture",
+      "target_type": "STRING",
+      "sql_expression": "VNAME",
+      "description": "Joint venture"
+    },
+    {
+      "source_field": "EGRUP",
+      "target_field": "grupo_particip",
+      "target_type": "STRING",
+      "sql_expression": "EGRUP",
+      "description": "Grupo de participação"
+    },
+    {
+      "source_field": "BTYPE",
+      "target_field": "cod_faturamento",
+      "target_type": "STRING",
+      "sql_expression": "BTYPE",
+      "description": "Categoria da liquidação"
+    },
+    {
+      "source_field": "PROPMANO",
+      "target_field": "mandato",
+      "target_type": "STRING",
+      "sql_expression": "PROPMANO",
+      "description": "Mandato, contrato que abre o mandato"
+    }
+  ]
+}

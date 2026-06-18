@@ -97,9 +97,10 @@ def _map_column(col: Dict[str, Any]) -> Tuple[str, str]:
 # ---------------------------------------------------------------------------
 
 def _load_type(table_class: str, data_class: str, size_category: int) -> str:
-    # FULL takes priority over INCREMENTAL rules
-    if table_class in ("VIEW", "INTTAB") or data_class == "APPL2":
+    # Structural types and config/master data are always full snapshots
+    if table_class in ("VIEW", "INTTAB") or data_class in ("APPL0", "APPL2"):
         return "FULL"
+    # Transactional data (APPL1) or unclassified large tables use incremental
     if data_class == "APPL1" or size_category >= 3:
         return "INCREMENTAL"
     return "FULL"

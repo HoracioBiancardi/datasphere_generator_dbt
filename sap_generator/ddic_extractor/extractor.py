@@ -17,6 +17,33 @@ _DATE_CANDIDATE_TYPES = {"CHAR", "NUMC"}
 # Keywords that signal a hidden date field in the element name, domain, or description
 _DATE_KEYWORDS = {"DATA", "DT", "DATUM", "TIMESTAMP", "CRIADO", "MODIFICADO", "DATE"}
 
+_TABLE_CLASS_LABELS: Dict[str, str] = {
+    "TRANSP":  "Tabela Transparente (Física)",
+    "VIEW":    "Visão de Dados (View)",
+    "CLUSTER": "Tabela Cluster (Compactada)",
+    "POOL":    "Tabela Pool (Compactada)",
+    "INTTAB":  "Estrutura Interna (sem tabela física)",
+}
+
+_DATA_CLASS_LABELS: Dict[str, str] = {
+    "APPL0": "Dados Mestre (Master Data)",
+    "APPL1": "Dados Transacionais (Transaction Data)",
+    "APPL2": "Configuração / Customização (Config)",
+}
+
+_SIZE_CATEGORY_LABELS: Dict[str, str] = {
+    "0": "Até 10.000 registros",
+    "1": "Até 40.000 registros",
+    "2": "Até 160.000 registros",
+    "3": "Até 650.000 registros",
+    "4": "Até 2.500.000 registros",
+    "5": "Até 10.000.000 registros",
+    "6": "Até 40.000.000 registros",
+    "7": "Até 160.000.000 registros",
+    "8": "Até 650.000.000 registros (Larga)",
+    "9": "Mais de 650.000.000 registros (Massiva)",
+}
+
 
 def _is_hidden_date(sap_type: str, length: int, data_element: str, domain_name: str, description: str) -> bool:
     """Return True if a CHAR/NUMC field (8–10 chars) appears to encode a date."""
@@ -90,6 +117,7 @@ class DDICExtractor:
                     "length": length,
                     "decimals": decimals,
                     "data_element": data_element,
+                    "domain_name": domain_name,
                     "field_description": field_description,
                     "field_label": field_label,
                     "possivel_data": _is_hidden_date(
@@ -98,12 +126,21 @@ class DDICExtractor:
                 }
             )
 
+        table_class = str(row["table_class"]).strip()
+        data_class = str(row["data_class"]).strip()
+        size_category_raw = str(row["size_category"]).strip() or "0"
+        primary_keys = [c["field_name"] for c in columns if c["is_key"]]
+
         contract: Dict[str, Any] = {
             "sap_table_name": str(row["sap_table_name"]).strip(),
             "table_description": str(row["table_description"]).strip(),
-            "table_class": str(row["table_class"]).strip(),
-            "data_class": str(row["data_class"]).strip(),
-            "size_category": int(str(row["size_category"]).strip() or 0),
+            "table_class": table_class,
+            "table_class_label": _TABLE_CLASS_LABELS.get(table_class, table_class),
+            "data_class": data_class,
+            "data_class_label": _DATA_CLASS_LABELS.get(data_class, data_class),
+            "size_category": int(size_category_raw),
+            "size_category_label": _SIZE_CATEGORY_LABELS.get(size_category_raw, size_category_raw),
+            "primary_keys": primary_keys,
             "columns": columns,
         }
 

@@ -2,8 +2,15 @@
   "sap_table_name": "MARA",
   "table_description": "Dados gerais de material",
   "table_class": "TRANSP",
+  "table_class_label": "Tabela Transparente (Física)",
   "data_class": "APPL0",
-  "size_category": 0,
+  "data_class_label": "Dados Mestre (Master Data)",
+  "size_category": 4,
+  "size_category_label": "Até 2.500.000 registros",
+  "primary_keys": [
+    "MANDT",
+    "MATNR"
+  ],
   "columns": [
     {
       "field_name": "MANDT",
@@ -13,6 +20,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "MANDT",
+      "domain_name": "MANDT",
       "field_description": "Mandante",
       "field_label": "Mandante",
       "possivel_data": false
@@ -25,6 +33,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "MATNR",
+      "domain_name": "MATNR",
       "field_description": "Nº do material",
       "field_label": "Material",
       "possivel_data": false
@@ -37,6 +46,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "ERSDA",
+      "domain_name": "DATUM",
       "field_description": "Data de criação",
       "field_label": "Criado em",
       "possivel_data": false
@@ -49,6 +59,7 @@
       "length": 12,
       "decimals": 0,
       "data_element": "ERNAM",
+      "domain_name": "USNAM",
       "field_description": "Nome do responsável que criou o objeto",
       "field_label": "Criado por",
       "possivel_data": false
@@ -61,6 +72,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "LAEDA",
+      "domain_name": "DATUM",
       "field_description": "Data da última modificação",
       "field_label": "Última modific.",
       "possivel_data": false
@@ -73,6 +85,7 @@
       "length": 12,
       "decimals": 0,
       "data_element": "AENAM",
+      "domain_name": "USNAM",
       "field_description": "Nome do responsável pela modificação do objeto",
       "field_label": "Modificado por",
       "possivel_data": false
@@ -85,6 +98,7 @@
       "length": 15,
       "decimals": 0,
       "data_element": "VPSTA",
+      "domain_name": "PSTAT",
       "field_description": "Status de atualização do material completo",
       "field_label": "Status completo",
       "possivel_data": false
@@ -97,6 +111,7 @@
       "length": 15,
       "decimals": 0,
       "data_element": "PSTAT_D",
+      "domain_name": "PSTAT",
       "field_description": "Status de atualização",
       "field_label": "Status atualiz.",
       "possivel_data": false
@@ -109,6 +124,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "LVOMA",
+      "domain_name": "XFELD",
       "field_description": "Marcar mat.para eliminação a nível de mandante",
       "field_label": "MarcPElNívMand.",
       "possivel_data": false
@@ -121,6 +137,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "MTART",
+      "domain_name": "MTART",
       "field_description": "Tipo de material",
       "field_label": "Tipo material",
       "possivel_data": false
@@ -133,6 +150,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "MBRSH",
+      "domain_name": "MBRSH",
       "field_description": "Setor industrial",
       "field_label": "SetorIndustrial",
       "possivel_data": false
@@ -145,6 +163,7 @@
       "length": 9,
       "decimals": 0,
       "data_element": "MATKL",
+      "domain_name": "MATKL",
       "field_description": "Grupo de mercadorias",
       "field_label": "GrpMercads.",
       "possivel_data": false
@@ -157,6 +176,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "BISMT",
+      "domain_name": "BISMT",
       "field_description": "Nº material antigo",
       "field_label": "Nº mat.antigo",
       "possivel_data": false
@@ -169,6 +189,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "MEINS",
+      "domain_name": "MEINS",
       "field_description": "Unidade de medida básica",
       "field_label": "UM básica",
       "possivel_data": false
@@ -181,6 +202,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "BSTME",
+      "domain_name": "MEINS",
       "field_description": "Unidade de medida do pedido",
       "field_label": "UM pedido",
       "possivel_data": false
@@ -193,6 +215,7 @@
       "length": 22,
       "decimals": 0,
       "data_element": "DZEINR",
+      "domain_name": "CHAR22",
       "field_description": "Nº documento (sem sistema de administração de documentos)",
       "field_label": "Documento",
       "possivel_data": false
@@ -205,6 +228,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "DZEIAR",
+      "domain_name": "ZEIAR",
       "field_description": "Tipo de documento (s/sistema administração documentos)",
       "field_label": "Tipo documento",
       "possivel_data": false
@@ -217,6 +241,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "DZEIVR",
+      "domain_name": "VERSI",
       "field_description": "Versão do documento (sem sistema administração documentos)",
       "field_label": "Versão doc.",
       "possivel_data": false
@@ -229,6 +254,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "DZEIFO",
+      "domain_name": "DINFO",
       "field_description": "Formato DIN do documento (s/sistema administração documents)",
       "field_label": "Formato DIN",
       "possivel_data": false
@@ -241,6 +267,7 @@
       "length": 6,
       "decimals": 0,
       "data_element": "AESZN",
+      "domain_name": "AENUM",
       "field_description": "Nº modificação do documento (sem sistema de admin.docs.)",
       "field_label": "Nº modif.doc.",
       "possivel_data": false
@@ -253,6 +280,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "BLATT",
+      "domain_name": "BLATT",
       "field_description": "Nº folha do documento (sem sistema de admin. de documentos)",
       "field_label": "Nº folha",
       "possivel_data": false
@@ -265,6 +293,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "BLANZ",
+      "domain_name": "NUM3",
       "field_description": "Nº de folhas (sem sistema de admin. de documentos)",
       "field_label": "Nº de folhas",
       "possivel_data": false
@@ -277,6 +306,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "FERTH",
+      "domain_name": "FERTH",
       "field_description": "Instrução de produção/de controle de qualidade",
       "field_label": "Prod./controle",
       "possivel_data": false
@@ -289,6 +319,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "FORMT",
+      "domain_name": "DINFO",
       "field_description": "Formato DIN da instrução de produção",
       "field_label": "Formato DIN",
       "possivel_data": false
@@ -301,6 +332,7 @@
       "length": 32,
       "decimals": 0,
       "data_element": "GROES",
+      "domain_name": "CHAR32",
       "field_description": "Tamanho/dimensão",
       "field_label": "Tamanho/dimens.",
       "possivel_data": false
@@ -313,6 +345,7 @@
       "length": 48,
       "decimals": 0,
       "data_element": "WRKST",
+      "domain_name": "WRKST",
       "field_description": "Material básico",
       "field_label": "Material básico",
       "possivel_data": false
@@ -325,6 +358,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "NORMT",
+      "domain_name": "NORMT",
       "field_description": "Denominação da norma (p.ex. DIN)",
       "field_label": "Denom.norma",
       "possivel_data": false
@@ -337,6 +371,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "LABOR",
+      "domain_name": "LABOR",
       "field_description": "Laboratório/escritório de engenharia",
       "field_label": "Lab./escr.",
       "possivel_data": false
@@ -349,6 +384,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "EKWSL",
+      "domain_name": "EKWSL",
       "field_description": "Chave de valores de Compras",
       "field_label": "ChaveValCompras",
       "possivel_data": false
@@ -361,6 +397,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "BRGEW",
+      "domain_name": "MENG13",
       "field_description": "Peso bruto",
       "field_label": "Peso bruto",
       "possivel_data": false
@@ -373,6 +410,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "NTGEW",
+      "domain_name": "MENG13",
       "field_description": "Peso líquido",
       "field_label": "Peso líquido",
       "possivel_data": false
@@ -385,6 +423,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "GEWEI",
+      "domain_name": "MEINS",
       "field_description": "Unidade de peso",
       "field_label": "Unidade de peso",
       "possivel_data": false
@@ -397,6 +436,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "VOLUM",
+      "domain_name": "MENG13",
       "field_description": "Volume",
       "field_label": "Volume",
       "possivel_data": false
@@ -409,6 +449,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "VOLEH",
+      "domain_name": "MEINS",
       "field_description": "Unidade de volume",
       "field_label": "Unidade volume",
       "possivel_data": false
@@ -421,6 +462,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "BEHVO",
+      "domain_name": "BEHVO",
       "field_description": "Instrução de recipiente",
       "field_label": "Recipiente",
       "possivel_data": false
@@ -433,6 +475,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "RAUBE",
+      "domain_name": "RAUBE",
       "field_description": "Condições de estocagem",
       "field_label": "Conds.estocagem",
       "possivel_data": false
@@ -445,6 +488,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "TEMPB",
+      "domain_name": "TEMPB",
       "field_description": "Código para a condição de temperatura",
       "field_label": "Temperatura",
       "possivel_data": false
@@ -457,6 +501,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "DISST",
+      "domain_name": "DISST",
       "field_description": "Nível de planejamento de necessidades (MRP)",
       "field_label": "Nível MRP",
       "possivel_data": false
@@ -469,6 +514,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "TRAGR",
+      "domain_name": "TRAGR",
       "field_description": "Grupo de transporte",
       "field_label": "Grp.transporte",
       "possivel_data": false
@@ -481,6 +527,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "STOFF",
+      "domain_name": "STOFF",
       "field_description": "Nº substância perigosa",
       "field_label": "Nº substância",
       "possivel_data": false
@@ -493,6 +540,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "SPART",
+      "domain_name": "SPART",
       "field_description": "Setor de atividade",
       "field_label": "Setor atividade",
       "possivel_data": false
@@ -505,6 +553,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "WETTB",
+      "domain_name": "KUNNR",
       "field_description": "Concorrente",
       "field_label": "Concorrente",
       "possivel_data": false
@@ -517,6 +566,7 @@
       "length": 13,
       "decimals": 0,
       "data_element": "EANNR",
+      "domain_name": "CHAR13",
       "field_description": "Nº europeu do artigo - obsoleti!!!!!",
       "field_label": "Nº EAN",
       "possivel_data": false
@@ -529,6 +579,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "WESCH",
+      "domain_name": "MENG13",
       "field_description": "Qtd.: determinação do número notas acompanhamento a imprimir",
       "field_label": "Qtd.notas EM",
       "possivel_data": false
@@ -541,6 +592,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "BWVOR",
+      "domain_name": "BWVOR",
       "field_description": "Norma de suprimento",
       "field_label": "Norma suprim.",
       "possivel_data": false
@@ -553,6 +605,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "BWSCL",
+      "domain_name": "BQSCL",
       "field_description": "Fonte de suprimento",
       "field_label": "Fonte supr.",
       "possivel_data": false
@@ -565,6 +618,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "SAISO",
+      "domain_name": "SAISO",
       "field_description": "Ctg.sazonal",
       "field_label": "Época",
       "possivel_data": false
@@ -577,6 +631,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "ETIAR",
+      "domain_name": "ETIAR",
       "field_description": "Tipo de etiquetagem",
       "field_label": "Tipo etiquetag.",
       "possivel_data": false
@@ -589,6 +644,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "ETIFO",
+      "domain_name": "ETIFO",
       "field_description": "Forma da etiqueta",
       "field_label": "Forma etiqueta",
       "possivel_data": false
@@ -601,6 +657,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "DUMMYENTAR",
+      "domain_name": "CHAR1",
       "field_description": "Desativado",
       "field_label": "Campo desativ.",
       "possivel_data": false
@@ -613,6 +670,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "EAN11",
+      "domain_name": "EAN11",
       "field_description": "Nº europeu do artigo (EAN)",
       "field_label": "Código EAN/UPC",
       "possivel_data": false
@@ -625,6 +683,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "NUMTP",
+      "domain_name": "NUMTP",
       "field_description": "Ctg.de número do nº europeu do artigo",
       "field_label": "Ctg.EAN",
       "possivel_data": false
@@ -637,6 +696,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "LAENG",
+      "domain_name": "MENG13",
       "field_description": "Comprimento",
       "field_label": "Comprimento",
       "possivel_data": false
@@ -649,6 +709,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "BREIT",
+      "domain_name": "MENG13",
       "field_description": "Largura",
       "field_label": "Largura",
       "possivel_data": false
@@ -661,6 +722,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "HOEHE",
+      "domain_name": "MENG13",
       "field_description": "Altura",
       "field_label": "Altura",
       "possivel_data": false
@@ -673,6 +735,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "MEABM",
+      "domain_name": "MEINS",
       "field_description": "Unidade para comprimento/largura/altura",
       "field_label": "Unidade",
       "possivel_data": false
@@ -685,6 +748,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "PRODH_D",
+      "domain_name": "PRODH",
       "field_description": "Hierarquia de produtos",
       "field_label": "Hierar.produtos",
       "possivel_data": false
@@ -697,6 +761,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CK_AEKLK",
+      "domain_name": "XFELD",
       "field_description": "Transferência - cálculo de custos net-change",
       "field_label": "CálC.net-change",
       "possivel_data": false
@@ -709,6 +774,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CADKZ",
+      "domain_name": "XFELD",
       "field_description": "Código CAD",
       "field_label": "Código CAD",
       "possivel_data": false
@@ -721,6 +787,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "QMPUR",
+      "domain_name": "XFELD",
       "field_description": "QM no suprimento está ativo",
       "field_label": "Suprimento QM",
       "possivel_data": false
@@ -733,6 +800,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "ERGEW",
+      "domain_name": "MENG13",
       "field_description": "Peso admissível da embalagem",
       "field_label": "Peso adm.emb.",
       "possivel_data": false
@@ -745,6 +813,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "ERGEI",
+      "domain_name": "MEINS",
       "field_description": "Unidade de peso (peso admissível de embalagem)",
       "field_label": "Unidade de peso",
       "possivel_data": false
@@ -757,6 +826,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "ERVOL",
+      "domain_name": "MENG13",
       "field_description": "Volume de embalagem admissível",
       "field_label": "Volume admiss.",
       "possivel_data": false
@@ -769,6 +839,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "ERVOE",
+      "domain_name": "MEINS",
       "field_description": "Unidade de volume (volume admissível de embalagem)",
       "field_label": "Unid.de volume",
       "possivel_data": false
@@ -781,6 +852,7 @@
       "length": 3,
       "decimals": 1,
       "data_element": "GEWTO",
+      "domain_name": "PRZ21",
       "field_description": "Tolerância excesso de peso da unidade comercial",
       "field_label": "Toler.excesso-peso",
       "possivel_data": false
@@ -793,6 +865,7 @@
       "length": 3,
       "decimals": 1,
       "data_element": "VOLTO",
+      "domain_name": "PRZ21",
       "field_description": "Tolerância excesso de volume da unidade comercial",
       "field_label": "Tol.excesso volume",
       "possivel_data": false
@@ -805,6 +878,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "VABME",
+      "domain_name": "VABME",
       "field_description": "UM pedido variável ativa",
       "field_label": "UMP variável",
       "possivel_data": false
@@ -817,6 +891,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZREV",
+      "domain_name": "XFELD",
       "field_description": "Código: foi atribuído um nível de revisão ao material",
       "field_label": "Nível revisão",
       "possivel_data": false
@@ -829,6 +904,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZKFG",
+      "domain_name": "XFELD",
       "field_description": "Material configurável",
       "field_label": "Configurável",
       "possivel_data": false
@@ -841,6 +917,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "XCHPF",
+      "domain_name": "XFELD",
       "field_description": "Código para administração em lote obrigatória",
       "field_label": "AdminLoteObrig.",
       "possivel_data": false
@@ -853,6 +930,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "VHIART",
+      "domain_name": "TRATY",
       "field_description": "Tipo de material de embalagem",
       "field_label": "Tp.mater.embal.",
       "possivel_data": false
@@ -865,6 +943,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "FUELG",
+      "domain_name": "DEC3",
       "field_description": "Nível de preenchimento (por volume)",
       "field_label": "Nív.preenchim.",
       "possivel_data": false
@@ -877,6 +956,7 @@
       "length": 5,
       "decimals": 0,
       "data_element": "STFAK",
+      "domain_name": "INT2",
       "field_description": "Fator de empilhamento",
       "field_label": "Fator empilh.",
       "possivel_data": false
@@ -889,6 +969,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "MAGRV",
+      "domain_name": "MAGRV",
       "field_description": "Grupo de materiais material de embalagem",
       "field_label": "Grp.mats. ME",
       "possivel_data": false
@@ -901,6 +982,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "BEGRU",
+      "domain_name": "BEGRU",
       "field_description": "Grupo de autorizações",
       "field_label": "Grp.autorizs.",
       "possivel_data": false
@@ -913,6 +995,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "DATAB",
+      "domain_name": "DATUM",
       "field_description": "Data de início da validade",
       "field_label": "Válido desde",
       "possivel_data": false
@@ -925,6 +1008,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "LIQDT",
+      "domain_name": "DATUM",
       "field_description": "Data da liquidação",
       "field_label": "Válido até",
       "possivel_data": false
@@ -937,6 +1021,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "SAISJ",
+      "domain_name": "CJAHR",
       "field_description": "Exercício sazonal",
       "field_label": "Exerc.saz.",
       "possivel_data": false
@@ -949,6 +1034,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "PLGTP",
+      "domain_name": "PLGTP",
       "field_description": "Tipo de faixa de preço",
       "field_label": "Tip.faixa preço",
       "possivel_data": false
@@ -961,6 +1047,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "W_MITLEERG",
+      "domain_name": "FLAG",
       "field_description": "Código: lista técnica de vasilhames",
       "field_label": "C/LT vasilhames",
       "possivel_data": false
@@ -973,6 +1060,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "EXTWG",
+      "domain_name": "EXTWG",
       "field_description": "Grupo de mercadorias externo",
       "field_label": "Grupo merc.ext.",
       "possivel_data": false
@@ -985,6 +1073,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "SATNR",
+      "domain_name": "MATNR",
       "field_description": "Material configurável geral",
       "field_label": "Mat.confg.geral",
       "possivel_data": false
@@ -997,6 +1086,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "ATTYP",
+      "domain_name": "ATTYP",
       "field_description": "Ctg.material",
       "field_label": "Ctg.material",
       "possivel_data": false
@@ -1009,6 +1099,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZKUPMAT",
+      "domain_name": "FLAG",
       "field_description": "Código: o material pode ser um co-produto",
       "field_label": "Co-produto",
       "possivel_data": false
@@ -1021,6 +1112,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZNFM",
+      "domain_name": "XFELD",
       "field_description": "Código: o material tem um material subsequente",
       "field_label": "Mat.subseq.",
       "possivel_data": false
@@ -1033,6 +1125,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "PMATN",
+      "domain_name": "MATNR",
       "field_description": "Mat.ref.p/prç.",
       "field_label": "Mat.ref.p/prç.",
       "possivel_data": false
@@ -1045,6 +1138,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "MSTAE",
+      "domain_name": "MMSTA",
       "field_description": "Status material p/todos os centros",
       "field_label": "St.mat.tod.cen.",
       "possivel_data": false
@@ -1057,6 +1151,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "MSTAV",
+      "domain_name": "VMSTA",
       "field_description": "Status de material para todos os canais de vendas",
       "field_label": "St.p/tod.can.v.",
       "possivel_data": false
@@ -1069,6 +1164,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "MSTDE",
+      "domain_name": "DATUM",
       "field_description": "Data a partir da qual stat.mat.p/todos os centros é válido",
       "field_label": "Válido desde",
       "possivel_data": false
@@ -1081,6 +1177,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "MSTDV",
+      "domain_name": "DATUM",
       "field_description": "Data a partir da qual o status mat.p/todos can.dist.é válido",
       "field_label": "Válido desde",
       "possivel_data": false
@@ -1093,6 +1190,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "TAKLV",
+      "domain_name": "TAXKM",
       "field_description": "Classificação fiscal do material",
       "field_label": "Classif.fiscal",
       "possivel_data": false
@@ -1105,6 +1203,7 @@
       "length": 9,
       "decimals": 0,
       "data_element": "RBNR",
+      "domain_name": "RBNR",
       "field_description": "Perfil do catálogo",
       "field_label": "Perf.catálogo",
       "possivel_data": false
@@ -1117,6 +1216,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "MHDRZ",
+      "domain_name": "DEC4",
       "field_description": "Tempo de validade restante",
       "field_label": "TmpValdRest.",
       "possivel_data": false
@@ -1129,6 +1229,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "MHDHB",
+      "domain_name": "DEC4",
       "field_description": "Prazo de validade",
       "field_label": "Prazo validade",
       "possivel_data": false
@@ -1141,6 +1242,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "MHDLP",
+      "domain_name": "DEC3",
       "field_description": "Percentagem para armazenagem",
       "field_label": "% para armazen.",
       "possivel_data": false
@@ -1153,6 +1255,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "INHME",
+      "domain_name": "MEINS",
       "field_description": "Unidade de medida conteúdo",
       "field_label": "UM conteúdo",
       "possivel_data": false
@@ -1165,6 +1268,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "INHAL",
+      "domain_name": "MENG13",
       "field_description": "Conteúdo líquido",
       "field_label": "Conteúdo líq.",
       "possivel_data": false
@@ -1177,6 +1281,7 @@
       "length": 5,
       "decimals": 0,
       "data_element": "VPREH",
+      "domain_name": "PACK3",
       "field_description": "Preço de comparação",
       "field_label": "Preço comparaç.",
       "possivel_data": false
@@ -1189,6 +1294,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "ETIAG",
+      "domain_name": "ETIAG",
       "field_description": "SAM etiquetagem: grupo de materiais (não ativo em 4.0)",
       "field_label": "Grupo mat.etiq.",
       "possivel_data": false
@@ -1201,6 +1307,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "INHBR",
+      "domain_name": "MENG13",
       "field_description": "Conteúdo bruto",
       "field_label": "Conteúdo bruto",
       "possivel_data": false
@@ -1213,6 +1320,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "OIB_CMETH",
+      "domain_name": "OIB_CMETH",
       "field_description": "Método conversão quantidades",
       "field_label": "Mét.conversão",
       "possivel_data": false
@@ -1225,6 +1333,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "CUOBM",
+      "domain_name": "CUOBJ",
       "field_description": "Nº interno do objeto",
       "field_label": "Nº int.objeto",
       "possivel_data": false
@@ -1237,6 +1346,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZUMW",
+      "domain_name": "XFELD",
       "field_description": "Código: relevância para o meio ambiente",
       "field_label": "RelevMeioAmb.",
       "possivel_data": false
@@ -1249,6 +1359,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "KOSCH",
+      "domain_name": "KOSCH",
       "field_description": "Alocação de produtos: esquema de alocação de produtos",
       "field_label": "Contingente",
       "possivel_data": false
@@ -1261,6 +1372,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "SPROF",
+      "domain_name": "SPROF",
       "field_description": "Perfil de cálculo para variantes",
       "field_label": "Perfil cálculo",
       "possivel_data": false
@@ -1273,6 +1385,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "NRFHG",
+      "domain_name": "NRFHG",
       "field_description": "Material com direito a bonificação em espécie",
       "field_label": "C/dir.bon.merc.",
       "possivel_data": false
@@ -1285,6 +1398,7 @@
       "length": 40,
       "decimals": 0,
       "data_element": "MFRPN",
+      "domain_name": "CHAR40",
       "field_description": "Nº peça de fabricante",
       "field_label": "Nº peça fabric.",
       "possivel_data": false
@@ -1297,6 +1411,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "MFRNR",
+      "domain_name": "LIFNR",
       "field_description": "Nº de um fabricante",
       "field_label": "Fabricante",
       "possivel_data": false
@@ -1309,6 +1424,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "MPMAT",
+      "domain_name": "MATNR",
       "field_description": "Nº do material interno (da firma) com admin.estoques",
       "field_label": "Mat.com adm.estq.",
       "possivel_data": false
@@ -1321,6 +1437,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "MPROF",
+      "domain_name": "MPROF",
       "field_description": "Perfil de peças de fabricante",
       "field_label": "Perfil peça fabr.",
       "possivel_data": false
@@ -1333,6 +1450,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZWSO",
+      "domain_name": "KZWSO",
       "field_description": "Utilização/categorias de unidades de medida",
       "field_label": "Utilização UM",
       "possivel_data": false
@@ -1345,6 +1463,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "SAITY",
+      "domain_name": "SAITY",
       "field_description": "Coleção em uma época",
       "field_label": "Coleção",
       "possivel_data": false
@@ -1357,6 +1476,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "ADGE_PROFL",
+      "domain_name": "ADGD_PROFL",
       "field_description": "Perfil para código de mercadoria perigosa",
       "field_label": "Perfil cód.MP",
       "possivel_data": false
@@ -1369,6 +1489,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "ADGE_IHIVI",
+      "domain_name": "X",
       "field_description": "Código: de alta viscosidade",
       "field_label": "Alta viscosid.",
       "possivel_data": false
@@ -1381,6 +1502,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "ADGE_ILOOS",
+      "domain_name": "X",
       "field_description": "Código: a granel / líquido",
       "field_label": "A granel/líq.",
       "possivel_data": false
@@ -1393,6 +1515,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "SERLV",
+      "domain_name": "SERLV",
       "field_description": "Nível de univocidade para nº série",
       "field_label": "Nív.serializ.",
       "possivel_data": false
@@ -1405,6 +1528,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "KZGVH",
+      "domain_name": "XFELD",
       "field_description": "O material de embalagem é uma embalagem fechada",
       "field_label": "fechado",
       "possivel_data": false
@@ -1417,6 +1541,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "XGCHP",
+      "domain_name": "XFELD",
       "field_description": "Código: é necessário protocolo de lotes autorizado",
       "field_label": "ProtBatch neces",
       "possivel_data": false
@@ -1429,6 +1554,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CC_MTEFF",
+      "domain_name": "XFELD",
       "field_description": "Avaliar parâmetros de validade / substituir nºs modificação",
       "field_label": "Aval.validade",
       "possivel_data": false
@@ -1441,6 +1567,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "CSCP_COMP_LVL",
+      "domain_name": "CSCP_COMP_LVL",
       "field_description": "Nível de conclusão de material",
       "field_label": "Nível conclusão",
       "possivel_data": false
@@ -1453,6 +1580,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "DATTP",
+      "domain_name": "DATTP",
       "field_description": "Código de período para DV",
       "field_label": "Código período",
       "possivel_data": false
@@ -1465,6 +1593,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "RDMHD",
+      "domain_name": "RDMHD",
       "field_description": "Regra de arredondamento para cálculo DV",
       "field_label": "Rgr.arredmto.",
       "possivel_data": false
@@ -1477,6 +1606,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "PRZUS",
+      "domain_name": "XFELD",
       "field_description": "Código: composição do produto impressa na embalagem",
       "field_label": "Compos.produto",
       "possivel_data": false
@@ -1489,6 +1619,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "MTPOS_MARA",
+      "domain_name": "MTPOS",
       "field_description": "Grupo de categorias de item geral",
       "field_label": "Gr.ctg.itm.ger.",
       "possivel_data": false
@@ -1501,6 +1632,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "BFLME",
+      "domain_name": "BFLME",
       "field_description": "Material genérico com variantes logísticas",
       "field_label": "Variantes log.",
       "possivel_data": false
@@ -1513,6 +1645,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "MATFI",
+      "domain_name": "XFELD",
       "field_description": "Material foi fixado",
       "field_label": "Fixado",
       "possivel_data": false
@@ -1525,6 +1658,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "DE_CM_RELEVANCE_FLAG",
+      "domain_name": "DO_CM_RELEVANCE_FLAG",
       "field_description": "Relevante para administração de configuração",
       "field_label": "Relevânc.CM",
       "possivel_data": false
@@ -1537,6 +1671,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "BBTYP",
+      "domain_name": "BBTYP",
       "field_description": "Tipo de lista de sortimento",
       "field_label": "Tip.lista sort.",
       "possivel_data": false
@@ -1549,6 +1684,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "SLED_BBD",
+      "domain_name": "SLED_BBD",
       "field_description": "Data de vencimento / data de expiração",
       "field_label": "DtV/DtExpiração",
       "possivel_data": false
@@ -1561,6 +1697,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "GTIN_VARIANT",
+      "domain_name": "GTIN_VARIANT",
       "field_description": "Variante para Global Trade Item Number",
       "field_label": "Variante EAN",
       "possivel_data": false
@@ -1573,6 +1710,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "WSTR_SATNR_PP",
+      "domain_name": "MATNR",
       "field_description": "Nº do material genérico em materiais pré-embalados",
       "field_label": "Mat.genérico",
       "possivel_data": false
@@ -1585,6 +1723,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "PL_RMATP",
+      "domain_name": "MATNR",
       "field_description": "Material ref.p/materiais a serem embalados da mesma maneira",
       "field_label": "Mat.ref.p/norma emb.",
       "possivel_data": false
@@ -1597,6 +1736,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "GDS_RELEVANT",
+      "domain_name": "XFELD",
       "field_description": "Código: relavante p/sincronização de dados globais",
       "field_label": "Relevante p/GDS",
       "possivel_data": false
@@ -1609,6 +1749,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "WEORA",
+      "domain_name": "XFELD",
       "field_description": "Retirada junto ao fornecedor",
       "field_label": "Retirada forn.",
       "possivel_data": false
@@ -1621,6 +1762,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "CIFHUTYPDF",
+      "domain_name": "CHAR4",
       "field_description": "Tipo de unidade comercial standard",
       "field_label": "Tp.UC standard",
       "possivel_data": false
@@ -1633,6 +1775,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CIFPILFRBL",
+      "domain_name": "XFELD",
       "field_description": "Com risco de roubo",
       "field_label": "C/risco roubo",
       "possivel_data": false
@@ -1645,6 +1788,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "CIFWHSTC",
+      "domain_name": "CHAR2",
       "field_description": "Condição de armazenamento",
       "field_label": "CondArmaz.",
       "possivel_data": false
@@ -1657,6 +1801,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "CIFWHMATGR",
+      "domain_name": "CHAR4",
       "field_description": "Grupo de materiais estocáveis",
       "field_label": "GrpMatEstocável",
       "possivel_data": false
@@ -1669,6 +1814,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "CIFHDLCODE",
+      "domain_name": "CHAR4",
       "field_description": "Código de manuseio",
       "field_label": "Cód.manuseio",
       "possivel_data": false
@@ -1681,6 +1827,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CIFHAZMAT",
+      "domain_name": "XFELD",
       "field_description": "Relevante para substância perigosa",
       "field_label": "Subst.perigosa",
       "possivel_data": false
@@ -1693,6 +1840,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "CIFHUTYP",
+      "domain_name": "CHAR4",
       "field_description": "Tipo de unidade comercial",
       "field_label": "Tp.UC",
       "possivel_data": false
@@ -1705,6 +1853,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CIFTAREVAR",
+      "domain_name": "XFELD",
       "field_description": "Massa líquida variável",
       "field_label": "ML variável",
       "possivel_data": false
@@ -1717,6 +1866,7 @@
       "length": 15,
       "decimals": 3,
       "data_element": "CIFMAXC",
+      "domain_name": "DECV15_3",
       "field_description": "Capacidade máxima permitida do material de embalagem",
       "field_label": "Capac.máxima",
       "possivel_data": false
@@ -1729,6 +1879,7 @@
       "length": 3,
       "decimals": 1,
       "data_element": "CIFMAXCTOL",
+      "domain_name": "DEC2_1",
       "field_description": "Tolerância de capacidade máxima da unidade comercial",
       "field_label": "Toler.CapacMáx.",
       "possivel_data": false
@@ -1741,6 +1892,7 @@
       "length": 15,
       "decimals": 3,
       "data_element": "CIFMAXL",
+      "domain_name": "CIFQUAN15",
       "field_description": "Comprimento máximo da embalagem de um material da embalagem",
       "field_label": "Compr.máx.",
       "possivel_data": false
@@ -1753,6 +1905,7 @@
       "length": 15,
       "decimals": 3,
       "data_element": "CIFMAXB",
+      "domain_name": "CIFQUAN15",
       "field_description": "Largura máxima da embalagem de um material de embalagem",
       "field_label": "Larg.máx.embal.",
       "possivel_data": false
@@ -1765,6 +1918,7 @@
       "length": 15,
       "decimals": 3,
       "data_element": "CIFMAXH",
+      "domain_name": "CIFQUAN15",
       "field_description": "Altura máx.da embalagem de um material de embalagem",
       "field_label": "Altura máxima",
       "possivel_data": false
@@ -1777,6 +1931,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "CIFMAXDUOM",
+      "domain_name": "MEINS",
       "field_description": "Unid.medida p/altura/largura/comprimento máx.da embalagem",
       "field_label": "Unidade medida",
       "possivel_data": false
@@ -1789,6 +1944,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "HERKL",
+      "domain_name": "LAND1",
       "field_description": "País de origem do material (origem CCI)",
       "field_label": "País de origem",
       "possivel_data": false
@@ -1801,6 +1957,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "MFRGR",
+      "domain_name": "MFRGR",
       "field_description": "Grupo de frete de material",
       "field_label": "Grp.frete mat.",
       "possivel_data": false
@@ -1813,6 +1970,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "CIFQQTIME",
+      "domain_name": "",
       "field_description": "Quarentena",
       "field_label": "Quarentena",
       "possivel_data": false
@@ -1825,6 +1983,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "CIFQQTIMEUOM",
+      "domain_name": "MEINS",
       "field_description": "Unidade de tempo para quarentena",
       "field_label": "Unidade tempo",
       "possivel_data": false
@@ -1837,6 +1996,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "CIFQGRP",
+      "domain_name": "CIFQGRP",
       "field_description": "Grupo de controle de qualidade",
       "field_label": "Grp.ctrl.qual.",
       "possivel_data": false
@@ -1849,6 +2009,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "CIFSERIAL",
+      "domain_name": "CIFSERIAL",
       "field_description": "Perfil nºs de série",
       "field_label": "Perf.nºs série",
       "possivel_data": false
@@ -1861,6 +2022,7 @@
       "length": 30,
       "decimals": 0,
       "data_element": "CIFPSSFNAME",
+      "domain_name": "TDSFNAME",
       "field_description": "Nome do formulário",
       "field_label": "Nome formulário",
       "possivel_data": false
@@ -1873,6 +2035,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "CIFLOGUNIT",
+      "domain_name": "MEINS",
       "field_description": "EWM-CW: unidade de medida logística",
       "field_label": "UM logística",
       "possivel_data": false
@@ -1885,6 +2048,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "CIFCWQREL",
+      "domain_name": "XFELD",
       "field_description": "EWM-CW: o material é um material Catch Weight",
       "field_label": "Relevante p/CW",
       "possivel_data": false
@@ -1897,6 +2061,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "CIFCWQPROC",
+      "domain_name": "CIFCWQPROC",
       "field_description": "EWM-CW: perfil Catch Weight p/entrada da quantidade CW",
       "field_label": "Perfil CW",
       "possivel_data": false
@@ -1909,6 +2074,7 @@
       "length": 9,
       "decimals": 0,
       "data_element": "CIFCWQTOLGR",
+      "domain_name": "CIFCWQTOLGR",
       "field_description": "EWM-CW: grupo de tolerância Catch Weight p/EWM",
       "field_label": "Grp.tolerância CW",
       "possivel_data": false
@@ -1921,6 +2087,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "CIFADPROF",
+      "domain_name": "CIFADPROF",
       "field_description": "Perfil de ajuste",
       "field_label": "Perfil ajuste",
       "possivel_data": false
@@ -1933,6 +2100,7 @@
       "length": 40,
       "decimals": 0,
       "data_element": "CRM_PRODUCT_ID_IP",
+      "domain_name": "CRM_PRODUCT_ID",
       "field_description": "ID de uma propriedade intelectual (produto CRM)",
       "field_label": "Propr.intelect.",
       "possivel_data": false
@@ -1945,6 +2113,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "WPM_ALLOW_PMAT_IGNO_MAT",
+      "domain_name": "XFELD",
       "field_description": "Preço de variantes permitido (referente ao mestre artigos)",
       "field_label": "Prç.variantes perm.",
       "possivel_data": false
@@ -1957,6 +2126,7 @@
       "length": 6,
       "decimals": 0,
       "data_element": "MEDIU",
+      "domain_name": "MEDIU",
       "field_description": "Meio",
       "field_label": "Meio",
       "possivel_data": false
@@ -1969,6 +2139,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "TBA_STOEFFCHEN",
+      "domain_name": "TBA_STOEFFCHEN",
       "field_description": "Commodity física",
       "field_label": "Commodity fís.",
       "possivel_data": false
@@ -1981,6 +2152,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "WRF_ANIMAL_ORIGIN_FLAG",
+      "domain_name": "WRF_ANIMAL_ORIGIN_FLAG",
       "field_description": "Código: contém partes não têxteis de origem animal",
       "field_label": "Origem animal",
       "possivel_data": false
@@ -1993,6 +2165,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "WRF_TEXTL_COMP_IND",
+      "domain_name": "WRF_TEXTL_COMP_IND",
       "field_description": "Código: nova função de composição têxtil",
       "field_label": "Compon.têx.atv.",
       "possivel_data": false
@@ -2005,6 +2178,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "SGT_CSGR",
+      "domain_name": "SGT_CSGR",
       "field_description": "Estrutura de segmentação",
       "field_label": "Estrutura segm.",
       "possivel_data": false
@@ -2017,6 +2191,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "SGT_COVSA",
+      "domain_name": "SGT_COVS",
       "field_description": "Estratégia de segmentação",
       "field_label": "Estrat.segm.",
       "possivel_data": false
@@ -2029,6 +2204,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "SGT_STATD",
+      "domain_name": "SGT_STAT",
       "field_description": "Status de segmentação mestre de materiais",
       "field_label": "Status segm.",
       "possivel_data": false
@@ -2041,6 +2217,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "SGT_SCOPE",
+      "domain_name": "SGT_SCOPE",
       "field_description": "Escopo da estratégia de segmentação",
       "field_label": "Escopo segm.",
       "possivel_data": false
@@ -2053,6 +2230,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "SGT_REL",
+      "domain_name": "CHAR1",
       "field_description": "Relev.p/segmentação",
       "field_label": "Relev.segm.",
       "possivel_data": false
@@ -2065,6 +2243,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "FSH_MG_ATTRIBUTE1",
+      "domain_name": "FSH_MG_ATTRIBUTE1",
       "field_description": "Campo de informação Fashion: 1",
       "field_label": "Atributo Fsh.1",
       "possivel_data": false
@@ -2077,6 +2256,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "FSH_MG_ATTRIBUTE2",
+      "domain_name": "FSH_MG_ATTRIBUTE2",
       "field_description": "Campo de informação Fashion: 2",
       "field_label": "Atributo Fsh.2",
       "possivel_data": false
@@ -2089,6 +2269,7 @@
       "length": 6,
       "decimals": 0,
       "data_element": "FSH_MG_ATTRIBUTE3",
+      "domain_name": "FSH_MG_ATTRIBUTE3",
       "field_description": "Campo de informação Fashion: 3",
       "field_label": "Atributo Fsh.3",
       "possivel_data": false
@@ -2101,6 +2282,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "FSH_SEALV",
+      "domain_name": "FSH_SEALV",
       "field_description": "Código: utilização de época",
       "field_label": "Utiliz.época",
       "possivel_data": false
@@ -2113,6 +2295,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "FSH_SEAIM",
+      "domain_name": "XFELD",
       "field_description": "Código: época ativa na aministração estoques",
       "field_label": "Época ativa na AE",
       "possivel_data": false
@@ -2125,6 +2308,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "FSH_SC_MID",
+      "domain_name": "FSH_SC_CID",
       "field_description": "ID de conversão de material p/conversão valor característica",
       "field_label": "ID conv.mat.",
       "possivel_data": false
@@ -2137,6 +2321,7 @@
       "length": 9,
       "decimals": 0,
       "data_element": "J_1BANP",
+      "domain_name": "J_1BANP",
       "field_description": "Código ANP",
       "field_label": "Código ANP",
       "possivel_data": false
@@ -2149,6 +2334,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "WRF_PSM_CODE",
+      "domain_name": "WRF_PSM_CODE",
       "field_description": "Código para administração de espécies protegidas",
       "field_label": "Código PSM",
       "possivel_data": false
@@ -2161,6 +2347,7 @@
       "length": 8,
       "decimals": 0,
       "data_element": "/BEV1/LULEINH",
+      "domain_name": "/BEV1/LULEINH",
       "field_description": "Unidades de carga",
       "field_label": "UnidadesCarga",
       "possivel_data": false
@@ -2173,6 +2360,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "/BEV1/LULDEGRP",
+      "domain_name": "/BEV1/LULDEGRP",
       "field_description": "Grupo de unidades de carga IS-Beverage",
       "field_label": "Grp.unidades carga",
       "possivel_data": false
@@ -2185,6 +2373,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/BEV1/NESTRUC_CAT",
+      "domain_name": "/BEV1/NESTRUC_CAT",
       "field_description": "Categoria de estrutura para relação de material",
       "field_label": "Ctg.estrutura",
       "possivel_data": false
@@ -2197,6 +2386,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "/DSD/SL_TOLTYP_ID",
+      "domain_name": "/DSD/SL_TOLTYP_ID",
       "field_description": "ID tipo de tolerância",
       "field_label": "Tp.toler.",
       "possivel_data": false
@@ -2209,6 +2399,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "/DSD/SV_COUNT_GROUP",
+      "domain_name": "/DSD/SV_COUNT_GROUP",
       "field_description": "Grupo de contagem",
       "field_label": "Grupo contagem",
       "possivel_data": false
@@ -2221,6 +2412,7 @@
       "length": 6,
       "decimals": 0,
       "data_element": "/DSD/VC_GROUP",
+      "domain_name": "/DSD/VC_GROUP",
       "field_description": "Agrupamento DSD",
       "field_label": "Agrupamento DSD",
       "possivel_data": false
@@ -2233,6 +2425,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/VSO/M_TILT_IND",
+      "domain_name": "/VSO/M_XFIELD",
       "field_description": "Material pode ser colocado em posição deitada (OAC)",
       "field_label": "Permit.deitar",
       "possivel_data": false
@@ -2245,6 +2438,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/VSO/M_STACK_IND",
+      "domain_name": "/VSO/M_XFIELD",
       "field_description": "Empilhamento não permitido (otimização área carregamento)",
       "field_label": "Não empilhar",
       "possivel_data": false
@@ -2257,6 +2451,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/VSO/M_BOTTOM_IND",
+      "domain_name": "/VSO/M_XFIELD",
       "field_description": "Camada inferior (otimização da área de carregamento)",
       "field_label": "Camada inferior",
       "possivel_data": false
@@ -2269,6 +2464,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/VSO/M_TOP_IND",
+      "domain_name": "/VSO/M_XFIELD",
       "field_description": "Camada superior (otimização da área de carregamento)",
       "field_label": "Camada superior",
       "possivel_data": false
@@ -2281,6 +2477,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "/VSO/M_STACK_NO",
+      "domain_name": "/VSO/M_STACK_NO",
       "field_description": "Fator de empilhamento (otimização da área de carregamento)",
       "field_label": "Fator empilh.",
       "possivel_data": false
@@ -2293,6 +2490,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/VSO/M_PALLET_IND",
+      "domain_name": "/VSO/M_XFIELD",
       "field_description": "Carregar sem material de embalagem (otimiz.área carregamto.)",
       "field_label": "Carregar s/ME",
       "possivel_data": false
@@ -2305,6 +2503,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "/VSO/R_PAL_OVR_D",
+      "domain_name": "MENG13",
       "field_description": "Saliên.permit.(profundidade) p/mat.embal.(otim.área carreg.)",
       "field_label": "Saliência prof.",
       "possivel_data": false
@@ -2317,6 +2516,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "/VSO/R_PAL_OVR_W",
+      "domain_name": "MENG13",
       "field_description": "Saliência permit.(largura) p/mat.embal.(otim.área carreg.)",
       "field_label": "Saliênc.largura",
       "possivel_data": false
@@ -2329,6 +2529,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "/VSO/R_PAL_BIN_HGT",
+      "domain_name": "MENG13",
       "field_description": "Altura máx.material de embalagem (otimiz.área carregamento)",
       "field_label": "Alt.máx.embal.",
       "possivel_data": false
@@ -2341,6 +2542,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "/VSO/R_PAL_MIN_HT",
+      "domain_name": "MENG13",
       "field_description": "Altura mínima do material de embalagem (otimiz.área carreg.)",
       "field_label": "Alt.mín.embal.",
       "possivel_data": false
@@ -2353,6 +2555,7 @@
       "length": 13,
       "decimals": 3,
       "data_element": "/VSO/R_TOL_BIN_HT",
+      "domain_name": "MENG13",
       "field_description": "Excesso da altura máxima da embalagem (otimiz.área carreg.)",
       "field_label": "Exc.alt.embal.",
       "possivel_data": false
@@ -2365,6 +2568,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "/VSO/M_ANZ_PER_GVH",
+      "domain_name": "/VSO/M_ANZ_PER_GVH",
       "field_description": "Nº de mats.por mat.embalagem fechado (otimiz.área carreg.)",
       "field_label": "NºMat/MatEmbal.",
       "possivel_data": false
@@ -2377,6 +2581,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "/VSO/R_QUAN_UNIT",
+      "domain_name": "/VSO/R_QUAN_UNIT",
       "field_description": "Unidade de medida da otimização da área de carregamento",
       "field_label": "UM OtimÁrCarr.",
       "possivel_data": false
@@ -2389,6 +2594,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "/VSO/M_KZGVH_IND",
+      "domain_name": "/VSO/M_XFIELD",
       "field_description": "Mat.embalagem fechado necessário (otimização área carreg.)",
       "field_label": "ME fechd.neces.",
       "possivel_data": false
@@ -2401,6 +2607,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "CBUNE_PACODE",
+      "domain_name": "CBUND_PACOD",
       "field_description": "Código de embalagem",
       "field_label": "Cód.embalagem",
       "possivel_data": false
@@ -2413,6 +2620,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "ADGE_DG_PACK_STATUS",
+      "domain_name": "CHAR10",
       "field_description": "Status da embalagem de produtos perigosos",
       "field_label": "StEmbProdPerig",
       "possivel_data": false
@@ -2425,6 +2633,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "DFPS_MCOND",
+      "domain_name": "DFPS_MCOND",
       "field_description": "Administração de status do material",
       "field_label": "Admin.status",
       "possivel_data": false
@@ -2437,6 +2646,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "DFPS_RETDELC",
+      "domain_name": "DFPS_RETDELC",
       "field_description": "Código de reembolso",
       "field_label": "Cód.reembolso",
       "possivel_data": false
@@ -2449,6 +2659,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "DFPS_LOGLEV_RETO",
+      "domain_name": "DFPS_LOGLEV",
       "field_description": "Reembolso até nível logístico",
       "field_label": "Reemb.até nív.log.",
       "possivel_data": false
@@ -2461,6 +2672,7 @@
       "length": 9,
       "decimals": 0,
       "data_element": "DFPS_NSNID",
+      "domain_name": "DFPS_NSNID",
       "field_description": "Nº identificação NATO",
       "field_label": "Nº ID NATO",
       "possivel_data": false
@@ -2473,6 +2685,7 @@
       "length": 1,
       "decimals": 0,
       "data_element": "ADSPC_SPC",
+      "domain_name": "ADSPC_SPC",
       "field_description": "Spare Part Class Code",
       "field_label": "Spare Prt Class Code",
       "possivel_data": false
@@ -2485,6 +2698,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "IMATN",
+      "domain_name": "MATNR",
       "field_description": "Classe FFF",
       "field_label": "Classe FFF",
       "possivel_data": false
@@ -2497,6 +2711,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "PIC_PICNUM_SUS",
+      "domain_name": "PIC_PICNUM",
       "field_description": "Nº de uma cadeia de substituições",
       "field_label": "Nº da cadeia",
       "possivel_data": false
@@ -2509,6 +2724,7 @@
       "length": 2,
       "decimals": 0,
       "data_element": "WRFBSTAT",
+      "domain_name": "WRFBSTAT",
       "field_description": "Status de criação suprimento por época",
       "field_label": "Status criação",
       "possivel_data": false
@@ -2521,6 +2737,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "WRF_COLOR_ATINN",
+      "domain_name": "ATINN",
       "field_description": "Nº interno de característica para cores",
       "field_label": "Caract.interna",
       "possivel_data": false
@@ -2533,6 +2750,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "WRF_SIZE1_ATINN",
+      "domain_name": "ATINN",
       "field_description": "Nº interno em características para tamanhos principais",
       "field_label": "Caract.interna",
       "possivel_data": false
@@ -2545,6 +2763,7 @@
       "length": 10,
       "decimals": 0,
       "data_element": "WRF_SIZE2_ATINN",
+      "domain_name": "ATINN",
       "field_description": "Nº interno em características p/tamanhos secundários",
       "field_label": "Caract.interna",
       "possivel_data": false
@@ -2557,6 +2776,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "WRF_COLOR",
+      "domain_name": "WRF_ATWRT",
       "field_description": "Valor da característica para cores em variantes",
       "field_label": "Cor",
       "possivel_data": false
@@ -2569,6 +2789,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "WRF_SIZE1",
+      "domain_name": "WRF_ATWRT",
       "field_description": "Valor da característica p/tamanho principal em variantes",
       "field_label": "Tamanho princ.",
       "possivel_data": false
@@ -2581,6 +2802,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "WRF_SIZE2",
+      "domain_name": "WRF_ATWRT",
       "field_description": "Valor da característica p/tamanho secundário em variantes",
       "field_label": "Tamanho secund.",
       "possivel_data": false
@@ -2593,6 +2815,7 @@
       "length": 18,
       "decimals": 0,
       "data_element": "WRF_FREE_CHAR",
+      "domain_name": "WRF_ATWRT",
       "field_description": "Valor da característica para fins de análise",
       "field_label": "Valor caract.",
       "possivel_data": false
@@ -2605,6 +2828,7 @@
       "length": 16,
       "decimals": 0,
       "data_element": "WRF_CARE_CODE",
+      "domain_name": "WRF_CARE_CODE",
       "field_description": "Instruções cuidado (p.ex.,instr.lavag.,instr.pass.ferro,...)",
       "field_label": "InstrCuid.",
       "possivel_data": false
@@ -2617,6 +2841,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "WRF_BRAND_ID",
+      "domain_name": "WRF_BRAND_ID",
       "field_description": "Marca",
       "field_label": "Marca",
       "possivel_data": false
@@ -2629,6 +2854,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_CODE_1",
+      "domain_name": "WRF_FIBER_CODE",
       "field_description": "Código de fibras para tecidos (componente 1)",
       "field_label": "Componente1",
       "possivel_data": false
@@ -2641,6 +2867,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_PART_1",
+      "domain_name": "WRF_FIBER_PART",
       "field_description": "Porcentagem de fibra (componente 1)",
       "field_label": "Porcentagem 1",
       "possivel_data": false
@@ -2653,6 +2880,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_CODE_2",
+      "domain_name": "WRF_FIBER_CODE",
       "field_description": "Código de fibras para têxteis (componente 2)",
       "field_label": "Componente2",
       "possivel_data": false
@@ -2665,6 +2893,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_PART_2",
+      "domain_name": "WRF_FIBER_PART",
       "field_description": "Porcentagem de fibra (componente 2)",
       "field_label": "Porcentagem 2",
       "possivel_data": false
@@ -2677,6 +2906,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_CODE_3",
+      "domain_name": "WRF_FIBER_CODE",
       "field_description": "Código de fibras para têxteis (componente 3)",
       "field_label": "Componente3",
       "possivel_data": false
@@ -2689,6 +2919,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_PART_3",
+      "domain_name": "WRF_FIBER_PART",
       "field_description": "Porcentagem de fibra (componente 3)",
       "field_label": "Porcentagem 3",
       "possivel_data": false
@@ -2701,6 +2932,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_CODE_4",
+      "domain_name": "WRF_FIBER_CODE",
       "field_description": "Código de fibras para têxteis (componente 4)",
       "field_label": "Componente4",
       "possivel_data": false
@@ -2713,6 +2945,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_PART_4",
+      "domain_name": "WRF_FIBER_PART",
       "field_description": "Porcentagem de fibra (componente 4)",
       "field_label": "Porcentagem 4",
       "possivel_data": false
@@ -2725,6 +2958,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_CODE_5",
+      "domain_name": "WRF_FIBER_CODE",
       "field_description": "Código de fibras para têxteis (componente 5)",
       "field_label": "Componente5",
       "possivel_data": false
@@ -2737,6 +2971,7 @@
       "length": 3,
       "decimals": 0,
       "data_element": "WRF_FIBER_PART_5",
+      "domain_name": "WRF_FIBER_PART",
       "field_description": "Porcentagem de fibra (componente 5)",
       "field_label": "Porcentagem 5",
       "possivel_data": false
@@ -2749,6 +2984,7 @@
       "length": 4,
       "decimals": 0,
       "data_element": "FASHGRD",
+      "domain_name": "FASHGRD",
       "field_description": "Ciclo de vida do produto da moda",
       "field_label": "CVPrModa",
       "possivel_data": false

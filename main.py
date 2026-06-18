@@ -34,7 +34,9 @@ def run_pipeline(table_name: str) -> None:
 
     ddic_schema = os.environ["DDIC_SCHEMA"]
     language = os.getenv("DDIC_LANGUAGE", "P")
-    dbt_source = os.getenv("DBT_SOURCE_NAME", "sap")
+    dbt_source = os.getenv("DBT_SOURCE_NAME", "dataspherev2")
+    dbt_database = os.getenv("DBT_DATABASE", "BRONZE")
+    dbt_schema = os.getenv("DBT_SCHEMA", "dataspherev2")
 
     connector = _build_connector()
     raw_extractor = DatasphereExtractor(connector=connector)
@@ -56,6 +58,8 @@ def run_pipeline(table_name: str) -> None:
     generator = DbtGenerator(
         output_dir="output/dbt/models/staging",
         source_name=dbt_source,
+        database=dbt_database,
+        schema=dbt_schema,
     )
     generator.generate(pipeline_contract)
 

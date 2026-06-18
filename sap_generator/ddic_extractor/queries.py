@@ -3,11 +3,11 @@
 # Table-level metadata: joins DD02L (table header), DD02T (description), DD09L (technical settings).
 _TABLE_META = """
 SELECT
-    t.TABNAME               AS sap_table_name,
-    COALESCE(tx.DDTEXT, '') AS table_description,
-    t.TABCLASS              AS table_class,
-    COALESCE(ts.TABART, '') AS data_class,
-    0                          AS size_category
+    t.TABNAME                  AS sap_table_name,
+    COALESCE(tx.DDTEXT, '')    AS table_description,
+    t.TABCLASS                 AS table_class,
+    COALESCE(ts.TABART, '')    AS data_class,
+    COALESCE(ts.TABKAT, '0')   AS size_category
 FROM {ddic_schema}.DD02L t
 LEFT JOIN {ddic_schema}.DD02T tx
     ON  t.TABNAME     = tx.TABNAME

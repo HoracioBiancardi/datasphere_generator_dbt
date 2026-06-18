@@ -1,11 +1,10 @@
 {{
     config(
         materialized='incremental',
-        incremental_strategy='merge'
+        incremental_strategy='delete+insert',
         alias='bseg'
         tags=['sap','datasphere','silver', 'BSEG']
         unique_key=['MANDT', 'BUKRS', 'BELNR', 'GJAHR', 'BUZEI'],
-        indexes=[{'columns': ['MANDT', 'BUKRS', 'BELNR', 'GJAHR', 'BUZEI'], 'type': 'btree'}],
     )
 }}
 {% if is_incremental() %}
