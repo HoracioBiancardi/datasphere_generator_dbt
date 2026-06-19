@@ -1,429 +1,241 @@
-"""Módulo de gestão de logs centralizado utilizando Logging padrão do Python.
-Oferece suporte a logs coloridos no terminal e logs estruturados em JSON,
-priorizando o estilo e formatação do logging_custom.py e mantendo compatibilidade
-com a interface do Loguru.
-"""
+"""Configuração de logging com Rich, arquivo e JSON."""
 
-import os
-import sys
+import contextlib
 import json
 import logging
-import contextvars
-from typing import Dict, Any, Union, Optional
+import logging.handlers
+from collections.abc import Hashable, Mapping, Sequence
 from contextlib import contextmanager
-from dotenv import load_dotenv
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Iterator
 
-# Carregar variáveis de ambiente para configuração dinâmica
-load_dotenv()
+import rich.box
+from rich.console import Console
+from rich.logging import RichHandler
+from rich.table import Table
+from rich.theme import Theme
 
-# Configuração de encoding UTF-8 para stdout (suporte a Emojis no Windows)
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+_THEME = Theme(
+    {
+        "logging.level.debug": "dim cyan",
+        "logging.level.info": "bold green",
+        "logging.level.warning": "bold yellow",
+        "logging.level.error": "bold red",
+        "logging.level.critical": "bold white on red",
+    }
+)
 
-__all__ = ["LoggerService", "ColoredFormatter", "JsonFormatter", "get_logger"]
+_console = Console(theme=_THEME)
 
-RESET = "\033[0m"
-BOLD = "\033[1m"
-
-# Cores e Emojis do logging_custom
-COLORS: Dict[str, str] = {
-    "DEBUG": "\033[94m",      # Azul
-    "INFO": "\033[92m",       # Verde
-    "WARNING": "\033[93m",    # Amarelo
-    "ERROR": "\033[91m",      # Vermelho
-    "CRITICAL": "\033[95m",   # Magenta
-}
-
-# Cor de fundo para erros críticos
-BACKGROUND: Dict[str, str] = {
-    "ERROR": "\033[41m",      # Fundo vermelho
-    "CRITICAL": "\033[45m",   # Fundo magenta
-}
-
-ICONS: Dict[str, str] = {
-    "DEBUG": "\U0001f41e",     # 🐞
-    "INFO": "\U0001f4a1",      # 💡
-    "WARNING": "\U0001f6a8",   # 🚨
-    "ERROR": "\U0000274c",     # ❌
-    "CRITICAL": "\U0001f4a5",  # 💥
-}
-
-# Formatos específicos para cada nível
-FORMATS: Dict[str, str] = {
-    "DEBUG": "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() - %(message)s",
-    "INFO": "%(asctime)s - %(levelname)s - %(message)s",
-    "WARNING": "%(asctime)s - %(levelname)s - %(filename)s - %(message)s",
-    "ERROR": "%(asctime)s - %(levelname)s - %(filename)s - %(message)s",
-    "CRITICAL": "%(asctime)s - %(levelname)s - %(filename)s - %(message)s",
-}
-
-STANDARD_LOG_RECORD_ATTRS = {
-    "args", "asctime", "created", "exc_info", "exc_text", "filename",
-    "funcName", "levelname", "levelno", "lineno", "module",
-    "msecs", "message", "msg", "name", "pathname", "process",
-    "processName", "relativeCreated", "stack_info", "thread", "threadName", "taskName"
-}
-
-# Variável de contexto assíncrono/thread-safe para conter metadados extras (Loguru contextualize)
-_context: contextvars.ContextVar[Dict[str, Any]] = contextvars.ContextVar("log_context", default={})
+_FILE_FMT = logging.Formatter(
+    "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+)
 
 
-class JsonFormatter(logging.Formatter):
-    """Formatter to output logs in JSON format."""
 
-    def __init__(self, date_format: str = "%Y-%m-%d %H:%M:%S") -> None:
-        super().__init__(datefmt=date_format)
+class _JsonFormatter(logging.Formatter):
+    """Formata cada record como uma linha JSON — compatível com Airflow e log aggregators."""
 
     def format(self, record: logging.LogRecord) -> str:
-        log_record: Dict[str, Any] = {
-            "timestamp": self.formatTime(record, self.datefmt or "%Y-%m-%d %H:%M:%S"),
+        payload: dict[str, object] = {
+            "ts": datetime.fromtimestamp(record.created, tz=timezone.utc).isoformat(),
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),
         }
-
-        # Sempre incluir informações detalhadas para logs de erro ou superior, e debug
-        if record.levelno >= logging.ERROR or record.levelno <= logging.DEBUG:
-            log_record["file"] = record.filename
-            log_record["path"] = record.pathname
-            log_record["line"] = record.lineno
-            log_record["function"] = record.funcName
-
         if record.exc_info:
-            log_record["exception"] = self.formatException(record.exc_info)
-
-        # Incluir quaisquer campos "extra" que foram passados ou vinculados
-        for key, value in record.__dict__.items():
-            if key not in STANDARD_LOG_RECORD_ATTRS:
-                log_record[key] = value
-
-        return json.dumps(log_record, ensure_ascii=False)
+            payload["exc_info"] = self.formatException(record.exc_info)
+        return json.dumps(payload, ensure_ascii=False)
 
 
-class ColoredFormatter(logging.Formatter):
-    """Formatter to output logs in a beautiful, highlighted terminal format."""
+def get_logger(
+    name: str = "app",
+    level: int = logging.INFO,
+    log_file: str | Path | None = None,
+    json_format: bool = False,
+) -> logging.Logger:
+    """Retorna um logger nomeado com formatação Rich, arquivo e/ou JSON.
 
-    def __init__(
-        self, use_background: bool = False, date_format: str = "%Y-%m-%d %H:%M:%S"
-    ) -> None:
-        super().__init__()
-        self.use_background = use_background
-        self.date_format = date_format
+    Cria os handlers apenas uma vez por logger, evitando duplicatas em
+    chamadas subsequentes.
 
-    def format(self, record: logging.LogRecord) -> str:
-        color = COLORS.get(record.levelname, RESET)
-        background = BACKGROUND.get(record.levelname, "") if self.use_background else ""
-        icon = ICONS.get(record.levelname, "")
+    Args:
+        name: Nome do logger. Use __name__ para identificar o módulo chamador.
+        level: Nível de logging (logging.DEBUG, INFO, WARNING, etc.).
+        log_file: Caminho para arquivo de log com rotação automática (10 MB / 5 backups).
+                  None desativa o log em arquivo.
+        json_format: Se True, emite JSON no stdout em vez de Rich — ideal para Airflow
+                     e sistemas que consomem logs estruturados.
 
-        # Usar formato específico para cada nível
-        format_str = FORMATS.get(record.levelname, FORMATS["INFO"])
-        formatter = logging.Formatter(format_str, datefmt=self.date_format)
-        message = formatter.format(record)
+    Returns:
+        logging.Logger: Instância configurada com os handlers solicitados.
 
-        if record.levelno >= logging.ERROR:
-            extra = (
-                "\n%s↳ Arquivo : %s"
-                "\n↳ Linha   : %s"
-                "\n↳ Função  : %s%s"
-                % (
-                    background,
-                    record.pathname,
-                    str(record.lineno),
-                    record.funcName,
-                    RESET,
-                )
-            )
-            if record.levelno >= logging.CRITICAL and record.exc_info:
-                extra += "\n%s%s%s" % (background, BOLD, RESET)
-            message += extra
+    Example — uso padrão com Rich:
+        >>> logger = get_logger(__name__)
+        >>> logger.info("Conectado ao MinIO")
 
-        # Adicionar formatação para extras / contexto do bind
-        extras = {k: v for k, v in record.__dict__.items() if k not in STANDARD_LOG_RECORD_ATTRS}
-        if extras:
-            message += f" | extras={extras}"
+    Example — arquivo + Rich:
+        >>> logger = get_logger(__name__, log_file="logs/app.log")
+        >>> logger.warning("Bucket não encontrado")
 
-        return f"{color}{background}{BOLD}{icon} {message}{RESET}"
+    Example — JSON para Airflow:
+        >>> logger = get_logger(__name__, json_format=True)
+        >>> logger.info("Task iniciada")
+        {"ts": "2026-06-19T12:00:00+00:00", "level": "INFO", ...}
+    """
+    logger = logging.getLogger(name)
+
+    if logger.handlers:
+        logger.setLevel(level)
+        return logger
+
+    # --- handler de console ---
+    if json_format:
+        console_handler: logging.Handler = logging.StreamHandler()
+        console_handler.setFormatter(_JsonFormatter())
+    else:
+        console_handler = RichHandler(
+            console=_console,
+            rich_tracebacks=True,
+            show_path=True,
+            markup=True,
+            log_time_format="[%X]",
+        )
+        console_handler.setFormatter(
+            logging.Formatter("%(message)s", datefmt="%X")
+        )
+
+    logger.addHandler(console_handler)
+
+    # --- handler de arquivo (opcional) ---
+    if log_file is not None:
+        log_path = Path(log_file)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+
+        file_handler = logging.handlers.RotatingFileHandler(
+            log_path,
+            maxBytes=10 * 1024 * 1024,  # 10 MB
+            backupCount=5,
+            encoding="utf-8",
+        )
+        file_handler.setFormatter(_JsonFormatter() if json_format else _FILE_FMT)
+        logger.addHandler(file_handler)
+
+    logger.propagate = False
+    logger.setLevel(level)
+    return logger
 
 
-class LoguruCompatibleLogger:
-    """Wrapper em torno de um logging.Logger padrão do Python.
+class BoundLogger(logging.LoggerAdapter):
+    """Logger com contexto fixo em todas as mensagens.
 
-    Fornece compatibilidade com chamadas de estilo do Loguru, como
-    `.bind(**kwargs)` e `.contextualize(**kwargs)`.
+    Substitui loguru.Logger.bind() mantendo compatibilidade com logging padrão.
+    Prefixo format: [chave=valor | chave=valor] mensagem
     """
 
-    def __init__(self, logger: logging.Logger, extra: Optional[Dict[str, Any]] = None) -> None:
-        self._logger = logger
-        self._extra = extra or {}
+    def process(self, msg: str, kwargs: dict) -> tuple[str, dict]:
+        if self.extra:
+            ctx = " | ".join(f"{k}={v}" for k, v in self.extra.items())
+            return f"[{ctx}] {msg}", kwargs
+        return msg, kwargs
 
-    def debug(self, msg: Any, *args: Any, **kwargs: Any) -> None:
-        self._log(logging.DEBUG, msg, *args, **kwargs)
-
-    def info(self, msg: Any, *args: Any, **kwargs: Any) -> None:
-        self._log(logging.INFO, msg, *args, **kwargs)
-
-    def warning(self, msg: Any, *args: Any, **kwargs: Any) -> None:
-        self._log(logging.WARNING, msg, *args, **kwargs)
-
-    def error(self, msg: Any, *args: Any, **kwargs: Any) -> None:
-        self._log(logging.ERROR, msg, *args, **kwargs)
-
-    def critical(self, msg: Any, *args: Any, **kwargs: Any) -> None:
-        self._log(logging.CRITICAL, msg, *args, **kwargs)
-
-    def exception(self, msg: Any, *args: Any, **kwargs: Any) -> None:
-        kwargs["exc_info"] = True
-        self._log(logging.ERROR, msg, *args, **kwargs)
-
-    def log(self, level: Union[str, int], msg: Any, *args: Any, **kwargs: Any) -> None:
-        if isinstance(level, str):
-            level = getattr(logging, level.upper(), logging.INFO)
-        self._log(level, msg, *args, **kwargs)
-
-    def bind(self, **kwargs: Any) -> "LoguruCompatibleLogger":
-        """Associa metadados de contexto permanente a esta instância do logger (copiando-a)."""
-        new_extra = {**self._extra, **kwargs}
-        return LoguruCompatibleLogger(self._logger, new_extra)
+    def bind(self, **kwargs: Any) -> "BoundLogger":
+        """Retorna um novo BoundLogger com contexto adicional mesclado."""
+        merged = {**self.extra, **kwargs}
+        return BoundLogger(self.logger, merged)
 
     @contextmanager
-    def contextualize(self, **kwargs: Any) -> Any:
-        """Gerenciador de contexto para associar dados dinâmicos de forma temporária e thread-safe."""
-        current = _context.get()
-        token = _context.set({**current, **kwargs})
-        try:
-            yield
-        finally:
-            _context.reset(token)
+    def contextualize(self, **kwargs: Any) -> Iterator[None]:
+        """Context manager de compatibilidade (loguru.contextualize).
 
-    def _log(self, level: int, msg: Any, *args: Any, **kwargs: Any) -> None:
-        if not self._logger.isEnabledFor(level):
-            return
-
-        call_extra = kwargs.pop("extra", None) or {}
-
-        # Mesclar fontes de metadados extras:
-        # 1. contextualize() (ContextVars)
-        # 2. bind() (self._extra)
-        # 3. extra parameter passed dynamically
-        merged_extra = {}
-        merged_extra.update(_context.get())
-        merged_extra.update(self._extra)
-        merged_extra.update(call_extra)
-
-        kwargs["extra"] = merged_extra
-
-        # Corrige o nível da pilha para exibir o arquivo/linha correto do chamador original
-        if "stacklevel" not in kwargs:
-            kwargs["stacklevel"] = 3  # wrapper -> method (ex. info) -> _log -> logger.log
-
-        self._logger.log(level, msg, *args, **kwargs)
-
-    # Delegadores adicionais para manter compatibilidade com propriedades de logging padrão
-    @property
-    def handlers(self) -> Any:
-        return self._logger.handlers
-
-    @property
-    def level(self) -> int:
-        return self._logger.level
-
-    def setLevel(self, level: Union[str, int]) -> None:
-        if isinstance(level, str):
-            level = getattr(logging, level.upper(), logging.INFO)
-        self._logger.setLevel(level)
-
-    def addHandler(self, hdlr: logging.Handler) -> None:
-        self._logger.addHandler(hdlr)
-
-    def removeHandler(self, hdlr: logging.Handler) -> None:
-        self._logger.removeHandler(hdlr)
+        No logging padrão não há propagação automática de contexto por thread,
+        então apenas executa o bloco sem efeito colateral.
+        """
+        yield
 
 
-class LoggerService:
-    """Configurador e gerador de Loggers padrão com formatação rica do logging_custom."""
+def bind(logger_instance: logging.Logger, **context: Any) -> BoundLogger:
+    """Retorna um BoundLogger com contexto fixo — substitui loguru.Logger.bind().
 
-    def __init__(
-        self,
-        name: str = "app",
-        level: Union[str, int] = "INFO",
-        use_background: bool = True,
-        use_json: bool = False,
-        date_format: str = "%Y-%m-%d %H:%M:%S",
-        enable_file_logging: bool = False,
-        log_file: str = "app.log",
-    ) -> None:
-        self.logger = logging.getLogger(name)
+    Args:
+        logger_instance: Logger base retornado por get_logger().
+        **context: Pares chave=valor adicionados como prefixo em cada mensagem.
 
-        if isinstance(level, str):
-            level = level.upper()
-            level = getattr(logging, level, logging.INFO)
-
-        self.logger.setLevel(level)  # type: ignore
-        self.logger.propagate = False
-
-        # Evita a duplicação de handlers se este logger já foi inicializado
-        if self.logger.handlers:
-            self.logger.handlers.clear()
-
-        # Determinar formatador de console
-        if use_json:
-            console_formatter: logging.Formatter = JsonFormatter(date_format=date_format)
-        else:
-            console_formatter = ColoredFormatter(
-                use_background=use_background, date_format=date_format
-            )
-
-        # Handler de Console (Standard Output)
-        console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setFormatter(console_formatter)
-        self.logger.addHandler(console_handler)
-
-        # Handler de Ficheiro (Opcional)
-        if enable_file_logging and log_file:
-            log_dir = os.path.dirname(log_file)
-            if log_dir and not os.path.exists(log_dir):
-                os.makedirs(log_dir, exist_ok=True)
-
-            file_handler = logging.FileHandler(log_file, encoding="utf-8")
-            if use_json:
-                file_formatter: logging.Formatter = JsonFormatter(date_format=date_format)
-            else:
-                file_formatter = logging.Formatter(
-                    "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() - %(message)s",
-                    datefmt=date_format,
-                )
-            file_handler.setFormatter(file_formatter)
-            self.logger.addHandler(file_handler)
-
-    def get_logger(self) -> LoguruCompatibleLogger:
-        return LoguruCompatibleLogger(self.logger)
-
-
-# Configuração automática baseada em variáveis de ambiente
-def _initialize_global_logger() -> LoguruCompatibleLogger:
-    log_level = os.getenv("LOG_LEVEL", "INFO").upper()
-    log_to_json = os.getenv("LOG_TO_JSON", "FALSE").upper() == "TRUE"
-    log_path = os.getenv("LOG_PATH", "logs/pipeline.log")
-    
-    # Se log_to_json for ativado e estiver usando o arquivo default, rotacionamos para .json
-    if log_to_json and log_path == "logs/pipeline.log":
-        log_path = "logs/pipeline.json"
-
-    # Sempre ativa escrita em ficheiro se LOG_PATH estiver definido
-    enable_file = bool(log_path)
-
-    service = LoggerService(
-        name="pipeline_ingestion",
-        level=log_level,
-        use_background=True,
-        use_json=log_to_json,
-        enable_file_logging=enable_file,
-        log_file=log_path,
-    )
-    return service.get_logger()
-
-
-# Instância global unificada
-_global_logger = _initialize_global_logger()
-
-
-def get_logger(*args: Any, **kwargs: Any) -> LoguruCompatibleLogger:
-    """Retorna a instância configurada do logger.
-
-    Suporta argumentos opcionais para inicializar adaptadores com pipeline, job ou run_id específicos.
+    Example:
+        >>> log = bind(get_logger(), pipeline="sap_ekko", run_id="abc123")
+        >>> log.info("Iniciando")   # → [pipeline=sap_ekko | run_id=abc123] Iniciando
     """
-    if not args and not kwargs:
-        return _global_logger
+    return BoundLogger(logger_instance, context)
 
-    name = args[0] if args else kwargs.get("name")
-    pipeline = kwargs.get("pipeline")
-    job = kwargs.get("job")
-    run_id = kwargs.get("run_id")
 
-    # Se apenas metadados de bind foram especificados (sem nome diferente de "pipeline_ingestion"),
-    # reutilizamos o _global_logger e apenas fazemos bind para evitar recriar os handlers de arquivo e console.
-    if (name is None or name == "pipeline_ingestion") and (pipeline or job or run_id):
-        l = _global_logger
-        bind_kwargs = {}
-        if pipeline:
-            bind_kwargs["pipeline"] = pipeline
-        if job:
-            bind_kwargs["job"] = job
-        if run_id:
-            bind_kwargs["run_id"] = run_id
-        return l.bind(**bind_kwargs)
+def print_table(
+    data: Sequence[Mapping[Hashable, object]],
+    title: str | None = None,
+    json_format: bool = False,
+) -> None:
+    """Exibe uma lista de dicts como tabela Rich ou JSON estruturado.
 
-    # Caso contrário, cria um novo LoggerService (ex: se um nome de sub-logger específico for pedido)
-    target_name = name or "pipeline_ingestion"
-    log_level = os.getenv("LOG_LEVEL", "INFO").upper()
-    log_to_json = os.getenv("LOG_TO_JSON", "FALSE").upper() == "TRUE"
-    log_path = os.getenv("LOG_PATH", "logs/pipeline.log")
-    enable_file = bool(log_path)
+    As colunas são derivadas automaticamente das chaves do primeiro item.
+    Em modo JSON (ex: Airflow), emite uma linha JSON por registro.
 
-    # Se log_to_json for ativado e estiver usando o arquivo default, rotacionamos para .json
-    if log_to_json and log_path == "logs/pipeline.log":
-        log_path = "logs/pipeline.json"
+    Args:
+        data: Lista de dicts com os dados a exibir.
+        title: Título opcional da tabela (ignorado em modo JSON).
+        json_format: Se True, emite JSON ao invés de tabela Rich.
 
-    service = LoggerService(
-        name=target_name,
-        level=log_level,
-        use_background=True,
-        use_json=log_to_json,
-        enable_file_logging=enable_file,
-        log_file=log_path,
+    Example — tabela Rich:
+        >>> print_table([{"arquivo": "a.csv", "tamanho": "1 MB"}], title="Arquivos")
+
+    Example — JSON para Airflow:
+        >>> print_table(rows, json_format=True)
+        {"arquivo": "a.csv", "tamanho": "1 MB"}
+    """
+    if not data:
+        return
+
+    if json_format:
+        for row in data:
+            print(json.dumps(row, ensure_ascii=False, default=str))
+        return
+
+    all_columns = list(data[0].keys())
+    term_width = _console.width or 120
+    max_cols = max(1, term_width // 12)
+    truncated = len(all_columns) > max_cols
+    columns = all_columns[:max_cols]
+
+    display_title = f"{title} ({len(all_columns)} colunas, exibindo {max_cols})" if truncated else title
+    table = Table(
+        title=display_title,
+        show_header=True,
+        header_style="bold cyan",
+        border_style="dim",
+        show_lines=True,
     )
-    l = service.get_logger()
-    
-    bind_kwargs = {}
-    if pipeline:
-        bind_kwargs["pipeline"] = pipeline
-    if job:
-        bind_kwargs["job"] = job
-    if run_id:
-        bind_kwargs["run_id"] = run_id
-        
-    if bind_kwargs:
-        l = l.bind(**bind_kwargs)
-    return l
+    for col in columns:
+        table.add_column(str(col), min_width=8, max_width=30)
+    for row in data:
+        table.add_row(*[str(row.get(col, "")) for col in columns])
+
+    _console.print(table)
 
 
 if __name__ == "__main__":
-    # Teste de uso normal (Colorido)
-    print("--- Teste Formato Colorido ---")
-    log = get_logger()
-    log.debug("Debug message")
-    log.info("Info message com extra", extra={"user": "admin", "id": 123})
-    log.warning("Warning message")
+    logger = get_logger("exemplo", log_file="logs/exemplo.log")
+    logger.debug("Mensagem de debug")
+    logger.info("Mensagem de info")
+    logger.warning("Mensagem de warning")
+    logger.error("Mensagem de error")
+    logger.critical("Mensagem de critical")
 
-    # Testar .bind() e .contextualize()
-    bound = log.bind(run_id="uuid-123456", pipeline="pipeline_sap")
-    bound.info("Mensagem com contexto fixo (bind)")
+    arquivos = [
+        {"arquivo": "dados.csv", "tamanho": "1.2 MB", "modificado": "2026-06-19"},
+        {"arquivo": "backup.tar.gz", "tamanho": "340 MB", "modificado": "2026-06-18"},
+    ]
+    print_table(arquivos, title="Arquivos no bucket")
 
-    with log.contextualize(job="SAP_EXTRACT"):
-        log.info("Dentro do contextualize (deve ter job)")
-        bound.warning("Bound logger dentro do contextualize")
-
-    log.info("Fora do contextualize (não deve ter job)")
-
-    log.error("Error message")
-    try:
-        1 / 0
-    except ZeroDivisionError:
-        log.exception("Exception message")
-
-    # Limpar handlers para testar json no mesmo script
-    log.handlers.clear()
-
-    # Teste de uso JSON
-    print("\n--- Teste Formato JSON ---")
-    os.environ["LOG_TO_JSON"] = "TRUE"
-    # Obter logger de teste JSON
-    json_log = get_logger("json_test")
-    json_log.debug("Debug JSON message")
-    json_log.info("Info JSON message com extra", extra={"user": "admin", "id": 123})
-    json_log.warning("Warning JSON message")
-    json_log.error("Error JSON message")
-    try:
-        1 / 0
-    except ZeroDivisionError:
-        json_log.exception("Exception JSON message")
+    logger_json = get_logger("exemplo-json", json_format=True)
+    logger_json.info("Modo JSON ativo")
+    print_table(arquivos, json_format=True)
