@@ -31,7 +31,7 @@ Framework modular de engenharia de dados que extrai metadados do Dicionário de 
        └─► output/dbt/models/staging/[TABELA]/stg_sap_[tabela].yml
 ```
 
-Os módulos são **totalmente independentes**, conectados apenas por contratos JSON em disco. Cada um pode ser executado isoladamente.
+Os módulos são **totalmente independentes**, conectados apenas por contratos JSON em disco. Cada um pode ser executado isoladamente via CLI ou Python.
 
 ---
 
@@ -41,7 +41,6 @@ Os módulos são **totalmente independentes**, conectados apenas por contratos J
 - [`uv`](https://github.com/astral-sh/uv) instalado
 
 ```bash
-# macOS / Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
@@ -50,42 +49,39 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ## Instalação
 
 ```bash
-# Clone o repositório e entre na pasta
 git clone <url-do-repo>
 cd datasphere_generator_dbt
 
-# Instala dependências e o pacote em modo editável
 uv sync
 ```
+
+Após o `uv sync`, o comando `datasphere-dbt` fica disponível no ambiente virtual.
 
 ---
 
 ## Configuração (.env)
 
-Copie `.env` e ajuste os valores:
+Crie um arquivo `.env` na raiz do projeto:
 
 ```dotenv
-# ── Conexão com SAP Datasphere (HANA) ────────────────────────────────────────
+# ── Conexão com SAP Datasphere (HANA) ─────────────────────────────────────
 HANA_ADDRESS=<host>.hana.prod-us10.hanacloud.ondemand.com
 HANA_PORT=443
 HANA_USER=DWCDBUSER#DATALAKE
 HANA_PASSWORD=<senha>
 
-# ── Módulo 1: Extrator DDIC ───────────────────────────────────────────────────
+# ── Módulo 1: Extrator DDIC ───────────────────────────────────────────────
 # Schema no Datasphere onde as tabelas DD* estão replicadas
 DDIC_SCHEMA=IB_SAPECC
 # Idioma das descrições: P=Português, E=Inglês, D=Alemão
 DDIC_LANGUAGE=P
 
-# ── Módulo 3: Gerador dbt ─────────────────────────────────────────────────────
-# Nome usado em {{ source(...) }} nos modelos gerados
+# ── Módulo 3: Gerador dbt ─────────────────────────────────────────────────
 DBT_SOURCE_NAME=dataspherev2
-# Database dbt (usado no sources.yml)
 DBT_DATABASE=BRONZE
-# Schema dbt (usado no sources.yml)
 DBT_SCHEMA=dataspherev2
 
-# ── Logging ───────────────────────────────────────────────────────────────────
+# ── Logging ───────────────────────────────────────────────────────────────
 LOG_LEVEL=INFO
 LOG_TO_JSON=False
 LOG_PATH=log/pipeline.json
@@ -93,60 +89,89 @@ LOG_PATH=log/pipeline.json
 
 ---
 
-## Execução
+## CLI
 
-### Pipeline completo (recomendado)
+O projeto expõe o comando `datasphere-dbt` com quatro subcomandos.
 
-Processa uma ou mais tabelas em sequência: DDIC → Tradução → dbt.
+### `run` — pipeline completo (recomendado)
+
+Executa os três módulos em sequência para uma ou mais tabelas SAP.
 
 ```bash
 # Uma tabela
-uv run main.py MARA
+uv run datasphere-dbt run MARA
 
-# Múltiplas tabelas
-uv run main.py MARA BSEG VBAK EKKO
+# Múltiplas tabelas (nomes normalizados para maiúsculas automaticamente)
+uv run datasphere-dbt run MARA BSEG VBAK EKKO
 
-# Os nomes são normalizados para maiúsculas automaticamente
-uv run main.py mara bseg
+# Sobrescrevendo defaults sem .env
+uv run datasphere-dbt run MARA \
+  --ddic-schema IB_SAPECC \
+  --source-name dataspherev2 \
+  --database BRONZE \
+  --schema dataspherev2
 ```
 
-### Executar módulos individualmente (via Python)
-
-Útil quando você já tem o contrato intermediário em disco e quer re-executar apenas parte do pipeline.
-
-**Módulo 1 — apenas extração DDIC:**
-
-```python
-from datasphere.datasphere_extractor import DatasphereConnector, DatasphereExtractor
-from sap_generator.ddic_extractor import DDICExtractor
-
-connector = DatasphereConnector({"host": "...", "port": 443, "user": "...", "password": "..."})
-extractor = DatasphereExtractor(connector)
-
-ddic = DDICExtractor(extractor=extractor, ddic_schema="IB_SAPECC", language="P")
-contract = ddic.extract("MARA")
-# Salvo em: output/contracts/ddic/ddic_schema_mara.json
+```
+Opções:
+  --ddic-schema TEXT     Schema DDIC no Datasphere  [env: DDIC_SCHEMA, obrigatório]
+  --language TEXT        Idioma das descrições       [env: DDIC_LANGUAGE, padrão: P]
+  --source-name TEXT     Nome do source dbt          [env: DBT_SOURCE_NAME, padrão: dataspherev2]
+  --database TEXT        Database dbt                [env: DBT_DATABASE, padrão: BRONZE]
+  --schema TEXT          Schema dbt                  [env: DBT_SCHEMA, padrão: dataspherev2]
+  --ddic-output DIR      Destino contratos DDIC      [padrão: output/contracts/ddic]
+  --pipeline-output DIR  Destino contratos pipeline  [padrão: output/contracts/pipeline]
+  --dbt-output DIR       Destino artefatos dbt       [padrão: output/dbt/models/staging]
 ```
 
-**Módulo 2 — apenas tradução (a partir de um JSON já gerado):**
+### `ddic` — apenas Módulo 1
 
-```python
-from sap_generator.ingestor import IngestorTranslator
+Extrai metadados DDIC do SAP e salva os contratos JSON.
 
-translator = IngestorTranslator()
-pipeline = translator.translate_from_file("output/contracts/ddic/ddic_schema_mara.json")
-# Salvo em: output/contracts/pipeline/ingestor_pipeline_mara.json
+```bash
+uv run datasphere-dbt ddic MARA BSEG
 ```
 
-**Módulo 3 — apenas geração dbt (a partir de um JSON já gerado):**
+### `translate` — apenas Módulo 2
 
-```python
-from sap_generator.dbt_generator import DbtGenerator
+Lê contratos DDIC e gera contratos de pipeline. Aceita nomes de tabela (busca no `--ddic-dir`) ou arquivos diretos.
 
-generator = DbtGenerator(source_name="dataspherev2", database="BRONZE", schema="dataspherev2")
-generator.generate_from_file("output/contracts/pipeline/ingestor_pipeline_mara.json")
-# Salvo em: output/dbt/models/staging/MARA/stg_sap_mara.sql
-#           output/dbt/models/staging/MARA/stg_sap_mara.yml
+```bash
+# A partir do diretório padrão
+uv run datasphere-dbt translate MARA
+
+# A partir de arquivos específicos
+uv run datasphere-dbt translate \
+  --from-file output/contracts/ddic/ddic_schema_mara.json \
+  --from-file output/contracts/ddic/ddic_schema_bseg.json
+```
+
+### `generate` — apenas Módulo 3
+
+Gera `.sql` e `sources.yml` dbt. Aceita nomes de tabela ou arquivos diretos.
+
+```bash
+# A partir do diretório padrão
+uv run datasphere-dbt generate MARA
+
+# A partir de um arquivo específico
+uv run datasphere-dbt generate --from-file output/contracts/pipeline/ingestor_pipeline_mara.json
+
+# Customizando os parâmetros dbt
+uv run datasphere-dbt generate MARA \
+  --source-name minha_fonte \
+  --database SILVER \
+  --schema sap_staging
+```
+
+### Ajuda
+
+Qualquer subcomando aceita `--help`:
+
+```bash
+uv run datasphere-dbt --help
+uv run datasphere-dbt run --help
+uv run datasphere-dbt generate --help
 ```
 
 ---
@@ -336,6 +361,35 @@ Prioridade de seleção do campo watermark:
 
 ---
 
+## Logging
+
+O módulo `logger.py` fornece logging com **Rich** no terminal e saída opcional em JSON para sistemas como Airflow.
+
+```python
+from logger import get_logger, bind, print_table
+
+# Logger padrão (Rich colorido no terminal)
+logger = get_logger(__name__)
+logger.info("Conectado ao Datasphere")
+
+# Com arquivo rotativo (10 MB / 5 backups)
+logger = get_logger(__name__, log_file="log/pipeline.log")
+
+# Modo JSON — ideal para Airflow e log aggregators
+logger = get_logger(__name__, json_format=True)
+# → {"ts": "2026-06-20T10:00:00+00:00", "level": "INFO", "message": "..."}
+
+# Logger com contexto fixo em todas as mensagens
+log = bind(logger, pipeline="sap_mara", run_id="abc123")
+log.info("Iniciando")
+# → [pipeline=sap_mara | run_id=abc123] Iniciando
+
+# Exibe uma lista de dicts como tabela Rich no terminal
+print_table([{"tabela": "MARA", "colunas": 42}], title="Resultado")
+```
+
+---
+
 ## Estrutura do Projeto
 
 ```
@@ -353,7 +407,8 @@ datasphere_generator_dbt/
 │   └── dbt/
 │       └── models/staging/
 │           └── [TABELA]/       # stg_sap_*.sql + stg_sap_*.yml (por tabela)
-├── logger.py
-├── main.py                     # Orquestrador CLI
+├── cli.py                      # CLI (datasphere-dbt) — entry point principal
+├── logger.py                   # Logging com Rich, arquivo e JSON
+├── main.py                     # Orquestrador legado (argparse)
 └── pyproject.toml
 ```
