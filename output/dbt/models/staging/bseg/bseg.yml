@@ -12,687 +12,688 @@ sources:
           tags: ["sap", "silver"]
 
         columns:
-          - name: mandante
+          # Chaves Primárias / Identificadores
+          - name: mandt
             description: "Mandante"
-          - name: empresa
+          - name: bukrs
             description: "Empresa"
-          - name: n_documento
+          - name: belnr
             description: "Nº documento de um documento contábil"
-          - name: exercicio
+          - name: gjahr
             description: "Exercício"
-          - name: item
+          - name: buzei
             description: "Nº linha de lançamento no documento contábil"
-          - name: id_linha_lcto
+          - name: buzid
             description: "Identificação da linha de lançamento"
-          - name: compensacao
+          - name: augdt
             description: "Data de compensação"
-          - name: dt_compens
+          - name: augcp
             description: "Data de entrada da compensação"
-          - name: doccompens
+          - name: augbl
             description: "Nº documento de compensação"
-          - name: chv_lancamento
+          - name: bschl
             description: "Chave de lançamento"
-          - name: tipo_conta
+          - name: koart
             description: "Tipo de conta"
-          - name: codigo_rze
+          - name: umskz
             description: "Código de Razão Especial"
-          - name: classe_operacao
+          - name: umsks
             description: "Classe de operação de Razão Especial"
-          - name: cd_rze_destinac
+          - name: zumsk
             description: "Código de Razão Especial de destino"
-          - name: debito_credito
+          - name: shkzg
             description: "Código débito/crédito"
-          - name: divisao
+          - name: gsber
             description: "Divisão"
-          - name: div_parceiro
+          - name: pargb
             description: "Divisão do parceiro de negócios"
-          - name: cod_imposto
+          - name: mwskz
             description: "Código do IVA"
-          - name: codigo_irf
+          - name: qsskz
             description: "Código de imposto retido na fonte"
-          - name: montante_mi
+          - name: dmbtr
             description: "Montante em moeda interna"
-          - name: montante
+          - name: wrbtr
             description: "Montante em moeda do documento"
-          - name: reducao_origin
+          - name: kzbtr
             description: "Montante original de redução em moeda interna"
-          - name: montante_razao
+          - name: pswbt
             description: "Montante para atualização no Razão"
-          - name: moeda_razao
+          - name: pswsl
             description: "Moeda de atualização p/movimentação no período do Razão"
-          - name: mont_base_inicial_imposto
+          - name: txbhw
             description: "Montante-base inicial de imposto em moeda interna"
-          - name: mont_base_inicial_imposto
+          - name: txbfw
             description: "Montante-base inicial de imposto em moeda de documento"
-          - name: imposto_mi
+          - name: mwsts
             description: "Montante de imposto em MI"
-          - name: mont_imposto
+          - name: wmwst
             description: "Montante de imposto na moeda do documento"
-          - name: base_mi
+          - name: hwbas
             description: "Montante básico do imposto em moeda interna"
-          - name: mont_basico
+          - name: fwbas
             description: "Montante básico do imposto em moeda do documento"
-          - name: provisao_mi
+          - name: hwzuz
             description: "Montante de provisão em moeda interna"
-          - name: impadicional
+          - name: fwzuz
             description: "Imposto adicional em moeda do documento"
-          - name: sinal_desconto
+          - name: shzuz
             description: "Dados adicionais de débito/crédito para desconto"
-          - name: componente_do_n_versao
+          - name: stekz
             description: "Componente do nº versão"
-          - name: tipo_de_imposto
+          - name: mwart
             description: "Tipo de imposto"
-          - name: codigo_de_grupo
+          - name: txgrp
             description: "Código de grupo para linhas de imposto"
-          - name: operacao
+          - name: ktosl
             description: "Chave de operação"
-          - name: base_irf
+          - name: qsshb
             description: "Montante base do imposto retido na fonte"
-          - name: tx_cobert
+          - name: kursr
             description: "Câmbio garantido"
-          - name: gravado
+          - name: gbetr
             description: "Montante c/ câmbio garantido em moeda estrangeira"
-          - name: difer_avaliacao
+          - name: bdiff
             description: "Diferença de avaliação"
-          - name: diferenca_avaliac_2
+          - name: bdif2
             description: "Diferença de avaliação para a moeda interna-2"
-          - name: data_efetiva
+          - name: valut
             description: "Data efetiva"
-          - name: atribuicao
+          - name: zuonr
             description: "Nº atribuição"
-          - name: texto
+          - name: sgtxt
             description: "Texto do item"
-          - name: bloqueio_juros
+          - name: zinkz
             description: "Exclusão do cálculo de juros"
-          - name: soc_parc_negs
+          - name: vbund
             description: "Nº sociedade parceira"
-          - name: tipo_movimento
+          - name: bewar
             description: "Tipo de movimento"
-          - name: n_conta_do_grupo
+          - name: altkt
             description: "Nº conta do grupo"
-          - name: tipo_operacao
+          - name: vorgn
             description: "Tipo de operação para o General Ledger"
-          - name: nivel_tsr
+          - name: fdlev
             description: "Nível de administração de tesouraria"
-          - name: grp_prev_tesour
+          - name: fdgrp
             description: "Grupo de tesouraria"
-          - name: mont_alocado
+          - name: fdwbt
             description: "Montante planejado na moeda do documento ou moeda CtaRazão"
-          - name: dt_planej
+          - name: fdtag
             description: "Data de planejamento"
-          - name: pl_financ
+          - name: fkont
             description: "Item do plano financeiro"
-          - name: area_cont_csts
+          - name: kokrs
             description: "Área de contabilidade de custos"
-          - name: centro_custo
+          - name: kostl
             description: "Centro de custo"
-          - name: sem_utilizacao
+          - name: projn
             description: "Ultrapassado: nº projeto : NÃO utilizar mais!! -> PS_POSNR"
-          - name: ordem
+          - name: aufnr
             description: "Nº ordem"
-          - name: docfat
+          - name: vbeln
             description: "Documento de faturamento"
-          - name: doc_vendas
+          - name: vbel2
             description: "Documento de vendas"
-          - name: item
+          - name: posn2
             description: "Item do documento de vendas"
-          - name: divremessa
+          - name: eten2
             description: "Nº da divisão de remessa"
-          - name: imobilizado
+          - name: anln1
             description: "Nº principal do imobilizado"
-          - name: subn
+          - name: anln2
             description: "Subnº do imobilizado"
-          - name: tip_moviment
+          - name: anbwa
             description: "Tipo de movimento de imobilizados"
-          - name: dt_referencia
+          - name: bzdat
             description: "Data de referência"
-          - name: n_pessoal
+          - name: pernr
             description: "Nº pessoal"
-          - name: relev_p_fatmto
+          - name: xumsw
             description: "Código: item relevante para faturamento?"
-          - name: codigo_conta_do_razao_residente
+          - name: xhres
             description: "Código: conta do Razão residente ?"
-          - name: parts_indivs
+          - name: xkres
             description: "Código: possível exibir partidas individuais via conta?"
-          - name: administr_pa
+          - name: xopvw
             description: "Código: administração de partidas em aberto?"
-          - name: c_indiv
+          - name: xcpdd
             description: "Código: endereço e dados do banco fixados individualmente"
-          - name: lncto_ccst_est
+          - name: xskst
             description: "Código: lançamento estatístico em centro de custo"
-          - name: lncto_ord_estat
+          - name: xsauf
             description: "Código: lançamento em ordem é estatístico"
-          - name: lncto_proj_est
+          - name: xspro
             description: "Código: lançamento em projeto é estatístico"
-          - name: lncto_resul_est
+          - name: xserg
             description: "Código: lançamento no resultado é estatístico"
-          - name: codigo_executada_a_atualizacao_da_fatura
+          - name: xfakt
             description: "Código: executada a atualização da fatura?"
-          - name: codigo_transferencia_por_adiantamento
+          - name: xuman
             description: "Código: transferência por adiantamento ?"
-          - name: cod_adiantamento_no_proc_contabilizacao_liquida
+          - name: xanet
             description: "Cód.: adiantamento no proc.contabilização líquida?"
-          - name: sem_desconto
+          - name: xskrl
             description: "Cód.: linha de lançamento não relevante p/desconto ?"
-          - name: cod_invest
+          - name: xinve
             description: "Código: referência a bens de investimento ?"
-          - name: exibir_item
+          - name: xpanz
             description: "Exibir item"
-          - name: gerado_automat
+          - name: xauto
             description: "Código: item gerado automaticamente"
-          - name: codigo_partidas_nao_podem_ser_copiadas
+          - name: xncop
             description: "Código: partidas não podem ser copiadas ?"
-          - name: operpagmto
+          - name: xzahl
             description: "Código: trata-se de uma operação de pagamento ?"
-          - name: conta_do_razao
+          - name: saknr
             description: "Nº conta do Razão"
-          - name: razao
+          - name: hkont
             description: "Conta do Razão"
-          - name: cliente
+          - name: kunnr
             description: "Nº cliente"
-          - name: fornecedor
+          - name: lifnr
             description: "Nº conta do fornecedor"
-          - name: filial
+          - name: filkd
             description: "Nº conta da filial"
-          - name: conta_do_balanco
+          - name: xbilk
             description: "Código: a conta é uma conta do balanço?"
-          - name: tpo_cta_result
+          - name: gvtyp
             description: "Tipo de conta de resultados"
-          - name: atribuic_rze
+          - name: hzuon
             description: "Nº atribuição para contas do Razão Especial"
-          - name: data_base
+          - name: zfbdt
             description: "Data base para cálculo do vencimento"
-          - name: conds_pgto
+          - name: zterm
             description: "Chave de condições de pagamento"
-          - name: dia_1
+          - name: zbd1t
             description: "Dias de desconto 1"
-          - name: dias_2
+          - name: zbd2t
             description: "Dias de desconto 2"
-          - name: dias_liquido
+          - name: zbd3t
             description: "Prazo para condição líquida"
-          - name: desconto_1
+          - name: zbd1p
             description: "Taxa de desconto 1"
-          - name: desconto_2
+          - name: zbd2p
             description: "Taxa de desconto 2"
-          - name: base_descon
+          - name: skfbt
             description: "Mont.c/direito a desconto em moeda doc."
-          - name: mont_descont
+          - name: sknto
             description: "Mont.desconto em moeda int."
-          - name: mont_descon
+          - name: wskto
             description: "Montante do desconto em moeda do documento"
-          - name: frmpgto
+          - name: zlsch
             description: "Forma de pagamento"
-          - name: bloq_pgto
+          - name: zlspr
             description: "Chave para o bloqueio de pagamento"
-          - name: fixado
+          - name: zbfix
             description: "Condição de pagamento fixada"
-          - name: banco_empresa
+          - name: hbkid
             description: "Chave breve de um banco da empresa"
-          - name: tp_banco_parc
+          - name: bvtyp
             description: "Tipo de banco do parceiro"
-          - name: mont_pgto
+          - name: nebtr
             description: "Montante líquido do pagamento"
-          - name: cod_imp
+          - name: mwsk1
             description: "Código IVA para repartição"
-          - name: montante
+          - name: dmbt1
             description: "Montante em moeda interna para divisão dos impostos"
-          - name: montante
+          - name: wrbt1
             description: "Montante em moeda estrangeira da repartição dos impostos"
-          - name: cod_imp
+          - name: mwsk2
             description: "Código IVA para repartição"
-          - name: montante
+          - name: dmbt2
             description: "Montante em moeda interna para divisão dos impostos"
-          - name: montante
+          - name: wrbt2
             description: "Montante em moeda estrangeira da repartição dos impostos"
-          - name: cod_imp
+          - name: mwsk3
             description: "Código IVA para repartição"
-          - name: montante
+          - name: dmbt3
             description: "Montante em moeda interna para divisão dos impostos"
-          - name: montante
+          - name: wrbt3
             description: "Montante em moeda estrangeira da repartição dos impostos"
-          - name: fat_relacion
+          - name: rebzg
             description: "Nº documento da fatura à qual pertence a operação"
-          - name: exercicio
+          - name: rebzj
             description: "Exercício da fatura relacionada (em caso de nota crédito)"
-          - name: item
+          - name: rebzz
             description: "Item de lançamento na fatura relacionada"
-          - name: tp_doc_subsequente
+          - name: rebzt
             description: "Tp.doc.subsequente"
-          - name: ntarifalfandeg
+          - name: zollt
             description: "Nº de tarifa alfandegária"
-          - name: dtdeclalfand
+          - name: zolld
             description: "Data da declaração alfandegária"
-          - name: cd_banccentr
+          - name: lzbkz
             description: "Código do Banco Central"
-          - name: pais_fornec
+          - name: landl
             description: "País do fornecedor"
-          - name: cod_servico
+          - name: diekz
             description: "Código prestação serviços (pag.internacional)"
-          - name: nfaturcolet
+          - name: samnr
             description: "Nº lista de faturas"
-          - name: periodo_liq
+          - name: abper
             description: "Período de liquidação"
-          - name: cod_seguro
+          - name: vrskz
             description: "Código do seguro"
-          - name: data_do_seguro
+          - name: vrsdt
             description: "Data do seguro"
-          - name: doc_utilizacao
+          - name: disbn
             description: "Nº documento comprovante de utilização L/C (doc.desconto)"
-          - name: ano
+          - name: disbj
             description: "Exercício do documento comprovante de utilização da L/C"
-          - name: linha
+          - name: disbz
             description: "Linha lançamento no documento comprovante de utilização L/C"
-          - name: utilizacao
+          - name: wverw
             description: "Tipo de utilização de letra de câmbio"
-          - name: solicitacao_l_c
+          - name: anfbn
             description: "Nº documento da solicitação de letra de câmbio"
-          - name: exercicio_do_documento_de_solicitacao_de_letra_de_cambio
+          - name: anfbj
             description: "Exercício do documento de solicitação de letra de câmbio"
-          - name: empresa
+          - name: anfbu
             description: "Empresa, na qual foi registrada a solicitação de L/C"
-          - name: reenvio_ate
+          - name: anfae
             description: "Vencimento da solicitação de letra de câmbio"
-          - name: mont_pref
+          - name: blnbt
             description: "Montante base p/determinação do montante preferencial"
-          - name: codigo_pref
+          - name: blnkz
             description: "(obsoleto) Cód.preferencial p/determinação da taxa redução"
-          - name: preferenc
+          - name: blnpz
             description: "Percentagem de preferência"
-          - name: chv_advert
+          - name: mschl
             description: "Chave de advertência"
-          - name: bloq_advert
+          - name: mansp
             description: "Bloqueio de advertências"
-          - name: ult_cobr
+          - name: madat
             description: "Data da última advertência"
-          - name: niv_adv
+          - name: manst
             description: "Nível de advertência"
-          - name: areaadvert
+          - name: maber
             description: "Área de advertência"
-          - name: n_ndr
+          - name: esrnr
             description: "Nº participante NDR"
-          - name: ref_ndr_cr
+          - name: esrre
             description: "Nº referência NDR/CR"
-          - name: digito_controle
+          - name: esrpz
             description: "Dígito de controle de nota de depósito c/nº referência (NDR)"
-          - name: mont_ctrl_cred
+          - name: klibt
             description: "Montante p/controle de crédito"
-          - name: n_cert_isencao
+          - name: qsznr
             description: "Nº do certificado relativo à isenção de IRF"
-          - name: montante_irf
+          - name: qbshb
             description: "Montante de imposto retido na fonte (em moeda de documento)"
-          - name: isento_irf
+          - name: qsfbt
             description: "Montante isento de imposto retido na fonte (em moeda doc.)"
-          - name: nao_dedutivel
+          - name: navhw
             description: "IVA suportado não dedutível (em moeda interna)"
-          - name: nao_dedutivel
+          - name: navfw
             description: "IVA suportado não dedutível (em moeda do documento MD)"
-          - name: material
+          - name: matnr
             description: "Nº do material"
-          - name: centro
+          - name: werks
             description: "Centro"
-          - name: quantidade
+          - name: menge
             description: "Quantidade"
-          - name: um_basica
+          - name: meins
             description: "Unidade de medida básica"
-          - name: qtd_um_registro
+          - name: erfmg
             description: "Quantidade na unidade de medida do registro"
-          - name: um_registro
+          - name: erfme
             description: "Unidade de medida do registro"
-          - name: qtd_upp
+          - name: bpmng
             description: "Quantidade na unidade do preço do pedido"
-          - name: upp
+          - name: bprme
             description: "Unidade do preço do pedido"
-          - name: doc_compras
+          - name: ebeln
             description: "Nº do documento de compras"
-          - name: item
+          - name: ebelp
             description: "Número do item do documento de compras"
-          - name: nseqclasscont
+          - name: zekkn
             description: "Nº seqüencial da classificação contábil"
-          - name: recbmto_concl
+          - name: elikz
             description: "Código de recebimento concluído"
-          - name: controle_preco
+          - name: vprsv
             description: "Código de controle de preço"
-          - name: unidade_preco
+          - name: peinh
             description: "Unidade preço"
-          - name: area_avaliacao
+          - name: bwkey
             description: "Área de avaliação"
-          - name: tipo_avaliacao
+          - name: bwtar
             description: "Tipo de avaliação"
-          - name: stringvals
+          - name: bustw
             description: "Cadeia de contabilização para valores"
-          - name: valor_fatura
+          - name: rewrt
             description: "Valor da fatura entrado em moeda interna"
-          - name: val_fatura_me
+          - name: rewwr
             description: "Valor faturas registradas - moeda estrangeira"
-          - name: mont
+          - name: bonfb
             description: "Montante c/direito a bônus em moeda interna (MI)"
-          - name: montante
+          - name: bualt
             description: "Montante lançado no controle preço alternativo"
-          - name: ctrlpreco_alter
+          - name: psalt
             description: "Controle de preço alternativo"
-          - name: preco_novo
+          - name: nprei
             description: "Preço novo"
-          - name: debito_poster
+          - name: tbtkz
             description: "Código: ajuste posterior"
-          - name: mt_bloqueio_prc
+          - name: spgrp
             description: "Motivo do bloqueio: preço"
-          - name: mt_bloqueio_qtd
+          - name: spgrm
             description: "Motivo do bloqueio: quantidade"
-          - name: mot_bloq_data
+          - name: spgrt
             description: "Motivo do bloqueio: data"
-          - name: mot_bloq_qupp
+          - name: spgrg
             description: "Motivo do bloqueio: quantidade em unidade do preço do pedido"
-          - name: mot_bloq_proj
+          - name: spgrv
             description: "Motivo do bloqueio: orçamento do projeto"
-          - name: motbloqueio_man
+          - name: spgrq
             description: "Motivo do bloqueio manual"
-          - name: nidfisiva
+          - name: stceg
             description: "Nº de identificação fiscal de IVA"
-          - name: pais_de_destino
+          - name: egbld
             description: "País de destino p/fornecimento da mercadoria"
-          - name: pais_fornecedor
+          - name: eglld
             description: "País fornecedor da mercadoria"
-          - name: mot_diferenca
+          - name: rstgr
             description: "Motivo diferença em pagamentos"
-          - name: ano_de_entrada
+          - name: ryacq
             description: "Ano de entrada"
-          - name: periodo_aquis
+          - name: rpacq
             description: "Período de aquisição"
-          - name: diferenc_realiz
+          - name: rdiff
             description: "Ganhos/perdas realizados(as) pela diferença de câmbio"
-          - name: diferenca_realiz_2
+          - name: rdif2
             description: "Diferença de câmbio realizada para moeda interna-2"
-          - name: centro_de_lucro
+          - name: prctr
             description: "Centro de lucro"
-          - name: ctarazao_manual
+          - name: xhkom
             description: "Código: classificação contábil manual na conta do Razão ?"
-          - name: joint_venture
+          - name: vname
             description: "Joint venture"
-          - name: tipo_de_custos
+          - name: recid
             description: "Tipo de custos"
-          - name: grupo_particip
+          - name: egrup
             description: "Grupo de participação"
-          - name: parceiro
+          - name: vptnr
             description: "Nº cliente do parceiro"
-          - name: tipo_contrato
+          - name: vertt
             description: "Tipo de contrato"
-          - name: n_contrato
+          - name: vertn
             description: "Nº contrato"
-          - name: tipo_movimento
+          - name: vbewa
             description: "Tp.movimento"
-          - name: deposito
+          - name: depot
             description: "Depósito"
-          - name: domiciliofiscal
+          - name: txjcd
             description: "Domicílio fiscal"
-          - name: chv_bensimoveis
+          - name: imkey
             description: "Chave interna para objeto de bens imóveis"
-          - name: data_ref
+          - name: dabrz
             description: "Data de referência para liquidação"
-          - name: regist_opcional
+          - name: popts
             description: "Taxa de opcão - imóveis"
-          - name: item_financeiro
+          - name: fipos
             description: "Item financeiro"
-          - name: objeto_de_custo
+          - name: kstrg
             description: "Objeto de custo"
-          - name: diagrede
+          - name: nplnr
             description: "Nº diagrama de rede para classificação contábil"
-          - name: n_roteiro_op
+          - name: aufpl
             description: "Nº de roteiro de operações na ordem"
-          - name: numrd
+          - name: aplzl
             description: "Numerador geral da ordem"
-          - name: elemento_pep
+          - name: projk
             description: "Elemento do plano da estrutura do projeto (elemento PEP)"
-          - name: obj_resultado
+          - name: paobjnr
             description: "Nº para objetos resultado (CO-PA)"
-          - name: subn
+          - name: pasubnr
             description: "Histórico de modificação para objetos de resultado (CO-PA)"
-          - name: mot_bloq_montante
+          - name: spgrs
             description: "Motivo do bloqueio: montante"
-          - name: mot_bloq_qld
+          - name: spgrc
             description: "Motivo do bloqueio: qualidade"
-          - name: cod_faturamento
+          - name: btype
             description: "Categoria da liquidação"
-          - name: classe_partic
+          - name: etype
             description: "Classe de participação"
-          - name: neg_triangul_ue
+          - name: xegdr
             description: "Código: negócio triangular no âmbito da UE?"
-          - name: n_sequencial
+          - name: lnran
             description: "Nº sequencial da partida individual do imob.no exercício"
-          - name: grupo_de_origem
+          - name: hrkft
             description: "Grupo de origem como subdivisão da classe de custo"
-          - name: mont_mi2
+          - name: dmbe2
             description: "Montante na 2ª moeda interna"
-          - name: mont_mi3
+          - name: dmbe3
             description: "Montante na 3ª moeda interna"
-          - name: montante
+          - name: dmb21
             description: "Montante na moeda interna-2 para repartição do imposto"
-          - name: montante
+          - name: dmb22
             description: "Montante na moeda interna-2 para repartição do imposto"
-          - name: montante
+          - name: dmb23
             description: "Montante na moeda interna-2 para repartição do imposto"
-          - name: montante
+          - name: dmb31
             description: "Montante na moeda interna-3 para repartição do imposto"
-          - name: montante
+          - name: dmb32
             description: "Montante na moeda interna-3 para repartição do imposto"
-          - name: montante
+          - name: dmb33
             description: "Montante na moeda interna-3 para repartição do imposto"
-          - name: iva_mi_2
+          - name: mwst2
             description: "Montante IVA na moeda interna-2"
-          - name: imposto_mi_3
+          - name: mwst3
             description: "Montante do imposto na moeda interna-3"
-          - name: naodedut_mi2
+          - name: navh2
             description: "IVA suportado não dedutível na moeda interna-2"
-          - name: naodedut_mi3
+          - name: navh3
             description: "IVA suportado não dedutível na moeda interna-3"
-          - name: desconto_mi2
+          - name: sknt2
             description: "Montante do desconto na moeda interna-2"
-          - name: desconto_mi3
+          - name: sknt3
             description: "Montante do desconto na moeda interna-3"
-          - name: difer_avaliacao_3
+          - name: bdif3
             description: "Diferença de avaliação para a 3ª moeda interna"
-          - name: dif_realizada_3
+          - name: rdif3
             description: "Diferença de câmbio para a moeda interna-3"
-          - name: metodo_atraves_do_qual_e_apurado_o_montante_em_moeda_interna
+          - name: hwmet
             description: "Método através do qual é apurado o montante em moeda interna"
-          - name: met_atualizacao
+          - name: glupm
             description: "Método de atualização para integração FM - FI-CA"
-          - name: anular_compensacao
+          - name: xragl
             description: "Código: anular compensação"
-          - name: supl_frm_pgto
+          - name: uzawe
             description: "Suplemento à forma de pagamento"
-          - name: cta_alternativa
+          - name: lokkt
             description: "Nº conta alternativo na empresa"
-          - name: cen_financeiro
+          - name: fistl
             description: "Centro financeiro"
-          - name: fundos
+          - name: geber
             description: "Fundos"
-          - name: empresa_iva
+          - name: stbuk
             description: "Empresa de imposto"
-          - name: mont_base_imposto_mi2
+          - name: txbh2
             description: "Base do imposto / base do imposto de origem em MI-2"
-          - name: montante_base_imposto_mi_3
+          - name: txbh3
             description: "Base de imposto / base de imposto original em MI-3"
-          - name: cenlcr_parcs
+          - name: pprct
             description: "Centro de lucro de parceiros"
-          - name: chave_refer_1
+          - name: xref1
             description: "Chave de referência do parceiro de negócios"
-          - name: chave_refer_2
+          - name: xref2
             description: "Chave de referência do parceiro de negócios"
-          - name: fundos_destins
+          - name: kblnr
             description: "Nº documento fundos destinados"
-          - name: item_documento
+          - name: kblpos
             description: "Item doc.fundos destinados"
-          - name: imposto_estatist
+          - name: sttax
             description: "Montante de imposto como info.estatística em moeda de doc."
-          - name: area_funcional
+          - name: fkber
             description: "Área funcional"
-          - name: item_origem
+          - name: obzei
             description: "Nº linha lançamento no documento original"
-          - name: lancamento_neg
+          - name: xnegp
             description: "Código: lançamento negativo"
-          - name: item_cart_pagto
+          - name: rfzei
             description: "Item de cartão de pagamento"
-          - name: liquidacao
+          - name: ccbtc
             description: "Cartões de pagamento: processo de liquidação"
-          - name: area_ctrl_cred
+          - name: kkber
             description: "Área de controle de créditos"
-          - name: pagador
+          - name: empfb
             description: "Recebedor de pagamento/pagador"
-          - name: chave_refer_3
+          - name: xref3
             description: "Chave de referência para item de doc."
-          - name: instrucao_1
+          - name: dtws1
             description: "Instrução 1"
-          - name: instrucao_2
+          - name: dtws2
             description: "Instrução 2"
-          - name: instrucao_3
+          - name: dtws3
             description: "Instrução 3"
-          - name: instrucao_4
+          - name: dtws4
             description: "Instrução 4"
-          - name: cod_atividade
+          - name: gricd
             description: "Código de atividade p/imposto sobre o rendimento bruto"
-          - name: regiao
+          - name: grirg
             description: "Região (estado, província, condado)"
-          - name: tp_distribuicao
+          - name: gityp
             description: "Tipo de distribuição para imposto salarial"
-          - name: pagto_a_caminho
+          - name: xpypr
             description: "Código: partida bloqueada pelo programa de pagamento"
-          - name: ref_pgto
+          - name: kidno
             description: "Referência de pagamento"
-          - name: mont_garantido
+          - name: absbt
             description: "Administração de créditos: montante garantido"
-          - name: indice_inflacao
+          - name: idxsp
             description: "Índice de inflação"
-          - name: ultimo_ajuste
+          - name: linfv
             description: "Última data de ajuste"
-          - name: categoria_clc
+          - name: kontt
             description: "Categoria de classificação contábil"
-          - name: clc
+          - name: kontl
             description: "Barra de classific.contábil p/clas.cont.específicas do setor"
-          - name: data_do_imposto
+          - name: txdat
             description: "Data p/determinação de taxas de imposto"
-          - name: item_compens
+          - name: agzei
             description: "Item de compensação"
-          - name: moeda_pagto
+          - name: pycur
             description: "Moeda para o pagamento automático"
-          - name: mont_moedpgt
+          - name: pyamt
             description: "Montante em moeda de pagamento"
-          - name: loc_negocios
+          - name: bupla
             description: "Local de negócios"
-          - name: irf_secao
+          - name: secco
             description: "IRF - seção"
-          - name: tipo_ativid
+          - name: lstar
             description: "Tipo de atividade"
-          - name: codigo_d_cessao
+          - name: cession_kz
             description: "Código de cessão"
-          - name: proc_empresar
+          - name: prznr
             description: "Processo empresarial"
-          - name: diferenc_realiz
+          - name: ppdiff
             description: "Ganhos/perdas realiz.pela difer.câmbio 1ª MI(pgtos.parciais)"
-          - name: diferenc_realiz
+          - name: ppdif2
             description: "Ganhos/perdas realiz.pela difer.câmbio 2ª MI(pgtos.parciais)"
-          - name: diferenc_realiz
+          - name: ppdif3
             description: "Ganhos/perdas realiz.pela difer.câmbio 3ª MI(pgtos.parciais)"
-          - name: juros_mora_mi
+          - name: penlc1
             description: "Montante juros de mora primeira MI"
-          - name: juros_mora_2mi
+          - name: penlc2
             description: "Montante juros de mora segunda MI"
-          - name: juros_mora_3mi
+          - name: penlc3
             description: "Montante juros de mora terceira MI"
-          - name: juros_de_mora
+          - name: penfc
             description: "Montante juros de mora moeda do documento"
-          - name: dias_de_atraso
+          - name: pendays
             description: "Número de dias para cálculo dos juros de mora"
-          - name: motivo_p_atraso
+          - name: penrc
             description: "Motivo para o pagamento atrasado"
-          - name: subspubl
+          - name: grant_nbr
             description: "Subsídio público"
-          - name: quota_trib_fi_ca
+          - name: sctax
             description: "Quota tributável FI-CA moeda interna"
-          - name: area_funcional
+          - name: fkber_long
             description: "Área funcional"
-          - name: execucao
+          - name: gmvkz
             description: "Partida em execução"
-          - name: cta_receb_adic
+          - name: srtype
             description: "Tipo da conta a receber adicional"
-          - name: chavbensimov_re
+          - name: intreno
             description: "Imóveis internos codificação dos dados mestre"
-          - name: progr_orcamento
+          - name: measure
             description: "Programa orçamento"
-          - name: exerc_compens
+          - name: auggj
             description: "Exercício fiscal do doc.de compensação"
-          - name: exclusao_ppa
+          - name: ppa_ex_ind
             description: "Código de exclusão PPA"
-          - name: linha_lcto
+          - name: docln
             description: "Linha de lançamento de 6 caracteres p/ledger"
-          - name: segmento
+          - name: segment
             description: "Segmento para o reporting do segmento"
-          - name: segm_parceiro
+          - name: psegment
             description: "Segmento do parceiro para reporting do segmento"
-          - name: area_func_parc
+          - name: pfkber
             description: "Área funcional do parceiro"
-          - name: id_da_conta
+          - name: hktid
             description: "Chave breve para detalhes da conta"
-          - name: classe_de_custo
+          - name: kstar
             description: "Classe de custo"
-          - name: compespgrpledgers
+          - name: xlgclr
             description: "Compensação específica de grupo de ledgers"
-          - name: nitem_doc_imposto
+          - name: taxps
             description: "Nº de item do documento p/documento de imposto"
-          - name: fsp
+          - name: pays_prov
             description: "Fornecedor de serviços de pagamento"
-          - name: refpgtofornservpgto
+          - name: pays_tran
             description: "Referência do pagamento do fornecedor serviços de pagamento"
-          - name: ref_mandato
+          - name: mndid
             description: "Referência única ao mandato por recebedor do pagamento"
-          - name: liberado
+          - name: xfrge_bseg
             description: "Liberação de pagamento efetuada"
-          - name: sinal_qtd
+          - name: squan
             description: "Sinal positivo/negativo da quantidade"
-          - name: tipo_d3_provisao
+          - name: acrobjtype
             description: "Tipo do objeto de provisão"
-          - name: id_objeto_provisao
+          - name: acrobj_id
             description: "Identificador do objeto de provisão"
-          - name: id_subobj_provisao
+          - name: acrsobj_id
             description: "Identificador do subobjeto de provisão"
-          - name: tp_item_subobj_prov
+          - name: acritmtype
             description: "Tipo do item do subobjeto de provisão"
-          - name: tp_objeto_avaliacao
+          - name: valobjtype
             description: "Tipo do objeto de avaliação"
-          - name: id_objeto_avaliacao
+          - name: valobj_id
             description: "Identificador do objeto de avaliação"
-          - name: id_subobjeto_aval
+          - name: valsobj_id
             description: "Identificador do subobjeto de avaliação"
-          - name: empresa
+          - name: re_bukrs
             description: "Razão baseado em pagamento: empresa para despesas/rendimento"
-          - name: ctadsp_rnd_rbp
+          - name: re_account
             description: "Razão baseado em pagamento: conta despesas ou rendimentos"
-          - name: fundos_parc
+          - name: pgeber
             description: "Fundos parc."
-          - name: subspubl_parc
+          - name: pgrant_nbr
             description: "Subsídio público do parceiro"
-          - name: per_orcamento
+          - name: budget_pd
             description: "AdO: período de orçamento"
-          - name: parc_perorcmto
+          - name: pbudget_pd
             description: "AdO: parceiro período de orçamento"
           - name: j_1tpbupl
-          - name: dtinicio_prprstsrvc
+          - name: perop_beg
             description: "Dt.início período prestação serviços"
-          - name: dtfinprprstservs
+          - name: perop_end
             description: "Data final do período de prestação de serviços"
-          - name: pgtorap
+          - name: fastpay
             description: "PPA: código para pagamento rápido"
           - name: ignr_ivref
-          - name: governo_us
+          - name: fmfgus_key
             description: "Campos do governo dos Estados Unidos"
-          - name: n_docreferencia_ado
+          - name: fmxdocnr
             description: "Nº do documento de referência na administração do orçamento"
-          - name: ano_referencia_ado
+          - name: fmxyear
             description: "Ano de referência administração do orçamento"
-          - name: part_indiv_ref_ado
+          - name: fmxdocln
             description: "Partida individual referência na administração do orçamento"
-          - name: serefclasscontado
+          - name: fmxzekkn
             description: "Sequência de referências das classificações contábeis na AdO"
-          - name: mes_prod
+          - name: prodper
             description: "Mês de produção (para determinar período e ano)"
           - name: gst_part
           - name: plc_sup

@@ -1,0 +1,91 @@
+sources:
+  - name: dataspherev2
+    database: BRONZE
+    schema: dataspherev2
+    tables:
+      - name: knkk
+        description: "Mestre clientes administr.de créditos: dados área controle"
+        config:
+          materialized: table
+          unique_key: "hash_pk"
+          tags: ["dataspherev2", "silver"]
+        columns:
+          - name: mandt
+            description: "Mandante"
+          - name: kunnr
+            description: "Nº cliente"
+          - name: kkber
+            description: "Área de controle de créditos"
+          - name: klimk
+            description: "Limite de crédito do cliente"
+          - name: knkli
+            description: "Nº conta de cliente c/respectivos dados de limite de crédito"
+          - name: sauft
+            description: "Total de valores de ordens p/controle de limite de crédito"
+          - name: skfor
+            description: "Total de dívidas a receber (p/controle de limite de crédito)"
+          - name: ssobl
+            description: "Compromisso especial relevante p/verificação de lim.crédito"
+          - name: uedat
+            description: "Data em que o limite de crédito foi excedido"
+          - name: xchng
+            description: "Código: limite de crédito deve ser criado de novo"
+          - name: ernam
+            description: "Nome do responsável que adicionou o objeto"
+          - name: erdat
+            description: "Data de criação do registro"
+          - name: ctlpc
+            description: "Administração de crédito: classe de risco"
+          - name: dtrev
+            description: "Última verificação do crédito do cliente (interna)"
+          - name: crblb
+            description: "Código: Bloqueio resultante da gestão de crédito ?"
+          - name: sbgrp
+            description: "Grupo de responsáveis p/ administração de créditos"
+          - name: nxtrv
+            description: "Verificação seguinte"
+          - name: kraus
+            description: "Nº informação de crédito"
+          - name: paydb
+            description: "não utilizar mais - substituído oelo elemento dados DBPAY_CM"
+          - name: dbrat
+            description: "não utilizar mais - substituído pelo elemento dados DBRTG_CM"
+          - name: revdb
+            description: "Última verificação (externa)"
+          - name: aedat
+            description: "Data da última modificação"
+          - name: aetxt
+            description: "Data da última modificação de texto"
+          - name: grupp
+            description: "Grupo de crédito de cliente"
+          - name: aenam
+            description: "Nome do último modificador"
+          - name: sbdat
+            description: "Data de apresentação"
+          - name: kdgrp
+            description: "Grupo de clientes"
+          - name: cashd
+            description: "Data do último pagamento"
+          - name: casha
+            description: "Montante do último pagamento"
+          - name: cashc
+            description: "Moeda do último pagamento"
+          - name: dbpay
+            description: "Indicador da assiduidade de pagamento"
+          - name: dbrtg
+            description: "Classificação"
+          - name: dbekr
+            description: "Limite de crédito recomendado"
+          - name: dbwae
+            description: "Moeda do limite de crédito recomendado"
+          - name: dbmon
+            description: "Data monitorização"
+          - name: absbt
+            description: "Total de créditos garantidos"
+          # Metadados de Auditoria da Pipeline
+          - name: hash_pk
+            description: "Chave primária MD5 gerada artificialmente para identificação única do registro"
+          - name: dt_ingestao
+            description: "Data e hora da ingestão na bronze"
+          - name: source
+            description: "Identificador da fonte dos dados"

@@ -1,0 +1,771 @@
+sources:
+  - name: dataspherev2
+    database: BRONZE
+    schema: dataspherev2
+    tables:
+      - name: bseg
+        description: "Tabela Silver contendo os dados de segmento (itens de linha) dos documentos contábeis do SAP (BSEG). Esta tabela armazena os lançamentos detalhados de contas do Razão, Clientes e Fornecedores com tratamento de nulos e tipos de dados."
+        config:
+          materialized: incremental
+          incremental_strategy: "delete+insert"
+          unique_key: "hash_pk"
+          tags: ["dataspherev2", "silver"]
+
+        columns:
+          # Chaves Primárias / Identificadores
+          - name: mandt
+            description: "Mandante (Cliente) do sistema SAP."
+          - name: bukrs
+            description: "Código da Empresa (Business Unit/Company Code)."
+          - name: belnr
+            description: "Número do documento contábil."
+          - name: gjahr
+            description: "Exercício fiscal (Ano do lançamento)."
+          - name: buzei
+            description: "Número da linha de lançamento (Item de linha no documento)."
+
+          # Campos de Negócio e Indicadores
+          - name: buzid
+            description: "Código de identificação do item de linha."
+          - name: augdt
+            description: "Data de compensação da partida/documento."
+          - name: augcp
+            description: "Data de lançamento da compensação."
+          - name: augbl
+            description: "Número do documento de compensação."
+          - name: bschl
+            description: "Chave de lançamento (Determina se é débito/crédito e o tipo de conta)."
+          - name: koart
+            description: "Tipo de conta (Ex: S = Razão, D = Cliente, K = Fornecedor, A = Ativo)."
+          - name: umskz
+            description: "Código do Razão Especial (Código CME)."
+          - name: umsks
+            description: "Tipo de Razão Especial."
+          - name: zumsk
+            description: "Código de Razão Especial de destino."
+          - name: shkzg
+            description: "Código de Débito/Crédito (S = Débito, H = Crédito)."
+          - name: gsber
+            description: "Divisão (Business Area)."
+          - name: pargb
+            description: "Divisão do parceiro de negócios."
+          - name: mwskz
+            description: "Código de imposto (Tax Code)."
+          - name: qsskz
+            description: "Código de retenção de imposto na fonte."
+
+          # Valores e Moedas
+          - name: dmbtr
+            description: "Montante em moeda local."
+          - name: wrbtr
+            description: "Montante em moeda do documento (transação)."
+          - name: kzbtr
+            description: "Montante de contrapartida em moeda local."
+          - name: pswbt
+            description: "Montante de pagamento na moeda correspondente."
+          - name: pswsl
+            description: "Chave da moeda de pagamento."
+          - name: txbhw
+            description: "Montante base de imposto em moeda local."
+          - name: txbfw
+            description: "Montante base de imposto em moeda do documento."
+          - name: mwsts
+            description: "Valor do imposto em moeda local."
+          - name: wmwst
+            description: "Valor do imposto em moeda do documento."
+          - name: hwbas
+            description: "Montante base do imposto em moeda local."
+          - name: fwbas
+            description: "Montante base do imposto em moeda estrangeira."
+          - name: hwzuz
+            description: "Valor adicional de imposto em moeda local."
+          - name: fwzuz
+            description: "Valor adicional de imposto em moeda estrangeira."
+          - name: shzuz
+            description: "Indicador para valor de imposto adicional."
+          - name: stekz
+            description: "Origem do imposto."
+          - name: mwart
+            description: "Tipo de imposto (Entrada/Saída)."
+          - name: txgrp
+            description: "Grupo de impostos."
+          - name: ktosl
+            description: "Chave de transação para determinação de contas de impostos."
+          - name: qsshb
+            description: "Montante base para retenção de imposto."
+          - name: kursr
+            description: "Taxa de câmbio para o lançamento."
+          - name: gbetr
+            description: "Montante de garantia."
+          - name: bdiff
+            description: "Diferença de avaliação em moeda local."
+          - name: bdif2
+            description: "Segunda diferença de avaliação em moeda local."
+
+          # Datas e Textos Explicativos
+          - name: valut
+            description: "Data de valor (Value Date - Relevante para Tesouraria)."
+          - name: zuonr
+            description: "Campo de atribuição (Usado para conciliação)."
+          - name: sgtxt
+            description: "Texto explicativo do item de linha."
+          - name: zinkz
+            description: "Indicador de cálculo de juros."
+
+          # Classificações Contábeis e Logística
+          - name: vbund
+            description: "Código da empresa parceira (Consolidação do grupo)."
+          - name: bewar
+            description: "Tipo de movimento (Consolidação de Ativos/Estoque)."
+          - name: altkt
+            description: "Número da conta alternativa do Razão."
+          - name: vorgn
+            description: "Tipo de transação/operação de negócio."
+          - name: fdlev
+            description: "Nível de planejamento de tesouraria."
+          - name: fdgrp
+            description: "Grupo de planejamento de tesouraria."
+          - name: fdwbt
+            description: "Montante planejado em moeda de tesouraria."
+          - name: fdtag
+            description: "Data de planejamento de tesouraria."
+          - name: fkont
+            description: "Conta financeira."
+          - name: kokrs
+            description: "Área de Contabilidade de Custos (Controlling Area)."
+          - name: kostl
+            description: "Centro de Custo (Cost Center)."
+          - name: projn
+            description: "Número do projeto (Estrutura antiga)."
+          - name: aufnr
+            description: "Número da Ordem Interna (Internal Order)."
+          - name: vbeln
+            description: "Número do Documento de Vendas (SD)."
+          - name: vbel2
+            description: "Documento de vendas secundário ou de referência."
+          - name: posn2
+            description: "Item do documento de vendas secundário."
+          - name: eten2
+            description: "Número da divisão de remessa."
+          - name: anln1
+            description: "Número principal do Ativo Imobilizado."
+          - name: anln2
+            description: "Subnúmero do Ativo Imobilizado."
+          - name: anbwa
+            description: "Tipo de movimento do Ativo Imobilizado."
+          - name: bzdat
+            description: "Data de referência do Ativo Imobilizado."
+          - name: pernr
+            description: "Número de pessoal (Identificador do funcionário)."
+
+          # Indicadores Booleanos (X = Verdadeiro)
+          - name: xumsw
+            description: "Indicador: Item relevante para o volume de negócios."
+          - name: xhres
+            description: "Indicador: Conta de balanço residente."
+          - name: xkres
+            description: "Indicador: Conta de cliente residente."
+          - name: xopvw
+            description: "Indicador: Gestão de partidas em aberto."
+          - name: xcpdd
+            description: "Indicador: Dados de endereço individuais (CPD)."
+          - name: xskst
+            description: "Indicador: Estatístico por centro de custo."
+          - name: xsauf
+            description: "Indicador: Estatístico por ordem."
+          - name: xspro
+            description: "Indicador: Estatístico por projeto."
+          - name: xserg
+            description: "Indicador: Estatístico por objeto de resultado."
+          - name: xfakt
+            description: "Indicador: Item faturado."
+          - name: xuman
+            description: "Indicador: Lançamento manual em conta de conciliação."
+          - name: xanet
+            description: "Indicador: Lançamento líquido de ativo imobilizado."
+          - name: xskrl
+            description: "Indicador: Desconto não elegível."
+          - name: xinve
+            description: "Indicador: Investimento."
+          - name: xpanz
+            description: "Indicador: Item em exibição."
+          - name: xauto
+            description: "Indicador: Item gerado automaticamente pelo sistema."
+          - name: xncop
+            description: "Indicador: Item não copiável."
+          - name: xzahl
+            description: "Indicador: Lançamento de pagamento."
+
+          # Contas de Terceiros e Razão
+          - name: saknr
+            description: "Número da conta do Razão (G/L Account)."
+          - name: hkont
+            description: "Conta do Razão de controle (G/L Account vinculada)."
+          - name: kunnr
+            description: "Código do Cliente (Customer Account)."
+          - name: lifnr
+            description: "Código do Fornecedor (Vendor Account)."
+          - name: filkd
+            description: "Código da agência/filial parceira."
+          - name: xbilk
+            description: "Indicador: Conta de Balanço."
+          - name: gvtyp
+            description: "Tipo de conta de resultado (P&L)."
+          - name: hzuon
+            description: "Atribuição secundária ou de contrapartida."
+
+          # Dados de Condições de Pagamento e Vencimento
+          - name: zfbdt
+            description: "Data base para cálculo do vencimento."
+          - name: zterm
+            description: "Chave de condições de pagamento."
+          - name: zbd1t
+            description: "Dias para o primeiro período de desconto."
+          - name: zbd2t
+            description: "Dias para o segundo período de desconto."
+          - name: zbd3t
+            description: "Prazo para pagamento líquido (vencimento total)."
+          - name: zbd1p
+            description: "Taxa de desconto do primeiro período."
+          - name: zbd2p
+            description: "Taxa de desconto do segundo período."
+          - name: skfbt
+            description: "Montante elegível para desconto."
+          - name: sknto
+            description: "Valor do desconto em moeda local."
+          - name: wskto
+            description: "Valor do desconto em moeda do documento."
+          - name: zlsch
+            description: "Forma de pagamento (Ex: Boleto, Transferência, Pix)."
+          - name: zlspr
+            description: "Bloqueio de pagamento."
+          - name: zbfix
+            description: "Condição de pagamento fixa."
+          - name: hbkid
+            description: "Chave do banco próprio da empresa."
+          - name: bvtyp
+            description: "Tipo de relação bancária do parceiro."
+          - name: nebtr
+            description: "Valor líquido do pagamento."
+
+          # Campos de Impostos Múltiplos e Repetições
+          - name: mwsk1
+            description: "Código de imposto adicional 1."
+          - name: dmbt1
+            description: "Valor do imposto 1 em moeda local."
+          - name: wrbt1
+            description: "Valor do imposto 1 em moeda do documento."
+          - name: mwsk2
+            description: "Código de imposto adicional 2."
+          - name: dmbt2
+            description: "Valor do imposto 2 em moeda local."
+          - name: wrbt2
+            description: "Valor do imposto 2 em moeda do documento."
+          - name: mwsk3
+            description: "Código de imposto adicional 3."
+          - name: dmbt3
+            description: "Valor do imposto 3 em moeda local."
+          - name: wrbt3
+            description: "Valor do imposto 3 em moeda do documento."
+
+          # Referências de Ajustes e Estornos
+          - name: rebzg
+            description: "Número do documento de referência original."
+          - name: rebzj
+            description: "Exercício do documento de referência original."
+          - name: rebzz
+            description: "Item de linha do documento de referência original."
+          - name: rebzt
+            description: "Tipo de referência (Ex: Nota de Crédito, Ajuste)."
+          - name: zollt
+            description: "Tarifa aduaneira."
+          - name: zolld
+            description: "Data da tarifa aduaneira."
+          - name: lzbkz
+            description: "Código do banco central para pagamentos externos."
+          - name: landl
+            description: "País de fornecimento do serviço."
+          - name: diekz
+            description: "Indicador de serviço prestado no exterior."
+          - name: samnr
+            description: "Número de liquidação coletiva."
+          - name: abper
+            description: "Período de liquidação."
+          - name: vrskz
+            description: "Indicador de seguro."
+          - name: vrsdt
+            description: "Data do seguro."
+
+          # Informações de Letras de Câmbio e Cobrança
+          - name: disbn
+            description: "Número do documento de desconto de letra de câmbio."
+          - name: disbj
+            description: "Exercício do documento de desconto."
+          - name: disbz
+            description: "Item de linha do documento de desconto."
+          - name: wverw
+            description: "Uso da letra de câmbio."
+          - name: anfbn
+            description: "Número do documento de solicitação de letra de câmbio."
+          - name: anfbj
+            description: "Exercício da solicitação de letra de câmbio."
+          - name: anfbu
+            description: "Empresa da solicitação de letra de câmbio."
+          - name: anfae
+            description: "Data de vencimento da solicitação."
+          - name: blnbt
+            description: "Montante preferencial de pagamento."
+          - name: blnkz
+            description: "Código de pagamento preferencial."
+          - name: blnpz
+            description: "Percentual preferencial."
+
+          # Dados de Cobrança / Notificação (Dunning)
+          - name: mschl
+            description: "Chave de notificação/cobrança automática."
+          - name: mansp
+            description: "Bloqueio de notificação de cobrança."
+          - name: madat
+            description: "Data da última notificação de cobrança."
+          - name: manst
+            description: "Nível da última notificação de cobrança."
+          - name: maber
+            description: "Área de notificação de cobrança."
+
+          # Contas Suíças / ISR (Padrões de Pagamento locais)
+          - name: esrnr
+            description: "Número de assinante ISR (padrão suíço de cobrança)."
+          - name: esrre
+            description: "Referência de pagamento ISR."
+          - name: esrpz
+            description: "Dígito de controle ISR."
+          - name: klibt
+            description: "Limite de crédito acordado."
+          - name: qsznr
+            description: "Número do certificado de isenção de imposto na fonte."
+          - name: qbshb
+            description: "Montante do imposto retido na fonte."
+          - name: qsfbt
+            description: "Montante isento de retenção de imposto."
+          - name: navhw
+            description: "Imposto sobre valor agregado não dedutível em moeda local."
+          - name: navfw
+            description: "Imposto sobre valor agregado não dedutível em moeda estrangeira."
+
+          # Dados de Logística, Estoque e Compras
+          - name: matnr
+            description: "Código do Material."
+          - name: werks
+            description: "Centro Logístico (Plant)."
+          - name: menge
+            description: "Quantidade movimentada."
+          - name: meins
+            description: "Unidade de medida base."
+          - name: erfmg
+            description: "Quantidade na unidade de medida de entrada."
+          - name: erfme
+            description: "Unidade de medida de entrada."
+          - name: bpmng
+            description: "Quantidade na unidade de preço do pedido de compras."
+          - name: bprme
+            description: "Unidade de preço do pedido de compras."
+          - name: ebeln
+            description: "Número do Pedido de Compras (Purchasing Document)."
+          - name: ebelp
+            description: "Item do pedido de compras."
+          - name: zekkn
+            description: "Número sequencial da classificação contábil no pedido."
+          - name: elikz
+            description: "Indicador de entrega final/concluída."
+          - name: vprsv
+            description: "Controle de preço do estoque (S = Padrão, V = Médio Móvel)."
+          - name: peinh
+            description: "Unidade de preço do estoque."
+          - name: bwkey
+            description: "Área de avaliação do estoque."
+          - name: bwtar
+            description: "Tipo de avaliação de estoque."
+          - name: bustw
+            description: "String de postagem contábil (Uso interno SAP)."
+          - name: rewrt
+            description: "Valor da fatura recebida na moeda local."
+          - name: rewwr
+            description: "Valor da fatura recebida na moeda estrangeira."
+          - name: bonfb
+            description: "Montante elegível para bônus."
+          - name: bualt
+            description: "Quantidade de consumo alternativo."
+          - name: psalt
+            description: "Preço alternativo."
+          - name: nprei
+            description: "Novo preço calculated."
+          - name: tbtkz
+            description: "Indicador de item de transferência de estoque."
+
+          # Indicadores de Bloqueio por Divergência (Invoice Verification)
+          - name: spgrp
+            description: "Bloqueio de preço."
+          - name: spgrm
+            description: "Bloqueio de quantidade."
+          - name: spgrt
+            description: "Bloqueio de data/prazo."
+          - name: spgrg
+            description: "Bloqueio de valor total."
+          - name: spgrv
+            description: "Bloqueio por desvio de qualidade."
+          - name: spgrq
+            description: "Bloqueio por falta de quantidade."
+          - name: spgrs
+            description: "Bloqueio por motivos contratuais."
+          - name: spgrc
+            description: "Bloqueio por validação de limite de tolerância."
+
+          # Outros Dados Geográficos, Fiscais e CO (Controlling)
+          - name: stceg
+            description: "Número de identificação fiscal europeu (VAT Registration Number)."
+          - name: egbld
+            description: "País de origem da mercadoria/serviço."
+          - name: eglld
+            description: "País de destino da mercadoria/serviço."
+          - name: rstgr
+            description: "Código do motivo da divergência ou pagamento parcial."
+          - name: ryacq
+            description: "Ano de aquisição original do Ativo."
+          - name: rpacq
+            description: "Período de aquisição original do Ativo."
+          - name: rdiff
+            description: "Arredondamento em moeda local."
+          - name: rdif2
+            description: "Arredondamento em segunda moeda."
+          - name: prctr
+            description: "Centro de Lucro (Profit Center)."
+          - name: xhkom
+            description: "Indicador de lançamento de compensação de custos."
+
+          # Joint Venture Accounting (JVA) e Setor Público
+          - name: vname
+            description: "Nome da Joint Venture."
+          - name: recid
+            description: "Indicador de classe de recuperação (JVA Recovery Code)."
+          - name: egrup
+            description: "Grupo de participação societária (Equity Group)."
+          - name: vptnr
+            description: "Parceiro da Joint Venture."
+          - name: vertt
+            description: "Tipo de contrato ou acordo."
+          - name: vertn
+            description: "Número do contrato de Joint Venture."
+          - name: vbewa
+            description: "Tipo de fluxo de caixa ou movimento."
+          - name: depot
+            description: "Código do depósito de custódia de títulos."
+          - name: txjcd
+            description: "Código de Jurisdição Fiscal (Tax Jurisdiction Code - Comum nos EUA)."
+          - name: imkey
+            description: "Chave do objeto imobiliário (Real Estate Management)."
+          - name: dabrz
+            description: "Data de referência para liquidação."
+          - name: popts
+            description: "Percentual de opção de imposto."
+          - name: fipos
+            description: "Posição orçamentária (Setor Público)."
+          - name: kstrg
+            description: "Objeto de custo."
+          - name: nplnr
+            description: "Número da rede de projetos."
+          - name: aufpl
+            description: "Número interno do plano de operações da ordem."
+          - name: aplzl
+            description: "Contador interno para o item de linha da operação."
+          - name: projk
+            description: "Elemento PEP (WBS Element) da estrutura de projetos."
+          - name: paobjnr
+            description: "Número do objeto de resultado (CO-PA Profitability Segment)."
+          - name: pasubnr
+            description: "Subnúmero do segmento de rentabilidade."
+
+          # Moedas Paralelas Adicionais (Group Currency / Hard Currency)
+          - name: btype
+            description: "Tipo de negócio."
+          - name: etype
+            description: "Tipo de despesa ou custo."
+          - name: xegdr
+            description: "Indicador de impressão de documento fiscal europeu."
+          - name: lnran
+            description: "Número sequencial de ajuste de ativo."
+          - name: hrkft
+            description: "Origem dos custos secundários."
+          - name: dmbe2
+            description: "Montante na segunda moeda paralela/local."
+          - name: dmbe3
+            description: "Montante na terceira moeda paralela/local."
+          - name: dmb21
+            description: "Montante de imposto na segunda moeda local 1."
+          - name: dmb22
+            description: "Montante de imposto na segunda moeda local 2."
+          - name: dmb23
+            description: "Montante de imposto na segunda moeda local 3."
+          - name: dmb31
+            description: "Montante de imposto na terceira moeda local 1."
+          - name: dmb32
+            description: "Montante de imposto na terceira moeda local 2."
+          - name: dmb33
+            description: "Montante de imposto na terceira moeda local 3."
+          - name: mwst2
+            description: "Valor do imposto na segunda moeda local."
+          - name: mwst3
+            description: "Valor do imposto na terceira moeda local."
+          - name: navh2
+            description: "Imposto não dedutível na segunda moeda local."
+          - name: navh3
+            description: "Imposto não dedutível na terceira moeda local."
+          - name: sknt2
+            description: "Desconto concedido na segunda moeda local."
+          - name: sknt3
+            description: "Desconto concedido na terceira moeda local."
+          - name: bdif3
+            description: "Terceira diferença de avaliação em moeda local."
+          - name: rdif3
+            description: "Terceiro arredondamento em moeda local."
+
+          # Consolidação e Administração Pública
+          - name: hwmet
+            description: "Método de cálculo do montante em moeda local."
+          - name: glupm
+            description: "Método de atualização do Ledger do razão."
+          - name: xragl
+            description: "Indicador de reversão ou compensação activa."
+          - name: uzawe
+            description: "Forma de pagamento adicional / Suplemento da forma de pagamento."
+          - name: lokkt
+            description: "Número da conta local do Razão."
+          - name: fistl
+            description: "Centro financeiro (Funds Management)."
+          - name: geber
+            description: "Fundo público originário (Funds Management)."
+          - name: stbuk
+            description: "Empresa de origem do lançamento fiscal."
+          - name: txbh2
+            description: "Base tributária na segunda moeda local."
+          - name: txbh3
+            description: "Base tributária na terceira moeda local."
+          - name: pprct
+            description: "Centro de lucro parceiro (Intercompany)."
+          - name: xref1
+            description: "Chave de referência do usuário 1 (Campo livre)."
+          - name: xref2
+            description: "Chave de referência do usuário 2 (Campo livre)."
+          - name: kblnr
+            description: "Número do documento de reserva orçamentária."
+          - name: kblpos
+            description: "Item da reserva orçamentária."
+          - name: sttax
+            description: "Montante de imposto estatístico."
+          - name: fkber
+            description: "Área funcional (Functional Area para DRE por função)."
+          - name: obzei
+            description: "Número do item de linha original."
+          - name: xnegp
+            description: "Indicador de lançamento negativo (Estorno de sinal de Débito/Crédito)."
+          - name: rfzei
+            description: "Indicador de item de referência fiscal."
+          - name: ccbtc
+            description: "Código de liquidação de cartão de crédito."
+          - name: kkber
+            description: "Área de controle de crédito (Credit Management Area)."
+          - name: empfb
+            description: "Recebedor do pagamento."
+          - name: xref3
+            description: "Chave de referência do usuário 3 (Campo de texto longo/livre)."
+
+          # Dados de Letras de Câmbio Nacionais e Campos Adicionais
+          - name: dtws1
+            description: "Instrução de cobrança bancária 1."
+          - name: dtws2
+            description: "Instrução de cobrança bancária 2."
+          - name: dtws3
+            description: "Instrução de cobrança bancária 3."
+          - name: dtws4
+            description: "Instrução de cobrança bancária 4."
+          - name: gricd
+            description: "Código de atividade fiscal para retenção."
+          - name: grirg
+            description: "Região fiscal para retenção."
+          - name: gityp
+            description: "Tipo de faturamento / Categoria de imposto."
+          - name: xpypr
+            description: "Indicador de validação de pagamento."
+          - name: kidno
+            description: "ID de referência de pagamento internacional (Payment Reference)."
+          - name: absbt
+            description: "Montante de cobertura/garantia contra perdas."
+          - name: idxsp
+            description: "Índice de inflação."
+          - name: linfv
+            description: "Prazo final de validade do contrato."
+          - name: kontt
+            description: "Tipo de conta de compensação."
+          - name: kontl
+            description: "Conta de compensação local."
+          - name: txdat
+            description: "Data relevante para determinação do imposto."
+          - name: agzei
+            description: "Contador do item de compensação."
+          - name: pycur
+            description: "Moeda do pagamento efetivo."
+          - name: pyamt
+            description: "Valor do pagamento efetivo."
+          - name: bupla
+            description: "Local de negócios (Business Place - Crítico para Notas Fiscais no Brasil)."
+          - name: secco
+            description: "Seção fiscal (Section Code para retenção de impostos)."
+          - name: lstar
+            description: "Tipo de atividade de custos (Activity Type)."
+          - name: cession_kz
+            description: "Código de cessão de direitos/crédito."
+          - name: prznr
+            description: "Processo de negócio."
+          - name: ppdiff
+            description: "Diferença de preço em moeda local."
+          - name: ppdif2
+            description: "Diferença de preço na segunda moeda."
+          - name: ppdif3
+            description: "Diferença de preço na terceira moeda."
+
+          # Penalidades e Outros Valores Setor Público/Novos Campos SAP
+          - name: penlc1
+            description: "Montante da penalidade em moeda local 1."
+          - name: penlc2
+            description: "Montante da penalidade em moeda local 2."
+          - name: penlc3
+            description: "Montante da penalidade em moeda local 3."
+          - name: penfc
+            description: "Montante da penalidade em moeda estrangeira."
+          - name: pendays
+            description: "Número de dias de atraso para cálculo da penalidade."
+          - name: penrc
+            description: "Código do motivo da penalidade."
+          - name: grant_nbr
+            description: "Número da concessão/auxílio público (Grant Management)."
+          - name: sctax
+            description: "Valor de imposto em cenário especial."
+          - name: fkber_long
+            description: "Área funcional estendida (Functional Area Long)."
+          - name: gmvkz
+            description: "Indicador de execução orçamentária."
+          - name: srtype
+            description: "Tipo de registro de sub-razão."
+          - name: intreno
+            description: "Número interno do objeto imobiliário (RE-FX)."
+          - name: measure
+            description: "Medida ou programa governamental (Setor Público)."
+          - name: auggj
+            description: "Exercício fiscal de compensação das partidas."
+          - name: ppa_ex_ind
+            description: "Indicador de exceção PPA."
+          - name: docln
+            description: "Número do item de linha no Ledger Geral (Universal Journal - ACDOCA)."
+          - name: segment
+            description: "Segmento de mercado para relatórios financeiros (Segment Reporting)."
+          - name: psegment
+            description: "Segmento parceiro (Segment Reporting Intercompany)."
+          - name: pfkber
+            description: "Área funcional parceira."
+          - name: hktid
+            description: "ID da conta bancária detalhada (House Bank Account ID)."
+          - name: kstar
+            description: "Elemento de custo (Classe de Custo - Cost Element)."
+          - name: xlgclr
+            description: "Indicador: Lançamento em Ledger específico."
+          - name: taxps
+            description: "Número do item de documento fiscal."
+          - name: pays_prov
+            description: "Provedor do serviço de pagamento."
+          - name: pays_tran
+            description: "ID da transação de pagamento externo."
+          - name: mndid
+            description: "ID de referência do mandato (Débito Direto SEPA)."
+          - name: xfrge_bseg
+            description: "Indicador de liberação do item de linha."
+          - name: squan
+            description: "Quantidade de mercadoria padrão."
+          - name: acrobjtype
+            description: "Tipo de objeto de periodização (Accrual Object Type)."
+          - name: acrobj_id
+            description: "ID do objeto de periodização."
+          - name: acrsobj_id
+            description: "Sub-ID do objeto de periodização."
+          - name: acritmtype
+            description: "Tipo de item de periodização."
+          - name: valobjtype
+            description: "Tipo de objeto de avaliação."
+          - name: valobj_id
+            description: "ID do objeto de avaliação."
+          - name: valsobj_id
+            description: "Sub-ID do objeto de avaliação."
+          - name: re_bukrs
+            description: "Empresa de referência imobiliária."
+          - name: re_account
+            description: "Conta de referência imobiliária."
+          - name: pgeber
+            description: "Fundo orçamentário parceiro."
+          - name: pgrant_nbr
+            description: "Número de concessão parceiro."
+          - name: budget_pd
+            description: "Período de orçamento."
+          - name: pbudget_pd
+            description: "Período de orçamento parceiro."
+          - name: j_1tpbupl
+            description: "Local de negócios da filial terceirizada."
+          - name: perop_beg
+            description: "Data de início do período de operação."
+          - name: perop_end
+            description: "Data de término do período de operação."
+          - name: fastpay
+            description: "Indicador de pagamento acelerado."
+          - name: ignr_ivref
+            description: "Indicador para ignorar referência de verificação de fatura."
+
+          # Campos de Localização Geral / Notas Fiscais Eletrônicas
+          - name: fmfgus_key
+            description: "Chave do governo federal dos EUA (US Federal Government)."
+          - name: fmxdocnr
+            description: "Número do documento FM (Funds Management Reference)."
+          - name: fmxyear
+            description: "Ano do documento FM."
+          - name: fmxdocln
+            description: "Item de linha do documento FM."
+          - name: fmxzekkn
+            description: "Sequencial de classificação contábil FM."
+          - name: prodper
+            description: "Período de produção."
+          - name: gst_part
+            description: "ID do parceiro de imposto GST."
+          - name: plc_sup
+            description: "Local de fornecimento da mercadoria."
+          - name: hsn_sac
+            description: "Código HSN/SAC (Classificação fiscal de produtos/serviços)."
+          - name: irn
+            description: "Número de referência da fatura eletrônica (Invoice Reference Number)."
+          - name: recrf
+            description: "Referência de recebimento."
+          - name: inward_no
+            description: "Número do documento de entrada interna."
+          - name: inward_dt
+            description: "Data do documento de entrada interna."
+          - name: ground_no
+            description: "Número do documento de transporte/terrestre."
+          - name: ground_dt
+            description: "Data do documento de transporte."
+          - name: ground_typ
+            description: "Tipo de transporte utilizado."
+          - name: pymtkey
+            description: "Chave de identificação única do pagamento."
+
+          # Metadados de Auditoria da Pipeline
+          - name: hash_pk
+            description: "Chave primária MD5 gerada artificialmente para identificação única do registro"
+          - name: dt_ingestao
+            description: "Data e hora da ingestão na bronze"
+          - name: source
+            description: "Identificador da fonte dos dados"

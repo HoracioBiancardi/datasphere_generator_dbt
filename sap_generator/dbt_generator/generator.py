@@ -13,47 +13,46 @@ logger = get_logger()
 # SQL builder
 # ---------------------------------------------------------------------------
 
-def _pk_literal(primary_keys: List[str]) -> str:
-    """Render primary_keys as a Jinja-safe Python literal for dbt config."""
-    if len(primary_keys) == 1:
-        return f"'{primary_keys[0]}'"
-    keys = ", ".join(f"'{k}'" for k in primary_keys)
-    return f"[{keys}]"
+def _sap_alias(field: str) -> str:
+    """Convert SAP field name to a valid SQL/YAML identifier.
+    Handles namespace fields like /BEV1/LULDEGRP → bev1_luldegrp.
+    """
+    return field.lstrip("/").replace("/", "_").lower()
 
 
-def _source_to_target_map(columns: List[Dict[str, Any]]) -> Dict[str, str]:
-    """Map lowercase technical source field names to their dbt target field names."""
-    return {col["source_field"].lower(): col["target_field"] for col in columns}
+def _col_to_macro(col: Dict[str, Any]) -> str:
+    """Return the dbt macro expression for a column based on its target_type."""
+    field = col["source_field"]
+    target_type = col["target_type"]
+    if target_type == "DATE":
+        return f"{{{{ to_date('{field}') }}}}"
+    elif target_type.startswith("DECIMAL"):
+        return f"{{{{ to_decimal_nullif('{field}') }}}}"
+    elif target_type == "INTEGER":
+        return f"{{{{ to_integer_nullif('{field}') }}}}"
+    else:
+        return f"{{{{ nullif_empty('{field}') }}}}"
 
-
-def _resolve_pk_targets(primary_keys: List[str], col_map: Dict[str, str]) -> List[str]:
-    """Translate technical primary key names to their target_field equivalents."""
-    return [col_map.get(pk, pk) for pk in primary_keys]
 
 
 def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
     strategy = pipeline["ingestion_strategy"]
     load_type = strategy["load_type"]
-    primary_keys = strategy["primary_keys"]
     source_table = pipeline["source_sap_table"]
     columns = pipeline["transformed_columns"]
-
-    col_map = _source_to_target_map(columns)
-    pk_targets = _resolve_pk_targets(primary_keys, col_map)
 
     lines: List[str] = []
 
     # --- config block ---
     if load_type == "INCREMENTAL":
-        pk_str = _pk_literal(pk_targets)
         lines += [
             "{{",
             "    config(",
-            "        materialized='incremental',",
-            "        incremental_strategy='delete+insert',",
-            f"        alias='{source_table.lower()}',",
-            f"        tags=['sap','datasphere','silver', '{source_table}'],",
-            f"        unique_key='hash_pk',",
+            f'        tags=["{source_name}", "silver"],',
+            f'        alias="{source_table.lower()}",',
+            '        materialized="incremental",',
+            '        incremental_strategy="delete+insert",',
+            '        unique_key="hash_pk",',
             "    )",
             "}}",
             "{% if is_incremental() %}",
@@ -69,14 +68,12 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
             "{% endif %}",
         ]
     else:
-        pk_str = _pk_literal(pk_targets)
         lines += [
             "{{",
             "    config(",
-            "        materialized='table',",
+            f"        tags=['{source_name}', 'silver'],",
             f"        alias='{source_table.lower()}',",
-            f"        tags=['sap','datasphere','silver', '{source_table}'],",
-            f"        unique_key='hash_pk',",
+            "        materialized='table',",
             "    )",
             "}}",
         ]
@@ -85,12 +82,11 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
 
     # --- SELECT ---
     lines.append("SELECT")
-    col_lines = [f"    {col['sql_expression']} AS {col['target_field']}" for col in columns]
+    col_lines = [f"    {_col_to_macro(col)} AS {_sap_alias(col['source_field'])}" for col in columns]
 
     if load_type == "INCREMENTAL":
         audit_block = (
             ",\n"
-            "    -- Metadados de Auditoria da Pipeline\n"
             "    {{ to_timestamp('dt_ingestao') }} AS dt_ingestao,\n"
             "    silver.hash_pk,\n"
             "    silver.source"
@@ -103,7 +99,16 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
             "    {% endif %}",
         ]
     else:
-        lines.append(",\n".join(col_lines))
+        audit_block = (
+            ",\n"
+            "\n"
+            "    -- Metadados de Auditoria da Pipeline\n"
+            "    {{ to_timestamp('dt_ingestao') }} AS dt_ingestao,\n"
+            "    hash_pk,\n"
+            "    source"
+        )
+        lines.append(",\n".join(col_lines) + audit_block)
+        lines.append("")
         lines.append(f"FROM {{{{ source('{source_name}', '{source_table.lower()}') }}}}")
 
     return "\n".join(lines) + "\n"
@@ -131,8 +136,7 @@ def _build_sources_yml(
     load_type = strategy["load_type"]
     columns = pipeline["transformed_columns"]
 
-    col_map = _source_to_target_map(columns)
-    pk_target_set = set(_resolve_pk_targets(strategy.get("primary_keys", []), col_map))
+    pk_set = {_sap_alias(pk) for pk in strategy.get("primary_keys", [])}
 
     materialized = "incremental" if load_type == "INCREMENTAL" else "table"
 
@@ -155,19 +159,19 @@ def _build_sources_yml(
     out.append("")
     out.append("        columns:")
 
-    pk_cols = [c for c in columns if c["target_field"] in pk_target_set]
-    non_pk_cols = [c for c in columns if c["target_field"] not in pk_target_set]
+    pk_cols = [c for c in columns if _sap_alias(c["source_field"]) in pk_set]
+    non_pk_cols = [c for c in columns if _sap_alias(c["source_field"]) not in pk_set]
 
     if pk_cols:
         out.append("          # Chaves Primárias / Identificadores")
         for col in pk_cols:
-            out.append(f"          - name: {col['target_field']}")
+            out.append(f"          - name: {_sap_alias(col['source_field'])}")
             desc = _esc(col.get("description") or "")
             if desc:
                 out.append(f'            description: "{desc}"')
 
     for col in non_pk_cols:
-        out.append(f"          - name: {col['target_field']}")
+        out.append(f"          - name: {_sap_alias(col['source_field'])}")
         desc = _esc(col.get("description") or "")
         if desc:
             out.append(f'            description: "{desc}"')
