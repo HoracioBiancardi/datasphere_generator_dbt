@@ -705,3 +705,11 @@ sources:
           - name: ground_dt
           - name: ground_typ
           - name: pymtkey
+
+          # Metadados de Auditoria da Pipeline
+          - name: hash_pk
+            description: "Chave primária MD5 gerada artificialmente para identificação única do registro"
+          - name: dt_ingestao
+            description: "Data e hora da ingestão na bronze"
+          - name: source
+            description: "Identificador da fonte dos dados"

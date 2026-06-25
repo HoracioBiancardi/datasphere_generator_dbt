@@ -181,3 +181,6 @@ uv.lock
 # log
 /log/*
 *.log
+
+out
+out

@@ -35,7 +35,6 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
     strategy = pipeline["ingestion_strategy"]
     load_type = strategy["load_type"]
     primary_keys = strategy["primary_keys"]
-    watermark = strategy.get("watermark_column")
     source_table = pipeline["source_sap_table"]
     columns = pipeline["transformed_columns"]
 
@@ -60,7 +59,7 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
             "{% if is_incremental() %}",
             "    WITH novos_hashes AS (",
             "        SELECT s_tgt.hash_pk",
-            f"        FROM {{ source('dataspherev2', '{source_table.lower()}') }} AS s_tgt",
+            f"        FROM {{{{ source('{source_name}', '{source_table.lower()}') }}}} AS s_tgt",
             "        WHERE TRY_CONVERT(DATETIME2, s_tgt.dt_ingestao) >= (",
             "                SELECT DATEADD(",
             "                    DAY, -1, MAX(s_src.dt_ingestao)",
@@ -87,16 +86,25 @@ def _build_sql(pipeline: Dict[str, Any], source_name: str) -> str:
     # --- SELECT ---
     lines.append("SELECT")
     col_lines = [f"    {col['sql_expression']} AS {col['target_field']}" for col in columns]
-    lines.append(",\n".join(col_lines))
-    lines.append(f"FROM {{{{ source('{source_name}', '{source_table}') }}}}")
 
-    # --- incremental filter ---
-    if load_type == "INCREMENTAL" and watermark:
+    if load_type == "INCREMENTAL":
+        audit_block = (
+            ",\n"
+            "    -- Metadados de Auditoria da Pipeline\n"
+            "    {{ to_timestamp('dt_ingestao') }} AS dt_ingestao,\n"
+            "    silver.hash_pk,\n"
+            "    silver.source"
+        )
+        lines.append(",\n".join(col_lines) + audit_block)
         lines += [
-            "{%- if is_incremental() %}",
-            f"WHERE {watermark} > (SELECT MAX({watermark}) FROM {{{{ this }}}})",
-            "{%- endif %}",
+            f"FROM {{{{ source('{source_name}', '{source_table.lower()}') }}}} AS silver",
+            "    {% if is_incremental() %}",
+            "        INNER JOIN novos_hashes AS nhashes ON silver.hash_pk = nhashes.hash_pk",
+            "    {% endif %}",
         ]
+    else:
+        lines.append(",\n".join(col_lines))
+        lines.append(f"FROM {{{{ source('{source_name}', '{source_table.lower()}') }}}}")
 
     return "\n".join(lines) + "\n"
 
@@ -164,6 +172,17 @@ def _build_sources_yml(
         if desc:
             out.append(f'            description: "{desc}"')
 
+    out += [
+        "",
+        "          # Metadados de Auditoria da Pipeline",
+        '          - name: hash_pk',
+        '            description: "Chave primária MD5 gerada artificialmente para identificação única do registro"',
+        '          - name: dt_ingestao',
+        '            description: "Data e hora da ingestão na bronze"',
+        '          - name: source',
+        '            description: "Identificador da fonte dos dados"',
+    ]
+
     return "\n".join(out) + "\n"
 
 
@@ -189,13 +208,13 @@ class DbtGenerator:
 
     def generate(self, pipeline_contract: Dict[str, Any]) -> None:
         """Write SQL model and sources.yml for the given pipeline contract."""
-        target_table = pipeline_contract["target_table"]
         source_table = pipeline_contract["source_sap_table"]
-        logger.info(f"[Module 3] Generating dbt artifacts for: {target_table}")
+        table_name = source_table.lower()
+        logger.info(f"[Module 3] Generating dbt artifacts for: {table_name}")
 
         # --- SQL model ---
         sql_content = _build_sql(pipeline_contract, self.source_name)
-        sql_path = self.output_dir / source_table / f"{target_table}.sql"
+        sql_path = self.output_dir / table_name / f"{table_name}.sql"
         sql_path.parent.mkdir(parents=True, exist_ok=True)
         sql_path.write_text(sql_content, encoding="utf-8")
         logger.info(f"[Module 3] SQL model saved → {sql_path}")
@@ -204,7 +223,7 @@ class DbtGenerator:
         yml_content = _build_sources_yml(
             pipeline_contract, self.source_name, self.database, self.schema
         )
-        yml_path = self.output_dir / source_table / f"{target_table}.yml"
+        yml_path = self.output_dir / table_name / f"{table_name}.yml"
         yml_path.parent.mkdir(parents=True, exist_ok=True)
         yml_path.write_text(yml_content, encoding="utf-8")
         logger.info(f"[Module 3] sources.yml saved → {yml_path}")

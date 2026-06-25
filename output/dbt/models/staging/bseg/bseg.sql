@@ -10,7 +10,7 @@
 {% if is_incremental() %}
     WITH novos_hashes AS (
         SELECT s_tgt.hash_pk
-        FROM { source('dataspherev2', 'bseg') } AS s_tgt
+        FROM {{ source('sap', 'bseg') }} AS s_tgt
         WHERE TRY_CONVERT(DATETIME2, s_tgt.dt_ingestao) >= (
                 SELECT DATEADD(
                     DAY, -1, MAX(s_src.dt_ingestao)
@@ -372,5 +372,12 @@ SELECT
     GROUND_NO AS ground_no,
     CASE WHEN GROUND_DT = '00000000' OR GROUND_DT = '' THEN NULL ELSE TO_DATE(GROUND_DT, 'YYYYMMDD') END AS ground_dt,
     GROUND_TYP AS ground_typ,
-    PYMTKEY AS pymtkey
-FROM {{ source('sap', 'BSEG') }}
+    PYMTKEY AS pymtkey,
+    -- Metadados de Auditoria da Pipeline
+    {{ to_timestamp('dt_ingestao') }} AS dt_ingestao,
+    silver.hash_pk,
+    silver.source
+FROM {{ source('sap', 'bseg') }} AS silver
+    {% if is_incremental() %}
+        INNER JOIN novos_hashes AS nhashes ON silver.hash_pk = nhashes.hash_pk
+    {% endif %}
